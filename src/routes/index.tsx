@@ -20,7 +20,7 @@ import {
   WalletCards,
   Activity,
 } from "lucide-react";
-import React, { useRef, type CSSProperties, type ReactNode } from "react";
+import React, { useRef, useState, useEffect, type CSSProperties, type ReactNode } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { SizzleSection } from "../components/SizzleSection";
 import { CikkaMall } from "../components/CikkaMall";
@@ -31,6 +31,19 @@ import { GeneralPaymentsSection } from "../components/GeneralPaymentsSection";
 import { GetTheAppSection } from "../components/GetTheAppSection";
 import { Footer } from "../components/Footer";
 import { SmoothScroll } from "../components/SmoothScroll";
+import { Cikka3DLogo } from "../components/Cikka3DLogo";
+
+// Responsive window size hook
+function useWindowSize() {
+  const [size, setSize] = useState({ width: 1280, height: 800 });
+  useEffect(() => {
+    const update = () => setSize({ width: window.innerWidth, height: window.innerHeight });
+    update();
+    window.addEventListener("resize", update, { passive: true });
+    return () => window.removeEventListener("resize", update);
+  }, []);
+  return size;
+}
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -59,15 +72,52 @@ function PayerLanding() {
   );
 }
 
+function useHeaderTheme() {
+  const [isLight, setIsLight] = React.useState(false);
+
+  React.useEffect(() => {
+    const handleCheck = () => {
+      const lightSections = document.querySelectorAll('[data-theme-light="true"]');
+      const headerTriggerY = 60;
+      let lightActive = false;
+
+      lightSections.forEach((sec) => {
+        const r = sec.getBoundingClientRect();
+        if (r.top <= headerTriggerY && r.bottom >= headerTriggerY) {
+          lightActive = true;
+        }
+      });
+
+      setIsLight(lightActive);
+    };
+
+    window.addEventListener("scroll", handleCheck, { passive: true });
+    window.addEventListener("resize", handleCheck);
+    handleCheck();
+
+    return () => {
+      window.removeEventListener("scroll", handleCheck);
+      window.removeEventListener("resize", handleCheck);
+    };
+  }, []);
+
+  return isLight;
+}
+
 function Header() {
+  const isLight = useHeaderTheme();
+
   return (
     <header className="fixed top-0 left-0 right-0 z-50 h-[72px] sm:h-[80px] flex items-center justify-between px-6 sm:px-12 md:px-16 bg-transparent pointer-events-auto">
-      {/* Brand Logo */}
-      <a className="inline-flex items-center group transition-transform duration-200 hover:scale-105 cursor-pointer" href="#top" aria-label="Cikka home">
-        <img
-          src="/Cikka_Logo.png"
-          alt="Cikka"
-          className="h-11 sm:h-12 md:h-14 w-auto object-contain drop-shadow-[0_2px_16px_rgba(168,85,247,0.3)] select-none"
+      {/* 3D Brand Logo */}
+      <a
+        className="inline-flex items-center group transition-transform duration-200 hover:scale-105 cursor-pointer select-none"
+        href="#top"
+        aria-label="Cikka home"
+      >
+        <Cikka3DLogo
+          isLightBg={isLight}
+          className="w-12 h-12 sm:w-14 sm:h-14 md:w-16 md:h-16"
         />
       </a>
 
@@ -75,22 +125,26 @@ function Header() {
       <div className="flex items-center gap-3 sm:gap-3.5">
         <a
           href="/signin"
-          style={{ color: "#ffffff" }}
-          className="inline-flex items-center justify-center bg-[#15151c]/90 hover:bg-[#22222c] text-white font-medium text-[13px] px-4 sm:px-4.5 py-2 rounded-full border border-white/20 shadow-[0_2px_12px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all active:scale-95 cursor-pointer select-none"
+          style={{ color: isLight ? "#000000" : "#ffffff" }}
+          className={`inline-flex items-center justify-center font-medium text-[13px] px-4 sm:px-4.5 py-2 rounded-full border shadow-[0_2px_12px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all duration-500 active:scale-95 cursor-pointer select-none ${
+            isLight
+              ? "bg-black/5 hover:bg-black/10 text-black border-black/15 shadow-[0_2px_10px_rgba(0,0,0,0.06)]"
+              : "bg-[#15151c]/90 hover:bg-[#22222c] text-white border-white/20"
+          }`}
         >
-          <span style={{ color: "#ffffff" }} className="text-white font-medium">
-            Sign in
-          </span>
+          <span className="font-medium">Sign in</span>
         </a>
 
         <a
           href="#download"
-          style={{ color: "#000000" }}
-          className="inline-flex items-center justify-center bg-white hover:bg-neutral-100 text-black font-semibold text-[13px] px-5 sm:px-5.5 py-2 rounded-full border border-black/10 shadow-[0_2px_14px_rgba(0,0,0,0.25)] transition-all active:scale-95 cursor-pointer select-none"
+          style={{ color: isLight ? "#ffffff" : "#000000" }}
+          className={`inline-flex items-center justify-center font-semibold text-[13px] px-5 sm:px-5.5 py-2 rounded-full border shadow-[0_2px_14px_rgba(0,0,0,0.25)] transition-all duration-500 active:scale-95 cursor-pointer select-none ${
+            isLight
+              ? "bg-black hover:bg-neutral-900 text-white border-black/20"
+              : "bg-white hover:bg-neutral-100 text-black border-black/10"
+          }`}
         >
-          <span style={{ color: "#000000" }} className="text-black font-semibold">
-            Get app
-          </span>
+          <span className="font-semibold">Get app</span>
         </a>
       </div>
     </header>
@@ -98,10 +152,21 @@ function Header() {
 }
 
 // =========================================================================
-// UNIFIED PHONE SHOWCASE (EXACT MATCH TO REFERENCE SCREENSHOT)
+// UNIFIED PHONE SHOWCASE — FULLY RESPONSIVE WITH SCROLL PARALLAX
 // =========================================================================
 function UnifiedPhoneShowcase() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const { width } = useWindowSize();
+
+  // Responsive breakpoints
+  const isMobile = width < 640;
+  const isTablet = width >= 640 && width < 1024;
+
+  // Responsive phone X offset (how far it shifts left/right)
+  // On mobile, phone does NOT shift sideways — it stays centered
+  const phoneShiftX = isMobile ? 0 : isTablet ? 180 : 260;
+  // Hero start Y: phone enters from below, slides up as user scrolls
+  const heroStartY = isMobile ? 200 : 250;
 
   // Track scroll throughout the 480vh sequence
   const { scrollYProgress } = useScroll({
@@ -140,25 +205,27 @@ function UnifiedPhoneShowcase() {
   const largePaymentsY = useTransform(smoothProgress, [0.64, 0.76], [40, 0]);
 
   // --- 4. THE SINGLE CONTINUOUS PHONE MOCKUP ---
-  // Position moves: Center (0) -> Right (+260px) -> Left (-260px)
+  // Phone shifts RIGHT for Quick Actions, LEFT for Large Payments
   const phoneX = useTransform(
     smoothProgress,
     [0.0, 0.20, 0.36, 0.58, 0.76, 1.0],
-    [0, 100, 260, 260, -260, -260]
+    [0, isMobile ? 50 : 100, phoneShiftX, phoneShiftX, -phoneShiftX, -phoneShiftX]
   );
 
-  // Vertical position: Starts lower down (250px) in Hero so it sits cleanly below "Got You", moves to center (0px) for Quick Actions & Large Payments
+  // KEY SCROLL PARALLAX: Phone starts lower (below "Got You" text) and
+  // smoothly moves UPWARD as the user scrolls — giving a natural parallax lift.
+  // On mobile phone moves to the upper portion (-80px above center = near top)
   const phoneY = useTransform(
     smoothProgress,
-    [0.0, 0.26, 0.38, 0.58, 0.76, 1.0],
-    [250, 40, 0, 0, 0, 0]
+    [0.0, 0.26, 0.38, 1.0],
+    [heroStartY, 20, isMobile ? -80 : 0, isMobile ? -80 : 0]
   );
 
-  // 3D Perspective Tilt: 20deg in Hero (tilted back into depth), stands straight (0deg) for Quick Actions & Large Payments
+  // 3D Perspective Tilt
   const phoneRotateX = useTransform(
     smoothProgress,
     [0.0, 0.28, 0.38, 0.58, 0.76, 1.0],
-    [20, 0, 0, 0, 0, 0]
+    [isMobile ? 10 : 20, 0, 0, 0, 0, 0]
   );
   const phoneRotateY = useTransform(
     smoothProgress,
@@ -168,7 +235,7 @@ function UnifiedPhoneShowcase() {
   const phoneScale = useTransform(
     smoothProgress,
     [0.0, 0.26, 0.38, 0.58, 0.76, 1.0],
-    [0.86, 0.88, 0.88, 0.88, 0.88, 0.88]
+    [isMobile ? 0.78 : 0.86, isMobile ? 0.82 : 0.88, isMobile ? 0.84 : 0.88, isMobile ? 0.84 : 0.88, isMobile ? 0.84 : 0.88, isMobile ? 0.84 : 0.88]
   );
 
   // Screen Content Crossfades inside the SINGLE Phone
@@ -180,11 +247,11 @@ function UnifiedPhoneShowcase() {
   );
   const screen3Opacity = useTransform(smoothProgress, [0.64, 0.74, 1.0], [0, 1, 1]);
 
-  // Ambient Dynamic Purple Glow Translation behind the Phone
+  // Ambient Dynamic Purple Glow — also follows phone X
   const glowX = useTransform(
     smoothProgress,
     [0.0, 0.28, 0.38, 0.58, 0.76, 1.0],
-    [0, 220, 220, -220, -220, -220]
+    [0, phoneShiftX * 0.85, phoneShiftX * 0.85, -phoneShiftX * 0.85, -phoneShiftX * 0.85, -phoneShiftX * 0.85]
   );
 
   return (
@@ -220,7 +287,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute top-14 sm:top-18 md:top-20 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-4 max-w-4xl"
         >
-          <h1 className="font-sans font-bold tracking-[-0.04em] leading-[0.92] text-5xl sm:text-6xl md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
+          <h1 className="font-sans font-bold tracking-[-0.04em] leading-[0.92] text-8xl sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
             {/* Top Line: "We've" */}
             <span className="inline-block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] via-[#f472b6] via-[#c084fc] to-[#a5b4fc] bg-clip-text text-transparent drop-shadow-[0_10px_35px_rgba(244,114,182,0.12)]">
               We've
@@ -252,9 +319,14 @@ function UnifiedPhoneShowcase() {
               v >= 0.24 && v <= 0.66 ? "auto" : "none"
             ),
           }}
-          className="absolute left-6 sm:left-12 lg:left-20 xl:left-28 top-1/2 -translate-y-1/2 z-10 max-w-md lg:max-w-lg w-full flex flex-col justify-center"
+          className="absolute
+            left-0 right-0 mx-auto sm:left-12 sm:right-auto lg:left-20 xl:left-28
+            top-[62%] sm:top-1/2 sm:-translate-y-1/2
+            z-10 w-full max-w-[90%] sm:max-w-md lg:max-w-lg
+            flex flex-col justify-center items-center sm:items-start
+            text-center sm:text-left px-4 sm:px-0"
         >
-          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.0] text-5xl sm:text-6xl lg:text-[4.75rem]">
+          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.0] text-3xl sm:text-5xl lg:text-[4.75rem]">
             <span className="block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent">
               Quick
             </span>
@@ -262,21 +334,21 @@ function UnifiedPhoneShowcase() {
               Actions
             </span>
           </h2>
-          <p className="mt-5 text-sm sm:text-base text-slate-400 font-normal leading-relaxed max-w-md">
+          <p className="mt-3 sm:mt-5 text-xs sm:text-base text-slate-400 font-normal leading-relaxed max-w-md hidden sm:block">
             All major actions are just a tap away, right on the home screen. Enjoy a seamless and
             efficient user experience.
           </p>
-          <div className="grid grid-cols-2 gap-3.5 sm:gap-4 mt-8 max-w-[280px] sm:max-w-[320px]">
-            <div className="h-16 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
+          <div className="grid grid-cols-4 sm:grid-cols-2 gap-2 sm:gap-3.5 mt-4 sm:mt-8 w-full max-w-[280px] sm:max-w-[280px] md:max-w-[320px]">
+            <div className="h-14 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
               <ArrowUp className="w-5 sm:w-6 h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="h-16 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
+            <div className="h-14 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
               <Mail className="w-5 sm:w-6 h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="h-16 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
+            <div className="h-14 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
               <Database className="w-5 sm:w-6 h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="h-16 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
+            <div className="h-14 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
               <Users className="w-5 sm:w-6 h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
             </div>
           </div>
@@ -292,9 +364,14 @@ function UnifiedPhoneShowcase() {
             y: largePaymentsY,
             pointerEvents: useTransform(smoothProgress, (v) => (v >= 0.66 ? "auto" : "none")),
           }}
-          className="absolute right-6 sm:right-12 lg:right-20 xl:right-28 top-1/2 -translate-y-1/2 z-10 max-w-md lg:max-w-lg w-full flex flex-col justify-center items-start lg:items-end text-left lg:text-right"
+          className="absolute
+            left-0 right-0 mx-auto sm:left-auto sm:right-12 lg:right-20 xl:right-28
+            top-[62%] sm:top-1/2 sm:-translate-y-1/2
+            z-10 w-full max-w-[90%] sm:max-w-md lg:max-w-lg
+            flex flex-col justify-center items-center sm:items-end
+            text-center sm:text-right px-4 sm:px-0"
         >
-          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.0] text-5xl sm:text-6xl lg:text-[4.75rem]">
+          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.0] text-3xl sm:text-5xl lg:text-[4.75rem]">
             <span className="block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent">
               Large
             </span>
@@ -302,12 +379,12 @@ function UnifiedPhoneShowcase() {
               Payments
             </span>
           </h2>
-          <p className="mt-5 text-sm sm:text-base text-slate-400 font-normal leading-relaxed max-w-md">
+          <p className="mt-3 sm:mt-5 text-xs sm:text-base text-slate-400 font-normal leading-relaxed max-w-md hidden sm:block">
             Send payments over $1,000,000 USD with ease and confidence. Experience unmatched
             security for high-value transactions.
           </p>
-          <div className="mt-8 w-full max-w-[320px] sm:max-w-[360px] rounded-3xl bg-[#0c0c14]/90 border border-white/10 p-5 sm:p-7 shadow-2xl backdrop-blur-xl text-left">
-            <p className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight">
+          <div className="mt-4 sm:mt-8 w-full max-w-[200px] sm:max-w-[320px] md:max-w-[360px] rounded-2xl sm:rounded-3xl bg-[#0c0c14]/90 border border-white/10 p-3 sm:p-5 md:p-7 shadow-2xl backdrop-blur-xl text-left">
+            <p className="text-xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
               $1,000,000
             </p>
             <div className="flex items-center gap-2.5 mt-5">
@@ -830,7 +907,7 @@ function LightContinuation() {
   return (
     <>
       <div id="light-continuation-wrap" className="w-full">
-        <section id="company" className="relative z-20 mt-64 sm:mt-60 md:mt-56 bg-[#f4f5f8] text-black pt-16 pb-28 px-6 sm:px-12 md:px-16 shadow-[0_-30px_70px_rgba(0,0,0,0.7)]">
+        <section id="company" data-theme-light="true" className="relative z-20 mt-64 sm:mt-60 md:mt-56 bg-[#f4f5f8] text-black pt-16 pb-28 px-6 sm:px-12 md:px-16 shadow-[0_-30px_70px_rgba(0,0,0,0.7)]">
           {/* Inverted / Opposite Concave Corners */}
           <InvertedCornerLeft />
           <InvertedCornerRight />
