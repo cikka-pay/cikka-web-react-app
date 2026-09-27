@@ -126,11 +126,10 @@ function Header() {
         <a
           href="/signin"
           style={{ color: isLight ? "#000000" : "#ffffff" }}
-          className={`inline-flex items-center justify-center font-medium text-[13px] px-4 sm:px-4.5 py-2 rounded-full border shadow-[0_2px_12px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all duration-500 active:scale-95 cursor-pointer select-none ${
-            isLight
+          className={`inline-flex items-center justify-center font-medium text-[13px] px-4 sm:px-4.5 py-2 rounded-full border shadow-[0_2px_12px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all duration-500 active:scale-95 cursor-pointer select-none ${isLight
               ? "bg-black/5 hover:bg-black/10 text-black border-black/15 shadow-[0_2px_10px_rgba(0,0,0,0.06)]"
               : "bg-[#15151c]/90 hover:bg-[#22222c] text-white border-white/20"
-          }`}
+            }`}
         >
           <span className="font-medium">Sign in</span>
         </a>
@@ -138,11 +137,10 @@ function Header() {
         <a
           href="#download"
           style={{ color: isLight ? "#ffffff" : "#000000" }}
-          className={`inline-flex items-center justify-center font-semibold text-[13px] px-5 sm:px-5.5 py-2 rounded-full border shadow-[0_2px_14px_rgba(0,0,0,0.25)] transition-all duration-500 active:scale-95 cursor-pointer select-none ${
-            isLight
+          className={`inline-flex items-center justify-center font-semibold text-[13px] px-5 sm:px-5.5 py-2 rounded-full border shadow-[0_2px_14px_rgba(0,0,0,0.25)] transition-all duration-500 active:scale-95 cursor-pointer select-none ${isLight
               ? "bg-black hover:bg-neutral-900 text-white border-black/20"
               : "bg-white hover:bg-neutral-100 text-black border-black/10"
-          }`}
+            }`}
         >
           <span className="font-semibold">Get app</span>
         </a>
@@ -163,10 +161,10 @@ function UnifiedPhoneShowcase() {
   const isTablet = width >= 640 && width < 1024;
 
   // Responsive phone X offset (how far it shifts left/right)
-  // On mobile, phone does NOT shift sideways — it stays centered
-  const phoneShiftX = isMobile ? 0 : isTablet ? 180 : 260;
+  // On mobile, phone stays centered while text sits cleanly below
+  const phoneShiftX = isMobile ? 0 : isTablet ? 175 : 260;
   // Hero start Y: phone enters from below, slides up as user scrolls
-  const heroStartY = isMobile ? 200 : 250;
+  const heroStartY = isMobile ? 150 : 250;
 
   // Track scroll throughout the 480vh sequence
   const { scrollYProgress } = useScroll({
@@ -186,56 +184,78 @@ function UnifiedPhoneShowcase() {
   const heroY = useTransform(smoothProgress, [0.0, 0.30], [0, -90]);
   const heroScale = useTransform(smoothProgress, [0.0, 0.30], [1, 0.94]);
 
-  // --- 2. QUICK ACTIONS STAGE (Left Column) ---
+  // --- 2. QUICK ACTIONS STAGE (Left Column on desktop / Bottom on mobile) ---
   const quickActionsOpacity = useTransform(
     smoothProgress,
     [0.24, 0.36, 0.58, 0.68],
     [0, 1, 1, 0]
   );
-  const quickActionsX = useTransform(smoothProgress, [0.24, 0.36, 0.58, 0.68], [-50, 0, 0, -50]);
-  const quickActionsY = useTransform(smoothProgress, [0.24, 0.36, 0.58, 0.68], [40, 0, 0, -40]);
+  const quickActionsX = useTransform(
+    smoothProgress,
+    [0.24, 0.36, 0.58, 0.68],
+    isMobile ? [0, 0, 0, 0] : [-50, 0, 0, -50]
+  );
+  const quickActionsY = useTransform(
+    smoothProgress,
+    [0.24, 0.36, 0.58, 0.68],
+    isMobile ? [25, 0, 0, -25] : [40, 0, 0, -40]
+  );
 
-  // --- 3. LARGE PAYMENTS STAGE (Right Column) ---
+  // --- 3. LARGE PAYMENTS STAGE (Right Column on desktop / Bottom on mobile) ---
   const largePaymentsOpacity = useTransform(
     smoothProgress,
     [0.64, 0.76, 0.96, 1.0],
     [0, 1, 1, 1]
   );
-  const largePaymentsX = useTransform(smoothProgress, [0.64, 0.76], [50, 0]);
-  const largePaymentsY = useTransform(smoothProgress, [0.64, 0.76], [40, 0]);
+  const largePaymentsX = useTransform(
+    smoothProgress,
+    [0.64, 0.76],
+    isMobile ? [0, 0] : [50, 0]
+  );
+  const largePaymentsY = useTransform(
+    smoothProgress,
+    [0.64, 0.76],
+    isMobile ? [25, 0] : [40, 0]
+  );
 
   // --- 4. THE SINGLE CONTINUOUS PHONE MOCKUP ---
   // Phone shifts RIGHT for Quick Actions, LEFT for Large Payments
   const phoneX = useTransform(
     smoothProgress,
     [0.0, 0.20, 0.36, 0.58, 0.76, 1.0],
-    [0, isMobile ? 50 : 100, phoneShiftX, phoneShiftX, -phoneShiftX, -phoneShiftX]
+    [0, isMobile ? 0 : 100, phoneShiftX, phoneShiftX, -phoneShiftX, -phoneShiftX]
   );
 
-  // KEY SCROLL PARALLAX: Phone starts lower (below "Got You" text) and
-  // smoothly moves UPWARD as the user scrolls — giving a natural parallax lift.
-  // On mobile phone moves to the upper portion (-80px above center = near top)
+  // KEY SCROLL PARALLAX: Phone starts lower and moves upward.
+  // On mobile, phone docks safely in the top half (-120px) to give clear headroom for the interactive controls below
   const phoneY = useTransform(
     smoothProgress,
     [0.0, 0.26, 0.38, 1.0],
-    [heroStartY, 20, isMobile ? -80 : 0, isMobile ? -80 : 0]
+    [heroStartY, 20, isMobile ? -120 : 0, isMobile ? -120 : 0]
   );
 
   // 3D Perspective Tilt
   const phoneRotateX = useTransform(
     smoothProgress,
     [0.0, 0.28, 0.38, 0.58, 0.76, 1.0],
-    [isMobile ? 10 : 20, 0, 0, 0, 0, 0]
+    [isMobile ? 8 : 20, 0, 0, 0, 0, 0]
   );
   const phoneRotateY = useTransform(
     smoothProgress,
     [0.0, 0.22, 0.38, 0.58, 0.76, 1.0],
-    [0, -3, -3, 3, 3, 3]
+    [0, isMobile ? 0 : -3, isMobile ? 0 : -3, isMobile ? 0 : 3, isMobile ? 0 : 3, isMobile ? 0 : 3]
   );
   const phoneScale = useTransform(
     smoothProgress,
     [0.0, 0.26, 0.38, 0.58, 0.76, 1.0],
-    [isMobile ? 0.78 : 0.86, isMobile ? 0.82 : 0.88, isMobile ? 0.84 : 0.88, isMobile ? 0.84 : 0.88, isMobile ? 0.84 : 0.88, isMobile ? 0.84 : 0.88]
+    [
+      isMobile ? 0.70 : 0.86,
+      isMobile ? 0.73 : 0.88,
+      isMobile ? 0.74 : 0.88,
+      isMobile ? 0.74 : 0.88,
+      isMobile ? 0.74 : 0.88,
+      isMobile ? 0.74 : 0.88,
+    ]
   );
 
   // Screen Content Crossfades inside the SINGLE Phone
@@ -261,17 +281,17 @@ function UnifiedPhoneShowcase() {
       style={{ height: "480vh" }}
     >
       {/* Sticky Fullscreen Viewport */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-20 sm:pt-24 pb-8 px-6 sm:px-12 lg:px-20">
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-16 sm:pt-24 pb-4 sm:pb-8 px-4 sm:px-12 lg:px-20">
         {/* Ambient Radial Background Glows matching Reference */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
           {/* Main Following Purple Halo behind Phone */}
           <motion.div
             style={{ x: glowX }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] sm:w-[900px] lg:w-[1050px] h-[550px] sm:h-[650px] bg-[radial-gradient(circle,rgba(168,85,247,0.26)_0%,rgba(217,70,239,0.15)_30%,rgba(129,140,248,0.1)_55%,transparent_75%)] blur-[120px]"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] sm:w-[900px] lg:w-[1050px] h-[450px] sm:h-[650px] bg-[radial-gradient(circle,rgba(168,85,247,0.26)_0%,rgba(217,70,239,0.15)_30%,rgba(129,140,248,0.1)_55%,transparent_75%)] blur-[100px] sm:blur-[120px]"
           />
           {/* Side Soft Lavender & Peach Highlights */}
-          <div className="absolute top-1/2 right-[12%] -translate-y-1/2 w-[420px] h-[480px] bg-[radial-gradient(circle,rgba(192,132,252,0.16)_0%,transparent_70%)] blur-[100px]" />
-          <div className="absolute top-1/2 left-[12%] -translate-y-1/2 w-[420px] h-[480px] bg-[radial-gradient(circle,rgba(244,114,182,0.12)_0%,transparent_70%)] blur-[100px]" />
+          <div className="absolute top-1/2 right-[12%] -translate-y-1/2 w-[320px] sm:w-[420px] h-[400px] sm:h-[480px] bg-[radial-gradient(circle,rgba(192,132,252,0.16)_0%,transparent_70%)] blur-[80px] sm:blur-[100px]" />
+          <div className="absolute top-1/2 left-[12%] -translate-y-1/2 w-[320px] sm:w-[420px] h-[400px] sm:h-[480px] bg-[radial-gradient(circle,rgba(244,114,182,0.12)_0%,transparent_70%)] blur-[80px] sm:blur-[100px]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#000000_95%)]" />
         </div>
 
@@ -285,9 +305,9 @@ function UnifiedPhoneShowcase() {
             scale: heroScale,
             pointerEvents: useTransform(smoothProgress, (v) => (v < 0.22 ? "auto" : "none")),
           }}
-          className="absolute top-14 sm:top-18 md:top-20 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-4 max-w-4xl"
+          className="absolute top-12 xs:top-14 sm:top-18 md:top-20 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-4 max-w-4xl"
         >
-          <h1 className="font-sans font-bold tracking-[-0.04em] leading-[0.92] text-8xl sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
+          <h1 className="font-sans font-bold tracking-[-0.04em] leading-[0.92] text-5xl xs:text-6xl sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
             {/* Top Line: "We've" */}
             <span className="inline-block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] via-[#f472b6] via-[#c084fc] to-[#a5b4fc] bg-clip-text text-transparent drop-shadow-[0_10px_35px_rgba(244,114,182,0.12)]">
               We've
@@ -308,7 +328,7 @@ function UnifiedPhoneShowcase() {
         </motion.div>
 
         {/* ========================================================================= */}
-        {/* POSITION 2: QUICK ACTIONS VIEW (Left Column) */}
+        {/* POSITION 2: QUICK ACTIONS VIEW (Left Column on desktop / Bottom on mobile) */}
         {/* ========================================================================= */}
         <motion.div
           style={{
@@ -321,41 +341,41 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto sm:left-12 sm:right-auto lg:left-20 xl:left-28
-            top-[62%] sm:top-1/2 sm:-translate-y-1/2
-            z-10 w-full max-w-[90%] sm:max-w-md lg:max-w-lg
+            bottom-4 xs:bottom-6 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2
+            z-30 w-full max-w-[92%] sm:max-w-md lg:max-w-lg
             flex flex-col justify-center items-center sm:items-start
-            text-center sm:text-left px-4 sm:px-0"
+            text-center sm:text-left px-2 sm:px-0"
         >
-          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.0] text-3xl sm:text-5xl lg:text-[4.75rem]">
-            <span className="block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent">
+          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.0] text-3xl xs:text-4xl sm:text-5xl lg:text-[4.75rem]">
+            <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-2 sm:mr-0">
               Quick
             </span>
-            <span className="block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">
+            <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">
               Actions
             </span>
           </h2>
-          <p className="mt-3 sm:mt-5 text-xs sm:text-base text-slate-400 font-normal leading-relaxed max-w-md hidden sm:block">
+          <p className="mt-2 sm:mt-5 text-xs sm:text-base text-slate-400 font-normal leading-relaxed max-w-md hidden sm:block">
             All major actions are just a tap away, right on the home screen. Enjoy a seamless and
             efficient user experience.
           </p>
-          <div className="grid grid-cols-4 sm:grid-cols-2 gap-2 sm:gap-3.5 mt-4 sm:mt-8 w-full max-w-[280px] sm:max-w-[280px] md:max-w-[320px]">
-            <div className="h-14 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
-              <ArrowUp className="w-5 sm:w-6 h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
+          <div className="grid grid-cols-4 sm:grid-cols-2 gap-2.5 sm:gap-3.5 mt-3 sm:mt-8 w-full max-w-[260px] xs:max-w-[290px] sm:max-w-[280px] md:max-w-[320px]">
+            <div className="h-12 xs:h-14 sm:h-20 rounded-xl xs:rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
+              <ArrowUp className="w-4 xs:w-5 sm:w-6 h-4 xs:h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="h-14 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
-              <Mail className="w-5 sm:w-6 h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
+            <div className="h-12 xs:h-14 sm:h-20 rounded-xl xs:rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
+              <Mail className="w-4 xs:w-5 sm:w-6 h-4 xs:h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="h-14 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
-              <Database className="w-5 sm:w-6 h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
+            <div className="h-12 xs:h-14 sm:h-20 rounded-xl xs:rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
+              <Database className="w-4 xs:w-5 sm:w-6 h-4 xs:h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
             </div>
-            <div className="h-14 sm:h-20 rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
-              <Users className="w-5 sm:w-6 h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
+            <div className="h-12 xs:h-14 sm:h-20 rounded-xl xs:rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
+              <Users className="w-4 xs:w-5 sm:w-6 h-4 xs:h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
             </div>
           </div>
         </motion.div>
 
         {/* ========================================================================= */}
-        {/* POSITION 3: LARGE PAYMENTS VIEW (Right Column) */}
+        {/* POSITION 3: LARGE PAYMENTS VIEW (Right Column on desktop / Bottom on mobile) */}
         {/* ========================================================================= */}
         <motion.div
           style={{
@@ -366,36 +386,36 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto sm:left-auto sm:right-12 lg:right-20 xl:right-28
-            top-[62%] sm:top-1/2 sm:-translate-y-1/2
-            z-10 w-full max-w-[90%] sm:max-w-md lg:max-w-lg
+            bottom-4 xs:bottom-6 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2
+            z-30 w-full max-w-[92%] sm:max-w-md lg:max-w-lg
             flex flex-col justify-center items-center sm:items-end
-            text-center sm:text-right px-4 sm:px-0"
+            text-center sm:text-right px-2 sm:px-0"
         >
-          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.0] text-3xl sm:text-5xl lg:text-[4.75rem]">
-            <span className="block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent">
+          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.0] text-3xl xs:text-4xl sm:text-5xl lg:text-[4.75rem]">
+            <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-2 sm:mr-0">
               Large
             </span>
-            <span className="block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">
+            <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">
               Payments
             </span>
           </h2>
-          <p className="mt-3 sm:mt-5 text-xs sm:text-base text-slate-400 font-normal leading-relaxed max-w-md hidden sm:block">
+          <p className="mt-2 sm:mt-5 text-xs sm:text-base text-slate-400 font-normal leading-relaxed max-w-md hidden sm:block">
             Send payments over $1,000,000 USD with ease and confidence. Experience unmatched
             security for high-value transactions.
           </p>
-          <div className="mt-4 sm:mt-8 w-full max-w-[200px] sm:max-w-[320px] md:max-w-[360px] rounded-2xl sm:rounded-3xl bg-[#0c0c14]/90 border border-white/10 p-3 sm:p-5 md:p-7 shadow-2xl backdrop-blur-xl text-left">
-            <p className="text-xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
+          <div className="mt-3 sm:mt-8 w-full max-w-[240px] xs:max-w-[280px] sm:max-w-[320px] md:max-w-[360px] rounded-xl xs:rounded-2xl sm:rounded-3xl bg-[#0c0c14]/90 border border-white/10 p-2.5 xs:p-3.5 sm:p-5 md:p-7 shadow-2xl backdrop-blur-xl text-left">
+            <p className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
               $1,000,000
             </p>
-            <div className="flex items-center gap-2.5 mt-5">
-              <div className="flex-1 bg-[#181824] border border-white/10 rounded-full px-4 py-2.5 text-xs text-slate-400">
+            <div className="flex items-center gap-2 xs:gap-2.5 mt-3 sm:mt-5">
+              <div className="flex-1 bg-[#181824] border border-white/10 rounded-full px-3 xs:px-4 py-1.5 xs:py-2.5 text-[11px] xs:text-xs text-slate-400 truncate">
                 Add Note (Optional)
               </div>
               <button
                 aria-label="Send Payment"
-                className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shrink-0"
+                className="w-8 h-8 xs:w-10 xs:h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shrink-0"
               >
-                <Send className="w-3.5 h-3.5 fill-black text-black ml-0.5" />
+                <Send className="w-3 xs:w-3.5 h-3 xs:h-3.5 fill-black text-black ml-0.5" />
               </button>
             </div>
           </div>
@@ -684,6 +704,10 @@ function UnifiedPhoneShowcase() {
 
 function CardsScene() {
   const containerRef = useRef<HTMLElement>(null);
+  const { width } = useWindowSize();
+  const isMobile = width < 640;
+  const isTablet = width >= 640 && width < 1024;
+
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start 90%", "end 30%"],
@@ -696,13 +720,17 @@ function CardsScene() {
   });
 
   // Headline scroll animation: Starts closer to cards (+165px down), floats smoothly upwards to +15px on scroll
-  const titleY = useTransform(smoothProgress, [0.0, 0.75], [165, 15]);
+  const titleY = useTransform(smoothProgress, [0.0, 0.75], [isMobile ? 100 : 165, 15]);
   const titleOpacity = useTransform(smoothProgress, [0.0, 0.18], [0.7, 1]);
 
   // Left Card Scroll Transforms
-  const leftCardX = useTransform(smoothProgress, [0.05, 0.85], [0, -105]);
+  const leftCardX = useTransform(
+    smoothProgress,
+    [0.05, 0.85],
+    [0, isMobile ? -58 : isTablet ? -85 : -105]
+  );
   const leftCardY = useTransform(smoothProgress, [0.05, 0.85], [115, 12]);
-  const leftCardRotate = useTransform(smoothProgress, [0.05, 0.85], [0, -22]);
+  const leftCardRotate = useTransform(smoothProgress, [0.05, 0.85], [0, isMobile ? -16 : -22]);
   const leftCardScale = useTransform(smoothProgress, [0.05, 0.85], [0.92, 0.98]);
 
   // Center Card Scroll Transforms
@@ -711,31 +739,35 @@ function CardsScene() {
   const centerCardScale = useTransform(smoothProgress, [0.05, 0.85], [0.94, 1.02]);
 
   // Right Card Scroll Transforms
-  const rightCardX = useTransform(smoothProgress, [0.05, 0.85], [0, 105]);
+  const rightCardX = useTransform(
+    smoothProgress,
+    [0.05, 0.85],
+    [0, isMobile ? 58 : isTablet ? 85 : 105]
+  );
   const rightCardY = useTransform(smoothProgress, [0.05, 0.85], [115, 12]);
-  const rightCardRotate = useTransform(smoothProgress, [0.05, 0.85], [0, 18]);
+  const rightCardRotate = useTransform(smoothProgress, [0.05, 0.85], [0, isMobile ? 14 : 18]);
   const rightCardScale = useTransform(smoothProgress, [0.05, 0.85], [0.92, 0.98]);
 
   return (
     <section
       id="download"
       ref={containerRef}
-      className="relative pt-16 sm:pt-24 md:pt-28 pb-4 bg-[#000000] flex flex-col items-center justify-start overflow-visible min-h-0"
+      className="relative pt-12 sm:pt-24 md:pt-28 pb-4 bg-[#000000] flex flex-col items-center justify-start overflow-visible min-h-0"
     >
       {/* Ambient background glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] sm:w-[700px] h-[350px] bg-[radial-gradient(circle,rgba(168,85,247,0.13)_0%,transparent_70%)] blur-[90px] pointer-events-none" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] xs:w-[450px] sm:w-[700px] h-[300px] sm:h-[350px] bg-[radial-gradient(circle,rgba(168,85,247,0.13)_0%,transparent_70%)] blur-[70px] sm:blur-[90px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6 text-center w-full flex flex-col items-center mt-4 sm:mt-8">
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center w-full flex flex-col items-center mt-2 sm:mt-8">
         {/* Compact Headline that starts close to cards and ascends smoothly on scroll */}
         <motion.h2
           style={{ y: titleY, opacity: titleOpacity }}
-          className="font-sans font-bold tracking-[-0.035em] text-4xl sm:text-5xl md:text-6xl text-white text-center mb-2 select-none"
+          className="font-sans font-bold tracking-[-0.035em] text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white text-center mb-2 select-none"
         >
           Say <span className="bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">bye</span> to cards
         </motion.h2>
 
         {/* Fanned Cards Showcase (Scroll Scrubbed) */}
-        <div className="relative w-full max-w-2xl h-[280px] sm:h-[320px] md:h-[350px] flex items-center justify-center select-none mt-8 sm:mt-12 md:mt-14">
+        <div className="relative w-full max-w-2xl h-[260px] xs:h-[280px] sm:h-[320px] md:h-[350px] flex items-center justify-center select-none mt-6 sm:mt-12 md:mt-14">
           {/* Left Card */}
           <motion.div
             style={{
@@ -744,25 +776,25 @@ function CardsScene() {
               rotate: leftCardRotate,
               scale: leftCardScale,
             }}
-            className="absolute w-[185px] sm:w-[215px] md:w-[235px] h-[285px] sm:h-[330px] md:h-[365px] rounded-[20px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-4 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
+            className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
           >
             <div className="flex justify-end">
               <EmvChip />
             </div>
             <div className="my-auto flex items-center justify-between pl-0.5">
-              <div className="font-mono text-white/90 text-xs sm:text-[13px] tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
+              <div className="font-mono text-white/90 text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
                 3455 4562 7710 3507
               </div>
-              <div className="text-right text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
-                <p className="text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
+              <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
                 <p className="font-semibold text-white">Haley Baylee</p>
-                <p className="text-[8px] uppercase tracking-wider text-slate-500 pt-1.5">Expiry date</p>
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
                 <p className="font-semibold text-white">02/30</p>
               </div>
             </div>
             <div className="flex items-center gap-1.5 opacity-60">
-              <div className="w-5 h-5 rounded-full bg-white/20" />
-              <div className="w-5 h-5 rounded-full bg-white/15 -ml-2.5" />
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20" />
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/15 -ml-2 sm:-ml-2.5" />
             </div>
           </motion.div>
 
@@ -773,7 +805,7 @@ function CardsScene() {
               rotate: centerCardRotate,
               scale: centerCardScale,
             }}
-            className="absolute w-[185px] sm:w-[215px] md:w-[235px] h-[285px] sm:h-[330px] md:h-[365px] rounded-[20px] sm:rounded-[24px] bg-gradient-to-b from-[#252532] via-[#14141c] to-[#0c0c12] border border-white/25 p-4 sm:p-5 flex flex-col justify-between shadow-[0_25px_80px_rgba(0,0,0,0.95),_0_0_35px_rgba(168,85,247,0.12)] z-20 overflow-hidden origin-bottom"
+            className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#252532] via-[#14141c] to-[#0c0c12] border border-white/25 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_25px_80px_rgba(0,0,0,0.95),_0_0_35px_rgba(168,85,247,0.12)] z-20 overflow-hidden origin-bottom"
           >
             {/* Topographic Lines Overlay */}
             <TopoPattern />
@@ -783,20 +815,20 @@ function CardsScene() {
             </div>
 
             <div className="relative z-10 my-auto flex items-center justify-between pl-0.5">
-              <div className="font-mono text-white text-xs sm:text-[13px] tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180 drop-shadow">
+              <div className="font-mono text-white text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180 drop-shadow">
                 3455 4562 7710 3507
               </div>
-              <div className="text-right text-[9px] sm:text-[10px] text-slate-300 space-y-0.5">
-                <p className="text-[8px] uppercase tracking-wider text-slate-400">Card holder name</p>
+              <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-300 space-y-0.5">
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400">Card holder name</p>
                 <p className="font-semibold text-white">Haley Baylee</p>
-                <p className="text-[8px] uppercase tracking-wider text-slate-400 pt-1.5">Expiry date</p>
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400 pt-1 sm:pt-1.5">Expiry date</p>
                 <p className="font-semibold text-white">02/30</p>
               </div>
             </div>
 
             <div className="relative z-10 flex items-center gap-1.5 opacity-75">
-              <div className="w-5 h-5 rounded-full bg-white/30" />
-              <div className="w-5 h-5 rounded-full bg-white/20 -ml-2.5" />
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/30" />
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 -ml-2 sm:-ml-2.5" />
             </div>
           </motion.div>
 
@@ -808,25 +840,25 @@ function CardsScene() {
               rotate: rightCardRotate,
               scale: rightCardScale,
             }}
-            className="absolute w-[185px] sm:w-[215px] md:w-[235px] h-[285px] sm:h-[330px] md:h-[365px] rounded-[20px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-4 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
+            className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
           >
             <div className="flex justify-end">
               <EmvChip />
             </div>
             <div className="my-auto flex items-center justify-between pl-0.5">
-              <div className="font-mono text-white/90 text-xs sm:text-[13px] tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
+              <div className="font-mono text-white/90 text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
                 3455 4562 7710 3507
               </div>
-              <div className="text-right text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
-                <p className="text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
+              <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
                 <p className="font-semibold text-white">Haley Baylee</p>
-                <p className="text-[8px] uppercase tracking-wider text-slate-500 pt-1.5">Expiry date</p>
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
                 <p className="font-semibold text-white">02/30</p>
               </div>
             </div>
             <div className="flex items-center gap-1.5 opacity-60">
-              <div className="w-5 h-5 rounded-full bg-white/20" />
-              <div className="w-5 h-5 rounded-full bg-white/15 -ml-2.5" />
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20" />
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/15 -ml-2 sm:-ml-2.5" />
             </div>
           </motion.div>
         </div>

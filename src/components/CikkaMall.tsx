@@ -202,75 +202,74 @@ export function CikkaMall() {
     : REWARDS_CATALOG.filter((item) => item.category === activeCategory);
 
   return (
-    <section id="mall" className="relative py-32 sm:py-44 overflow-hidden w-full max-w-full bg-[#f4f5f8] text-black">
-      <div className="relative mx-auto max-w-7xl px-6 sm:px-8">
+    <section id="mall" className="relative py-16 sm:py-32 md:py-44 overflow-hidden w-full max-w-full bg-[#f4f5f8] text-black">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <h2 className="text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-black leading-[1.05]">
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
+          <h2 className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-black leading-[1.05]">
             Buy what you love.<br />
             <span className="text-slate-500 font-normal mt-2 block">Get paid every time.</span>
           </h2>
-          <p className="mt-6 text-base sm:text-xl text-slate-500 font-light leading-relaxed max-w-2xl mx-auto">
+          <p className="mt-4 sm:mt-6 text-sm xs:text-base sm:text-xl text-slate-500 font-light leading-relaxed max-w-2xl mx-auto">
             Every purchase on Cikka Mall returns direct cashback and high-value CI Points straight to your wallet.
           </p>
         </div>
 
         {/* Product Selector Pill Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-3 mb-14">
+        <div className="flex flex-wrap items-center justify-center gap-2 xs:gap-3 mb-10 sm:mb-14">
           {PRODUCTS.map((prod, idx) => {
             const isActive = idx === selectedIndex;
             return (
               <button
                 key={prod.id}
                 onClick={() => setSelectedIndex(idx)}
-                className={`flex items-center gap-3.5 rounded-full px-7 py-3 text-sm font-medium transition-all duration-300 backdrop-blur-xl ${
-                  isActive
+                className={`flex items-center gap-2 xs:gap-3.5 rounded-full px-4 xs:px-6 sm:px-7 py-2 xs:py-2.5 sm:py-3 text-xs xs:text-sm font-medium transition-all duration-300 backdrop-blur-xl ${isActive
                     ? "border-transparent bg-[#7c3aed] text-white shadow-md shadow-purple-500/20"
                     : "border border-slate-200 bg-white text-slate-500 hover:border-purple-300 hover:text-purple-900"
-                }`}
+                  }`}
               >
                 <span>{prod.name}</span>
-                <span className="font-mono text-xs text-zinc-400">₹{prod.retailPrice.toLocaleString("en-IN")}</span>
+                <span className="font-mono text-[10px] xs:text-xs text-zinc-400">₹{prod.retailPrice.toLocaleString("en-IN")}</span>
               </button>
             );
           })}
         </div>
 
         {/* Main 2-Column Authentic Glassmorphism Grid */}
-        <div className="grid gap-10 lg:grid-cols-12 items-stretch">
+        <div className="grid gap-8 sm:gap-10 lg:grid-cols-12 items-stretch">
           {/* Left Column: Product Spotlight (7 Cols) */}
-          <div className="lg:col-span-7 relative flex flex-col justify-between overflow-hidden rounded-[36px] bg-white bg-gradient-to-br from-white via-purple-50/50 to-purple-100/50 p-8 sm:p-12 shadow-2xl shadow-black/5 border border-purple-100/50">
+          <div className="lg:col-span-7 relative flex flex-col justify-between overflow-hidden rounded-[24px] xs:rounded-[30px] sm:rounded-[36px] bg-white bg-gradient-to-br from-white via-purple-50/50 to-purple-100/50 p-4 xs:p-6 sm:p-12 shadow-2xl shadow-black/5 border border-purple-100/50">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/35 to-transparent" />
             <div>
-              <div className="flex items-center justify-between gap-4 mb-6">
-                <span className="rounded-full border border-purple-200/60 bg-purple-50 px-4 py-1.5 text-xs font-bold tracking-widest text-purple-900 uppercase shadow-sm">
+              <div className="flex items-center justify-between gap-4 mb-4 sm:mb-6">
+                <span className="rounded-full border border-purple-200/60 bg-purple-50 px-3 xs:px-4 py-1 xs:py-1.5 text-[10px] xs:text-xs font-bold tracking-widest text-purple-900 uppercase shadow-sm">
                   {activeProduct.category}
                 </span>
-                <span className="text-xs sm:text-sm font-mono text-purple-900/60">
+                <span className="text-[11px] xs:text-xs sm:text-sm font-mono text-purple-900/60">
                   Direct Settlement
                 </span>
               </div>
 
-              <h3 className="text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-3">
+              <h3 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-2 sm:mb-3">
                 {activeProduct.name}
               </h3>
-              <p className="text-sm sm:text-base text-slate-600 font-light leading-relaxed mb-8">
+              <p className="text-xs xs:text-sm sm:text-base text-slate-600 font-light leading-relaxed mb-6 sm:mb-8">
                 {activeProduct.tagline}
               </p>
 
               {/* Product Image Frame */}
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-3xl border border-white/10 bg-zinc-950/80">
+              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-zinc-950/80">
                 <img
                   src={activeProduct.img}
                   alt={activeProduct.name}
                   className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-102"
                 />
                 {/* Floating Glass Badges */}
-                <div className="absolute bottom-5 left-5 right-5 flex flex-wrap items-center justify-between gap-3 z-10">
-                  <div className="flex items-center gap-2.5 rounded-2xl border border border-white/60 bg-white/70 backdrop-blur-2xl px-5 py-3 text-sm sm:text-base font-mono font-medium text-slate-900 shadow-sm">
+                <div className="absolute bottom-2.5 xs:bottom-4 sm:bottom-5 left-2.5 xs:left-4 sm:left-5 right-2.5 xs:right-4 sm:right-5 flex flex-wrap items-center justify-between gap-2 z-10">
+                  <div className="flex items-center gap-1.5 xs:gap-2.5 rounded-xl xs:rounded-2xl border border-white/60 bg-white/75 backdrop-blur-2xl px-3 xs:px-4 sm:px-5 py-1.5 xs:py-2.5 sm:py-3 text-[11px] xs:text-xs sm:text-base font-mono font-medium text-slate-900 shadow-sm">
                     <span>₹{totalCashback} Cashback</span>
                   </div>
-                  <div className="flex items-center gap-2.5 rounded-2xl border border border-white/60 bg-white/70 backdrop-blur-2xl px-5 py-3 text-sm sm:text-base font-mono font-medium text-slate-900 shadow-sm">
+                  <div className="flex items-center gap-1.5 xs:gap-2.5 rounded-xl xs:rounded-2xl border border-white/60 bg-white/75 backdrop-blur-2xl px-3 xs:px-4 sm:px-5 py-1.5 xs:py-2.5 sm:py-3 text-[11px] xs:text-xs sm:text-base font-mono font-medium text-slate-900 shadow-sm">
                     <span>+{totalPoints.toLocaleString("en-IN")} CI Points</span>
                   </div>
                 </div>
@@ -285,11 +284,10 @@ export function CikkaMall() {
                   <button
                     key={qty}
                     onClick={() => setQuantity(qty)}
-                    className={`h-11 w-11 rounded-xl text-sm font-mono font-semibold transition-all backdrop-blur-md ${
-                      quantity === qty
+                    className={`h-11 w-11 rounded-xl text-sm font-mono font-semibold transition-all backdrop-blur-md ${quantity === qty
                         ? "border-transparent bg-[#7c3aed] text-white shadow-md shadow-purple-500/20"
                         : "border border-slate-200 bg-white text-slate-500 hover:border-purple-300 hover:text-purple-900"
-                    }`}
+                      }`}
                   >
                     {qty}x
                   </button>
@@ -308,58 +306,58 @@ export function CikkaMall() {
           </div>
 
           {/* Right Column: Reward Summary Breakdown (5 Cols) */}
-          <div className="lg:col-span-5 relative flex flex-col justify-between overflow-hidden rounded-[36px] bg-gradient-to-br from-[#100720] to-[#0a0510] p-8 sm:p-12 shadow-2xl border border-white/5">
+          <div className="lg:col-span-5 relative flex flex-col justify-between overflow-hidden rounded-[24px] xs:rounded-[30px] sm:rounded-[36px] bg-gradient-to-br from-[#100720] to-[#0a0510] p-4 xs:p-6 sm:p-12 shadow-2xl border border-white/5">
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/35 to-transparent" />
             <div>
-              <div className="flex items-center justify-between pb-4 mb-6">
-                <span className="text-xs sm:text-sm font-mono font-medium tracking-widest text-slate-400 uppercase">REWARD SUMMARY</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-3.5 py-1 text-xs font-mono text-zinc-300 backdrop-blur-md">
+              <div className="flex items-center justify-between pb-3 sm:pb-4 mb-4 sm:mb-6">
+                <span className="text-[11px] xs:text-xs sm:text-sm font-mono font-medium tracking-widest text-slate-400 uppercase">REWARD SUMMARY</span>
+                <span className="rounded-full border border-white/10 bg-white/5 px-2.5 xs:px-3.5 py-0.5 xs:py-1 text-[11px] xs:text-xs font-mono text-zinc-300 backdrop-blur-md">
                   {estimatedYieldPct}% Return
                 </span>
               </div>
 
-              <div className="space-y-4 font-mono text-base">
+              <div className="space-y-3 xs:space-y-4 font-mono text-sm xs:text-base">
                 <div className="flex items-center justify-between text-slate-400 py-1">
                   <span>Retail Price ({quantity}x)</span>
                   <span className="text-white font-semibold">₹{totalRetail.toLocaleString("en-IN")}</span>
                 </div>
 
-                <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-zinc-300 backdrop-blur-md">
-                  <span className="text-sm">Direct Cashback</span>
-                  <span className="font-bold text-base text-white">- ₹{totalCashback.toLocaleString("en-IN")}</span>
+                <div className="flex items-center justify-between rounded-xl xs:rounded-2xl border border-white/10 bg-white/[0.03] p-3 xs:p-4 text-zinc-300 backdrop-blur-md">
+                  <span className="text-xs xs:text-sm">Direct Cashback</span>
+                  <span className="font-bold text-sm xs:text-base text-white">- ₹{totalCashback.toLocaleString("en-IN")}</span>
                 </div>
 
-                <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-white/[0.03] p-4 text-zinc-300 backdrop-blur-md">
-                  <span className="text-sm">CI Points Credited</span>
-                  <span className="font-bold text-base text-white">+{totalPoints.toLocaleString("en-IN")} CI</span>
+                <div className="flex items-center justify-between rounded-xl xs:rounded-2xl border border-white/10 bg-white/[0.03] p-3 xs:p-4 text-zinc-300 backdrop-blur-md">
+                  <span className="text-xs xs:text-sm">CI Points Credited</span>
+                  <span className="font-bold text-sm xs:text-base text-white">+{totalPoints.toLocaleString("en-IN")} CI</span>
                 </div>
               </div>
 
-              <div className="mt-6 rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-transparent p-6 sm:p-7 backdrop-blur-2xl">
-                <div className="text-xs font-mono tracking-widest text-slate-400 uppercase mb-2">
+              <div className="mt-4 xs:mt-6 rounded-2xl xs:rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-transparent p-4 xs:p-6 sm:p-7 backdrop-blur-2xl">
+                <div className="text-[10px] xs:text-xs font-mono tracking-widest text-slate-400 uppercase mb-1.5 xs:mb-2">
                   NET EFFECTIVE COST
                 </div>
                 <div className="flex items-baseline justify-between gap-2">
-                  <span className="text-4xl sm:text-5xl font-bold text-white">
+                  <span className="text-3xl xs:text-4xl sm:text-5xl font-bold text-white">
                     ₹{netEffectivePrice.toLocaleString("en-IN")}
                   </span>
-                  <span className="text-xs sm:text-sm font-mono text-slate-500">
+                  <span className="text-[11px] xs:text-xs sm:text-sm font-mono text-slate-500">
                     ₹{totalCashback} Saved
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="mt-8 space-y-4 text-center">
+            <div className="mt-6 sm:mt-8 space-y-3 xs:space-y-4 text-center">
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="group relative flex items-center justify-between gap-3 w-full rounded-2xl bg-white px-6 py-4 text-xs sm:text-sm font-mono font-semibold text-black transition-all duration-200 hover:bg-slate-200 shadow-xl cursor-pointer"
+                className="group relative flex items-center justify-between gap-3 w-full rounded-xl xs:rounded-2xl bg-white px-4 xs:px-6 py-3 xs:py-4 text-xs xs:text-sm font-mono font-semibold text-black transition-all duration-200 hover:bg-slate-200 shadow-xl cursor-pointer"
               >
                 <span>Explore what you can buy with CI points</span>
                 <ArrowRight className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1" />
               </button>
 
-              <p className="text-center text-xs sm:text-sm font-mono text-slate-400">
+              <p className="text-center text-[11px] xs:text-xs sm:text-sm font-mono text-slate-400">
                 Redeem accumulated CI Points for brand coupons, vouchers & exclusive rewards.
               </p>
             </div>
@@ -369,13 +367,13 @@ export function CikkaMall() {
 
       {/* Glassmorphism CI Points Reward Catalog Dialog Modal */}
       {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 bg-black/80 backdrop-blur-2xl transition-all duration-300 animate-in fade-in">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 xs:p-4 sm:p-6 bg-black/80 backdrop-blur-2xl transition-all duration-300 animate-in fade-in">
           {/* Backdrop Click Dismiss */}
           <div className="absolute inset-0" onClick={() => setIsModalOpen(false)} />
 
           {/* Modal Container */}
-          <div className="relative z-10 w-full max-w-5xl max-h-[84vh] translate-y-6 sm:translate-y-10 overflow-hidden rounded-[36px] border border-white/20 bg-gradient-to-b from-white/15 via-[#13141f]/95 to-[#0a0b10]/98 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.35)] text-white flex flex-col transition-all duration-300 animate-in zoom-in-95">
-            
+          <div className="relative z-10 w-full max-w-5xl max-h-[88vh] xs:max-h-[84vh] overflow-hidden rounded-[24px] xs:rounded-[30px] sm:rounded-[36px] border border-white/20 bg-gradient-to-b from-white/15 via-[#13141f]/95 to-[#0a0b10]/98 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.35)] text-white flex flex-col transition-all duration-300 animate-in zoom-in-95">
+
             {/* Subtle Minimal Off-White & Soft Purple Sheen */}
             <div className="pointer-events-none absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-white/[0.16] via-purple-300/[0.03] to-transparent" />
 
@@ -383,12 +381,12 @@ export function CikkaMall() {
             <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent" />
 
             {/* Modal Header */}
-            <div className="p-6 sm:p-8 pb-4 flex items-start justify-between border-b border-white/10 shrink-0">
+            <div className="p-4 xs:p-6 sm:p-8 pb-3 xs:pb-4 flex items-start justify-between border-b border-white/10 shrink-0">
               <div>
-                <h3 className="text-2xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
+                <h3 className="text-xl xs:text-2xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
                   Unlock Rewards with CI Points
                 </h3>
-                <p className="mt-2 text-xs sm:text-sm text-zinc-400 font-light max-w-2xl leading-relaxed">
+                <p className="mt-1.5 xs:mt-2 text-xs sm:text-sm text-zinc-400 font-light max-w-2xl leading-relaxed">
                   Convert your CI Points into ₹200 Zomato vouchers, Swiggy privileges, ₹1,500 flight discounts, zero-fee train passes, and luxury perfumes.
                 </p>
               </div>
@@ -396,14 +394,14 @@ export function CikkaMall() {
               {/* Close Glass Button */}
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="h-10 w-10 rounded-full border border-white/15 bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white flex items-center justify-center transition-all shrink-0 backdrop-blur-md cursor-pointer shadow-lg"
+                className="h-8 w-8 xs:h-10 xs:w-10 rounded-full border border-white/15 bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white flex items-center justify-center transition-all shrink-0 backdrop-blur-md cursor-pointer shadow-lg ml-2"
               >
-                <X className="h-5 w-5" />
+                <X className="h-4 w-4 xs:h-5 xs:w-5" />
               </button>
             </div>
 
             {/* Filter Tabs */}
-            <div className="px-6 sm:px-8 py-3 flex items-center gap-2.5 overflow-x-auto border-b border-white/10 shrink-0">
+            <div className="px-4 xs:px-6 sm:px-8 py-2.5 xs:py-3 flex items-center gap-2 xs:gap-2.5 overflow-x-auto border-b border-white/10 shrink-0">
               {[
                 { id: "all", label: "All Rewards" },
                 { id: "food", label: "Food & Dining" },
@@ -414,11 +412,10 @@ export function CikkaMall() {
                 <button
                   key={cat.id}
                   onClick={() => setActiveCategory(cat.id)}
-                  className={`px-4 py-2 rounded-full text-xs font-mono font-medium transition-all whitespace-nowrap cursor-pointer ${
-                    activeCategory === cat.id
+                  className={`px-3 xs:px-4 py-1.5 xs:py-2 rounded-full text-[11px] xs:text-xs font-mono font-medium transition-all whitespace-nowrap cursor-pointer ${activeCategory === cat.id
                       ? "bg-[#f4f5f8] text-black font-bold shadow-md"
                       : "bg-white/[0.04] text-zinc-400 border border-white/10 hover:bg-white/10 hover:text-white"
-                  }`}
+                    }`}
                 >
                   {cat.label}
                 </button>
@@ -426,7 +423,7 @@ export function CikkaMall() {
             </div>
 
             {/* Modal Body: Scrollable Rewards Grid */}
-            <div className="flex-1 overflow-y-auto p-6 sm:p-8 grid gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
+            <div className="flex-1 overflow-y-auto p-4 xs:p-6 sm:p-8 grid gap-4 xs:gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
               {filteredRewards.map((reward) => (
                 <div
                   key={reward.id}

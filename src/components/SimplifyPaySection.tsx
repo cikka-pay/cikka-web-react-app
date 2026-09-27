@@ -38,7 +38,7 @@ export function SimplifyPaySection() {
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="lg:col-span-6 relative rounded-[32px] sm:rounded-[38px] bg-[#111116] p-6 sm:p-8 flex items-center justify-center min-h-[580px] sm:min-h-[660px] overflow-hidden shadow-2xl border border-slate-800 will-change-transform group"
+        className="lg:col-span-6 relative rounded-[28px] xs:rounded-[32px] sm:rounded-[38px] bg-[#111116] p-4 xs:p-6 sm:p-8 flex items-center justify-center min-h-[520px] xs:min-h-[580px] sm:min-h-[660px] overflow-hidden shadow-2xl border border-slate-800 will-change-transform group"
       >
         {/* 3D Inflated Cushions / Pillows with subtle parallax drift */}
         <motion.div style={{ y: cushionsParallaxY }} className="absolute inset-0">
@@ -59,30 +59,30 @@ export function SimplifyPaySection() {
           whileInView={{ opacity: 1, y: 0, scale: 1 }}
           viewport={{ once: true, amount: 0.4 }}
           transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute bottom-4 left-4 right-4 z-30 p-3.5 sm:p-4 rounded-2xl bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl flex items-center justify-between text-white hover:bg-black/50 transition-colors"
+          className="absolute bottom-3 xs:bottom-4 left-3 xs:left-4 right-3 xs:right-4 z-30 p-3 xs:p-3.5 sm:p-4 rounded-2xl bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl flex items-center justify-between text-white hover:bg-black/50 transition-colors"
         >
           <div className="space-y-1">
             <div className="flex items-center -space-x-2">
               <motion.img
                 whileHover={{ scale: 1.15, zIndex: 10 }}
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white/80 object-cover shadow-sm transition-transform cursor-pointer"
+                className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white/80 object-cover shadow-sm transition-transform cursor-pointer"
                 src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
                 alt="avatar1"
               />
               <motion.img
                 whileHover={{ scale: 1.15, zIndex: 10 }}
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white/80 object-cover shadow-sm transition-transform cursor-pointer"
+                className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white/80 object-cover shadow-sm transition-transform cursor-pointer"
                 src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
                 alt="avatar2"
               />
               <motion.img
                 whileHover={{ scale: 1.15, zIndex: 10 }}
-                className="w-7 h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white/80 object-cover shadow-sm transition-transform cursor-pointer"
+                className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white/80 object-cover shadow-sm transition-transform cursor-pointer"
                 src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80"
                 alt="avatar3"
               />
             </div>
-            <p className="font-semibold text-xs sm:text-sm text-white drop-shadow-sm leading-snug">
+            <p className="font-semibold text-[11px] xs:text-xs sm:text-sm text-white drop-shadow-sm leading-snug">
               Welcome to our finance
               <br />
               banking services
@@ -92,7 +92,7 @@ export function SimplifyPaySection() {
             whileHover={{ scale: 1.1, rotate: 12 }}
             whileTap={{ scale: 0.95 }}
             aria-label="Open service details"
-            className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/30 flex items-center justify-center text-white text-base shadow-md shrink-0 transition-colors"
+            className="w-9 h-9 xs:w-10 xs:h-10 sm:w-11 sm:h-11 rounded-full bg-white/20 hover:bg-white/30 backdrop-blur-md border border-white/30 flex items-center justify-center text-white text-base shadow-md shrink-0 transition-colors"
           >
             ↗
           </motion.button>
@@ -105,14 +105,14 @@ export function SimplifyPaySection() {
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.25 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="lg:col-span-6 space-y-8"
+        className="lg:col-span-6 space-y-6 sm:space-y-8"
       >
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="text-4xl sm:text-5xl lg:text-[3.4rem] font-bold tracking-tight text-black leading-[1.08]"
+          className="text-3xl xs:text-4xl sm:text-5xl lg:text-[3.4rem] font-bold tracking-tight text-black leading-[1.08]"
         >
           We simplify the way you pay our platform offers
         </motion.h2>
@@ -227,23 +227,23 @@ export function SoftCushionsBackground() {
 // Expenses iPhone Screen Mockup with animated progress and hover physics
 export function ExpensesPhoneMockup() {
   return (
-    <div className="relative z-10 w-[265px] sm:w-[290px] h-[520px] sm:h-[560px] rounded-[42px] sm:rounded-[46px] p-2.5 sm:p-3 bg-black border-[5px] sm:border-[6px] border-[#222228] shadow-[0_25px_60px_rgba(0,0,0,0.9),_0_0_40px_rgba(0,0,0,0.6)] flex flex-col mb-12 select-none">
+    <div className="relative z-10 w-[240px] xs:w-[265px] sm:w-[290px] h-[480px] xs:h-[520px] sm:h-[560px] rounded-[38px] xs:rounded-[42px] sm:rounded-[46px] p-2 xs:p-2.5 sm:p-3 bg-black border-[4px] xs:border-[5px] sm:border-[6px] border-[#222228] shadow-[0_25px_60px_rgba(0,0,0,0.9),_0_0_40px_rgba(0,0,0,0.6)] flex flex-col mb-14 xs:mb-12 select-none">
       {/* Screen container */}
-      <div className="relative w-full h-full bg-[#f8fafc] rounded-[34px] sm:rounded-[38px] overflow-hidden flex flex-col p-3.5 sm:p-4 text-black">
+      <div className="relative w-full h-full bg-[#f8fafc] rounded-[30px] xs:rounded-[34px] sm:rounded-[38px] overflow-hidden flex flex-col p-3 xs:p-3.5 sm:p-4 text-black">
         {/* Dynamic Island */}
-        <div className="w-18 h-4.5 bg-black rounded-full mx-auto mb-2 flex items-center justify-end px-2">
+        <div className="w-16 xs:w-18 h-4 xs:h-4.5 bg-black rounded-full mx-auto mb-1.5 xs:mb-2 flex items-center justify-end px-2">
           <div className="w-1.5 h-1.5 rounded-full bg-[#111] border border-[#222]" />
         </div>
 
         {/* Top navigation */}
         <div className="flex items-center justify-between text-slate-700 mb-1">
-          <span className="w-6 h-6 rounded-full bg-slate-200/70 flex items-center justify-center text-xs text-slate-800 cursor-pointer hover:bg-slate-300 transition-colors">
+          <span className="w-5.5 h-5.5 xs:w-6 xs:h-6 rounded-full bg-slate-200/70 flex items-center justify-center text-xs text-slate-800 cursor-pointer hover:bg-slate-300 transition-colors">
             ‹
           </span>
           <div className="flex items-center gap-1 font-bold text-xs sm:text-sm text-slate-900">
             Expenses <span className="text-[9px] text-slate-500">▾</span>
           </div>
-          <span className="w-6 h-6 rounded-full bg-slate-200/70 flex items-center justify-center text-xs text-slate-800 cursor-pointer hover:bg-slate-300 transition-colors">
+          <span className="w-5.5 h-5.5 xs:w-6 xs:h-6 rounded-full bg-slate-200/70 flex items-center justify-center text-xs text-slate-800 cursor-pointer hover:bg-slate-300 transition-colors">
             +
           </span>
         </div>

@@ -178,12 +178,12 @@ export function GeneralPaymentsSection() {
         whileInView={{ opacity: 1, y: 0, scale: 1 }}
         viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="lg:col-span-6 p-3 sm:p-4 rounded-[32px] sm:rounded-[40px] bg-gradient-to-b from-[#5c24e5] via-[#7839ee] to-[#d8caff] shadow-[0_25px_60px_rgba(92,36,229,0.22)] will-change-transform group"
+        className="lg:col-span-6 p-2.5 xs:p-3 sm:p-4 rounded-[28px] xs:rounded-[32px] sm:rounded-[40px] bg-gradient-to-b from-[#5c24e5] via-[#7839ee] to-[#d8caff] shadow-[0_25px_60px_rgba(92,36,229,0.22)] will-change-transform group"
       >
-        <div className="bg-white rounded-[24px] sm:rounded-[32px] p-6 sm:p-7 shadow-sm">
+        <div className="bg-white rounded-[20px] xs:rounded-[24px] sm:rounded-[32px] p-4 xs:p-5 sm:p-7 shadow-sm">
           {/* Header */}
           <div className="flex items-center justify-between">
-            <h3 className="text-base sm:text-lg font-bold text-slate-900">
+            <h3 className="text-sm xs:text-base sm:text-lg font-bold text-slate-900">
               General Payment
             </h3>
             <button className="text-slate-800 hover:text-slate-600 text-xl font-bold px-1 tracking-widest leading-none">
@@ -192,17 +192,17 @@ export function GeneralPaymentsSection() {
           </div>
 
           {/* Big Balance Amount */}
-          <div className="mt-4">
+          <div className="mt-3 xs:mt-4">
             <motion.p
               initial={{ opacity: 0, scale: 0.95 }}
               whileInView={{ opacity: 1, scale: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight"
+              className="text-2xl xs:text-3xl sm:text-4xl font-extrabold text-slate-950 tracking-tight"
             >
               $47,928.00
             </motion.p>
-            <div className="flex items-center gap-5 text-xs font-semibold text-slate-600 mt-2.5">
+            <div className="flex flex-wrap items-center gap-3 sm:gap-5 text-[11px] xs:text-xs font-semibold text-slate-600 mt-2 xs:mt-2.5">
               <span className="flex items-center gap-1.5">
                 <span className="w-2.5 h-2.5 rounded-full bg-[#4f46e5] animate-pulse" />{" "}
                 Payment Done
@@ -215,17 +215,17 @@ export function GeneralPaymentsSection() {
           </div>
 
           {/* Two Subscription Cards */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 mt-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3.5 mt-4 sm:mt-6">
             {/* Finova Solutions Card */}
             <motion.div
               whileHover={{ y: -3 }}
-              className="border border-slate-200/90 rounded-2xl p-3.5 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.03)] flex flex-col justify-between cursor-pointer"
+              className="border border-slate-200/90 rounded-2xl p-3 xs:p-3.5 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.03)] flex flex-col justify-between cursor-pointer"
             >
               <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+                <div className="flex items-center gap-2 xs:gap-2.5">
+                  <div className="w-7 h-7 xs:w-8 xs:h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0">
                     <svg
-                      className="w-4 h-4 text-white"
+                      className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-white"
                       viewBox="0 0 24 24"
                       fill="currentColor"
                     >
@@ -236,35 +236,35 @@ export function GeneralPaymentsSection() {
                     <p className="text-xs sm:text-sm font-bold text-slate-900 leading-tight">
                       Finova Solutions
                     </p>
-                    <p className="text-[11px] text-slate-400">Lorem Ipsum</p>
+                    <p className="text-[10px] xs:text-[11px] text-slate-400">Lorem Ipsum</p>
                   </div>
                 </div>
                 {/* Toggle Pill */}
-                <div className="bg-[#eff1fe] rounded-full p-1 flex flex-col items-center gap-1 w-6">
-                  <span className="text-[9px] text-slate-400 font-bold leading-none">
+                <div className="bg-[#eff1fe] rounded-full p-1 flex flex-col items-center gap-1 w-5 xs:w-6">
+                  <span className="text-[8px] xs:text-[9px] text-slate-400 font-bold leading-none">
                     ✕
                   </span>
-                  <span className="w-4 h-4 rounded-full bg-[#4f46e5] text-white flex items-center justify-center text-[9px] font-bold shadow-sm">
+                  <span className="w-3.5 h-3.5 xs:w-4 xs:h-4 rounded-full bg-[#4f46e5] text-white flex items-center justify-center text-[8px] xs:text-[9px] font-bold shadow-sm">
                     ✓
                   </span>
                 </div>
               </div>
-              <div className="mt-4 pt-1">
-                <span className="text-base font-extrabold text-slate-950">$36</span>
-                <span className="text-xs text-slate-400 font-medium"> /Month</span>
+              <div className="mt-3 xs:mt-4 pt-1">
+                <span className="text-sm xs:text-base font-extrabold text-slate-950">$36</span>
+                <span className="text-[11px] xs:text-xs text-slate-400 font-medium"> /Month</span>
               </div>
             </motion.div>
 
             {/* Sync Systems Card */}
             <motion.div
               whileHover={{ y: -3 }}
-              className="border border-slate-200/90 rounded-2xl p-3.5 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.03)] flex flex-col justify-between cursor-pointer"
+              className="border border-slate-200/90 rounded-2xl p-3 xs:p-3.5 bg-white shadow-[0_2px_8px_rgba(0,0,0,0.03)] flex flex-col justify-between cursor-pointer"
             >
               <div className="flex items-start justify-between gap-2">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0">
+                <div className="flex items-center gap-2 xs:gap-2.5">
+                  <div className="w-7 h-7 xs:w-8 xs:h-8 rounded-full bg-black flex items-center justify-center flex-shrink-0">
                     <svg
-                      className="w-4 h-4 text-white"
+                      className="w-3.5 h-3.5 xs:w-4 xs:h-4 text-white"
                       viewBox="0 0 24 24"
                       fill="none"
                       stroke="currentColor"
@@ -279,34 +279,34 @@ export function GeneralPaymentsSection() {
                     <p className="text-xs sm:text-sm font-bold text-slate-900 leading-tight">
                       Sync Systems
                     </p>
-                    <p className="text-[11px] text-slate-400">Lorem Ipsum</p>
+                    <p className="text-[10px] xs:text-[11px] text-slate-400">Lorem Ipsum</p>
                   </div>
                 </div>
                 {/* Toggle Pill */}
-                <div className="bg-[#f4f4f5] rounded-full p-1 flex flex-col items-center gap-1 w-6">
-                  <span className="text-[9px] text-slate-400 font-bold leading-none">
+                <div className="bg-[#f4f4f5] rounded-full p-1 flex flex-col items-center gap-1 w-5 xs:w-6">
+                  <span className="text-[8px] xs:text-[9px] text-slate-400 font-bold leading-none">
                     ✕
                   </span>
-                  <span className="w-4 h-4 rounded-full bg-black text-white flex items-center justify-center text-[9px] font-bold shadow-sm">
+                  <span className="w-3.5 h-3.5 xs:w-4 xs:h-4 rounded-full bg-black text-white flex items-center justify-center text-[8px] xs:text-[9px] font-bold shadow-sm">
                     ✓
                   </span>
                 </div>
               </div>
-              <div className="mt-4 pt-1">
-                <span className="text-base font-extrabold text-slate-950">$46</span>
-                <span className="text-xs text-slate-400 font-medium"> /Month</span>
+              <div className="mt-3 xs:mt-4 pt-1">
+                <span className="text-sm xs:text-base font-extrabold text-slate-950">$46</span>
+                <span className="text-[11px] xs:text-xs text-slate-400 font-medium"> /Month</span>
               </div>
             </motion.div>
           </div>
 
           {/* 12-Month Stacked Segmented Bar Chart */}
-          <div className="mt-8 pt-4 relative">
+          <div className="mt-6 sm:mt-8 pt-3 xs:pt-4 relative">
             {/* Hover Tooltip display */}
             {hoveredMonth && (
               <motion.div
                 initial={{ opacity: 0, y: 5 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="absolute top-0 right-0 bg-slate-900 text-white text-[11px] font-bold px-2.5 py-1 rounded-lg shadow-md z-20"
+                className="absolute top-0 right-0 bg-slate-900 text-white text-[10px] xs:text-[11px] font-bold px-2 xs:px-2.5 py-0.5 xs:py-1 rounded-lg shadow-md z-20"
               >
                 {hoveredMonth}:{" "}
                 {monthlyData.find((m) => m.month === hoveredMonth)?.value}
@@ -321,7 +321,7 @@ export function GeneralPaymentsSection() {
             </div>
 
             {/* Bar Columns Container with Staggered Cascading Animation */}
-            <div className="relative z-10 h-44 sm:h-48 flex items-end justify-between gap-1.5 sm:gap-2">
+            <div className="relative z-10 h-36 xs:h-44 sm:h-48 flex items-end justify-between gap-1 xs:gap-1.5 sm:gap-2">
               {monthlyData.map((item, idx) => (
                 <div
                   key={item.month}
@@ -340,18 +340,17 @@ export function GeneralPaymentsSection() {
                       ease: [0.16, 1, 0.3, 1],
                     }}
                     style={{ originY: 1 }}
-                    className="flex flex-col-reverse gap-[2px] sm:gap-[2.5px] w-full max-w-[20px] items-center group-hover/col:scale-y-105 transition-transform"
+                    className="flex flex-col-reverse gap-[1.5px] xs:gap-[2px] sm:gap-[2.5px] w-full max-w-[20px] items-center group-hover/col:scale-y-105 transition-transform"
                   >
                     {Array.from({ length: item.segments }).map((_, i) => (
                       <span
                         key={i}
-                        className={`w-full h-[4.5px] sm:h-[5.5px] rounded-full transition-colors ${
-                          item.color === "purple"
+                        className={`w-full h-[3.5px] xs:h-[4.5px] sm:h-[5.5px] rounded-full transition-colors ${item.color === "purple"
                             ? "bg-[#4f46e5] group-hover/col:bg-[#6366f1]"
                             : item.color === "black"
-                            ? "bg-[#09090b] group-hover/col:bg-slate-700"
-                            : "bg-[#e2e8f0] group-hover/col:bg-slate-300"
-                        }`}
+                              ? "bg-[#09090b] group-hover/col:bg-slate-700"
+                              : "bg-[#e2e8f0] group-hover/col:bg-slate-300"
+                          }`}
                       />
                     ))}
                   </motion.div>
@@ -360,15 +359,14 @@ export function GeneralPaymentsSection() {
             </div>
 
             {/* Month Labels */}
-            <div className="flex justify-between gap-1.5 sm:gap-2 mt-2.5 pt-1">
+            <div className="flex justify-between gap-1 xs:gap-1.5 sm:gap-2 mt-2 xs:mt-2.5 pt-1">
               {monthlyData.map((item) => (
                 <span
                   key={item.month}
-                  className={`flex-1 text-center text-[10px] sm:text-[11px] font-medium transition-colors ${
-                    hoveredMonth === item.month
+                  className={`flex-1 text-center text-[8px] xs:text-[10px] sm:text-[11px] font-medium transition-colors ${hoveredMonth === item.month
                       ? "text-[#4f46e5] font-bold"
                       : "text-slate-500"
-                  }`}
+                    }`}
                 >
                   {item.month}
                 </span>

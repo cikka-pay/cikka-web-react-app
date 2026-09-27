@@ -59,7 +59,7 @@ export function GetTheAppSection() {
       {/* 3-PHONE TRIPTYCH SHOWCASE (Solid, Opaque & Widely Spread with Bottom Fade) */}
       {/* ------------------------------------------------------------- */}
       <div
-        className="relative w-full max-w-4xl h-[380px] sm:h-[450px] md:h-[500px] mt-2 sm:mt-4 flex items-center justify-center pointer-events-none"
+        className="relative w-full max-w-4xl h-[300px] xs:h-[350px] sm:h-[450px] md:h-[500px] mt-2 sm:mt-4 flex items-center justify-center pointer-events-none"
         style={{
           maskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.5) 80%, transparent 98%)",
           WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.5) 80%, transparent 98%)",
@@ -76,7 +76,7 @@ export function GetTheAppSection() {
           whileInView={{ opacity: 1, x: 0, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute left-1/2 -translate-x-[calc(50%+85px)] sm:-translate-x-[calc(50%+115px)] md:-translate-x-[calc(50%+138px)] z-10 w-[160px] sm:w-[195px] md:w-[220px] h-[330px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom"
+          className="absolute left-1/2 -translate-x-[calc(50%+65px)] xs:-translate-x-[calc(50%+85px)] sm:-translate-x-[calc(50%+115px)] md:-translate-x-[calc(50%+138px)] z-10 w-[120px] xs:w-[155px] sm:w-[195px] md:w-[220px] h-[250px] xs:h-[320px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom"
         >
           <PhoneFrame>
             <LeftPhoneDashboardScreen />
@@ -94,7 +94,7 @@ export function GetTheAppSection() {
           whileInView={{ opacity: 1, x: 0, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute left-1/2 translate-x-[calc(-50%+85px)] sm:translate-x-[calc(-50%+115px)] md:translate-x-[calc(-50%+138px)] z-10 w-[160px] sm:w-[195px] md:w-[220px] h-[330px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom"
+          className="absolute left-1/2 translate-x-[calc(-50%+65px)] xs:translate-x-[calc(-50%+85px)] sm:translate-x-[calc(-50%+115px)] md:translate-x-[calc(-50%+138px)] z-10 w-[120px] xs:w-[155px] sm:w-[195px] md:w-[220px] h-[250px] xs:h-[320px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom"
         >
           <PhoneFrame>
             <RightPhoneTransferScreen />
@@ -111,7 +111,7 @@ export function GetTheAppSection() {
           whileInView={{ opacity: 1, y: 0, scale: 1.0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-20 w-[175px] sm:w-[210px] md:w-[238px] h-[355px] sm:h-[425px] md:h-[475px] pointer-events-auto shadow-[0_25px_70px_rgba(0,0,0,0.95),_0_0_35px_rgba(168,85,247,0.22)] rounded-[34px] sm:rounded-[42px]"
+          className="relative z-20 w-[135px] xs:w-[170px] sm:w-[210px] md:w-[238px] h-[275px] xs:h-[345px] sm:h-[425px] md:h-[475px] pointer-events-auto shadow-[0_25px_70px_rgba(0,0,0,0.95),_0_0_35px_rgba(168,85,247,0.22)] rounded-[26px] xs:rounded-[34px] sm:rounded-[42px]"
         >
           <PhoneFrame isCenter>
             <CenterPhoneHeroScreen />
@@ -129,7 +129,7 @@ export function GetTheAppSection() {
         transition={{ duration: 0.65, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-30 -mt-2 sm:-mt-4 md:-mt-5 text-center flex flex-col items-center max-w-2xl px-4 pointer-events-auto"
       >
-        <h2 className="font-sans font-bold tracking-tight text-4xl sm:text-6xl md:text-[4.4rem] text-white leading-none drop-shadow-md">
+        <h2 className="font-sans font-bold tracking-tight text-3xl xs:text-4xl sm:text-6xl md:text-[4.4rem] text-white leading-none drop-shadow-md">
           Get the App.
         </h2>
 
@@ -171,11 +171,10 @@ function PhoneFrame({
 }) {
   return (
     <div
-      className={`relative w-full h-full rounded-[34px] sm:rounded-[40px] md:rounded-[44px] p-1.5 sm:p-2 bg-gradient-to-b from-[#3a3a46] via-[#1c1c24] to-[#0c0c12] border border-white/20 ${
-        isCenter
+      className={`relative w-full h-full rounded-[34px] sm:rounded-[40px] md:rounded-[44px] p-1.5 sm:p-2 bg-gradient-to-b from-[#3a3a46] via-[#1c1c24] to-[#0c0c12] border border-white/20 ${isCenter
           ? "shadow-[0_0_0_1px_rgba(255,255,255,0.2),_0_20px_60px_rgba(0,0,0,0.95)]"
           : "shadow-[0_15px_40px_rgba(0,0,0,0.85)] opacity-95 hover:opacity-100 transition-opacity"
-      }`}
+        }`}
     >
       {/* Top Specular Edge Highlight */}
       <div className="absolute top-0 inset-x-8 sm:inset-x-10 h-[1.2px] bg-gradient-to-r from-transparent via-white/70 to-transparent pointer-events-none" />

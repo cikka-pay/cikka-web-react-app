@@ -317,15 +317,14 @@ export function WaitlistSection() {
     offset: ["start start", "end end"],
   });
 
-  // Butter-smooth GSAP-class spring physics
+  // Zero-lag spring synchronized with Lenis inertia
   const smoothProgress = useSpring(scrollYProgress, {
-    damping: 26,
-    stiffness: 85,
-    mass: 0.22,
+    damping: 32,
+    stiffness: 140,
+    mass: 0.1,
   });
 
   // 1. OUTER CIRCLE ZOOM-IN TRANSFORMS
-  // Fast & impactful expansion past the viewport
   const outerScale = useTransform(smoothProgress, [0, 0.25, 0.45, 0.55], [0.72, 1.0, 1.9, 3.4]);
   const outerOpacity = useTransform(smoothProgress, [0, 0.15, 0.38, 0.48, 1], [0.85, 1.0, 0.95, 0.0, 0.0]);
   const outerZ = useTransform(smoothProgress, [0, 0.55], [0, 280]);
@@ -341,7 +340,6 @@ export function WaitlistSection() {
   const cikkaLogoBlur = useTransform(smoothProgress, [0, 0.38, 0.48], ["blur(0px)", "blur(0px)", "blur(12px)"]);
 
   // 4. CONVERTED TEXT: "Rewards that reshape the daily life" (POPPINS FONT)
-  // Reaches 100% at 0.55 and STAYS LOCKED ON SCREEN all the way to 0.92 (Extended Hold Zone)
   const textOpacity = useTransform(smoothProgress, [0.46, 0.55, 0.92, 1.0], [0, 1, 1, 0.92]);
   const textScale = useTransform(smoothProgress, [0.46, 0.55, 0.92, 1.0], [0.88, 1.0, 1.03, 1.0]);
   const textY = useTransform(smoothProgress, [0.46, 0.55, 0.92, 1.0], [24, 0, 0, -8]);
@@ -357,19 +355,19 @@ export function WaitlistSection() {
   return (
     <div
       ref={containerRef}
-      className="relative w-full bg-[#f4f5f8] select-none"
+      className="relative w-full bg-[#f4f5f8] select-none will-change-transform"
       style={{ height: "360vh" }}
     >
       {/* Sticky Viewport Pinned Viewport with Navbar Clearance */}
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pt-[88px] sm:pt-[96px] pb-16 sm:pb-24 md:pb-32 px-4 sm:px-8 md:px-12 overflow-hidden">
-        
+
         {/* Outer Showcase Card positioned cleanly with generous spacing */}
         <motion.section
           style={{
             scale: cardScale,
             perspective: 1200,
           }}
-          className="relative w-full max-w-[1380px] rounded-[32px] sm:rounded-[40px] md:rounded-[48px] bg-[#0c0d12] border border-white/10 overflow-hidden h-[calc(100vh-170px)] max-h-[580px] sm:max-h-[610px] min-h-[460px] sm:min-h-[500px] flex flex-col items-center justify-center shadow-[0_30px_90px_rgba(0,0,0,0.95)]"
+          className="relative w-full max-w-[1380px] rounded-[32px] sm:rounded-[40px] md:rounded-[48px] bg-[#0c0d12] border border-white/10 overflow-hidden h-[calc(100vh-170px)] max-h-[580px] sm:max-h-[610px] min-h-[460px] sm:min-h-[500px] flex flex-col items-center justify-center shadow-[0_30px_90px_rgba(0,0,0,0.95)] will-change-transform"
         >
           {/* Subtle Ambient Radial Glows expanding with scroll zoom */}
           <motion.div
@@ -384,10 +382,10 @@ export function WaitlistSection() {
           </motion.div>
 
           {/* ========================================================================= */}
-          {/* DUAL COUNTER-ROTATING CIRCULAR ORBITS WITH SCROLL ZOOM-IN */}
+          {/* DUAL COUNTER-ROTATING CIRCULAR ORBITS WITH SCROLL ZOOM-IN (GPU ACCELERATED) */}
           {/* ========================================================================= */}
           <div className="pointer-events-none absolute inset-0 z-0 overflow-hidden flex items-center justify-center">
-            
+
             {/* LINE 2: OUTER CIRCLE TRACK (1:1 Ratio) — ZOOM-IN + ROTATING RIGHT */}
             <motion.div
               style={{
@@ -395,17 +393,9 @@ export function WaitlistSection() {
                 opacity: outerOpacity,
                 z: outerZ,
               }}
-              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              className="absolute inset-0 flex items-center justify-center pointer-events-none will-change-transform"
             >
-              <motion.div
-                animate={{ rotate: 360 }}
-                transition={{
-                  duration: 54,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="w-[620px] h-[620px] sm:w-[700px] sm:h-[700px] md:w-[780px] md:h-[780px] lg:w-[860px] lg:h-[860px] rounded-full relative pointer-events-none"
-              >
+              <div className="animate-orbit-cw w-[340px] h-[340px] xs:w-[440px] xs:h-[440px] sm:w-[700px] sm:h-[700px] md:w-[780px] md:h-[780px] lg:w-[860px] lg:h-[860px] rounded-full relative pointer-events-none">
                 {OUTER_CIRCLE_LOGOS.map((app) => {
                   const coords = getExactCircleCoords(app.angle);
                   return (
@@ -416,27 +406,21 @@ export function WaitlistSection() {
                         top: coords.top,
                         opacity: app.opacity,
                       }}
-                      className={`absolute -translate-x-1/2 -translate-y-1/2 ${app.blur} transition-transform duration-300`}
+                      className="absolute -translate-x-1/2 -translate-y-1/2 transition-transform duration-300 will-change-transform"
                     >
                       {/* Counter-rotation to keep logo upright with its tangent tilt */}
-                      <motion.div
-                        animate={{ rotate: -360 }}
-                        transition={{
-                          duration: 54,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }}
-                        style={{ rotate: app.tilt }}
-                        className="flex items-center justify-center pointer-events-auto hover:scale-115 transition-transform"
+                      <div
+                        style={{ transform: `rotate(${app.tilt}deg)` }}
+                        className="animate-orbit-logo-ccw flex items-center justify-center pointer-events-auto hover:scale-115 transition-transform"
                       >
-                        <div className={`${app.size} drop-shadow-2xl`}>
+                        <div className="w-8 h-8 xs:w-10 xs:h-10 sm:w-13 sm:h-13 drop-shadow-xl">
                           {app.component}
                         </div>
-                      </motion.div>
+                      </div>
                     </div>
                   );
                 })}
-              </motion.div>
+              </div>
             </motion.div>
 
             {/* LINE 1: INNER CIRCLE TRACK (1:1 Ratio) — ZOOM-IN + ROTATING LEFT */}
@@ -446,17 +430,9 @@ export function WaitlistSection() {
                 opacity: innerOpacity,
                 z: innerZ,
               }}
-              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+              className="absolute inset-0 flex items-center justify-center pointer-events-none will-change-transform"
             >
-              <motion.div
-                animate={{ rotate: -360 }}
-                transition={{
-                  duration: 40,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="w-[420px] h-[420px] sm:w-[480px] sm:h-[480px] md:w-[540px] md:h-[540px] lg:w-[600px] lg:h-[600px] rounded-full relative pointer-events-none"
-              >
+              <div className="animate-orbit-ccw w-[220px] h-[220px] xs:w-[280px] xs:h-[280px] sm:w-[480px] sm:h-[480px] md:w-[540px] md:h-[540px] lg:w-[600px] lg:h-[600px] rounded-full relative pointer-events-none">
                 {INNER_CIRCLE_LOGOS.map((app) => {
                   const coords = getExactCircleCoords(app.angle);
                   return (
@@ -467,27 +443,21 @@ export function WaitlistSection() {
                         top: coords.top,
                         opacity: app.opacity,
                       }}
-                      className={`absolute -translate-x-1/2 -translate-y-1/2 ${app.blur} transition-transform duration-300`}
+                      className="absolute -translate-x-1/2 -translate-y-1/2 transition-transform duration-300 will-change-transform"
                     >
                       {/* Counter-rotation to keep logo upright with its tangent tilt */}
-                      <motion.div
-                        animate={{ rotate: 360 }}
-                        transition={{
-                          duration: 40,
-                          repeat: Infinity,
-                          ease: "linear",
-                        }}
-                        style={{ rotate: app.tilt }}
-                        className="flex items-center justify-center pointer-events-auto hover:scale-115 transition-transform"
+                      <div
+                        style={{ transform: `rotate(${app.tilt}deg)` }}
+                        className="animate-orbit-logo-cw flex items-center justify-center pointer-events-auto hover:scale-115 transition-transform"
                       >
-                        <div className={`${app.size} drop-shadow-2xl`}>
+                        <div className="w-8 h-8 xs:w-10 xs:h-10 sm:w-13 sm:h-13 drop-shadow-xl">
                           {app.component}
                         </div>
-                      </motion.div>
+                      </div>
                     </div>
                   );
                 })}
-              </motion.div>
+              </div>
             </motion.div>
 
           </div>
@@ -496,15 +466,15 @@ export function WaitlistSection() {
           {/* CENTER VOID: CIKKA LOGO (STABLE) -> MORPHS TO POPPINS TEXT */}
           {/* ========================================================================= */}
           <div className="pointer-events-none absolute inset-0 z-20 flex items-center justify-center">
-            
-            {/* 1. Cikka Logo in the center of the void (Clean, no shadow) */}
+
+            {/* 1. Cikka Logo in the center of the void */}
             <motion.div
               style={{
                 opacity: cikkaLogoOpacity,
                 scale: cikkaLogoScale,
                 filter: cikkaLogoBlur,
               }}
-              className="absolute flex flex-col items-center justify-center pointer-events-none select-none"
+              className="absolute flex flex-col items-center justify-center pointer-events-none select-none will-change-transform"
             >
               <img
                 src="/Cikka_Logo.png"
@@ -521,11 +491,11 @@ export function WaitlistSection() {
                 y: textY,
                 filter: textBlur,
               }}
-              className="absolute flex flex-col items-center justify-center text-center px-6 sm:px-12 max-w-4xl pointer-events-none select-none"
+              className="absolute flex flex-col items-center justify-center text-center px-4 sm:px-12 max-w-4xl pointer-events-none select-none will-change-transform"
             >
               <h2
                 style={{ fontFamily: "'Poppins', sans-serif" }}
-                className="text-3xl sm:text-5xl md:text-6xl lg:text-[4.2rem] font-bold tracking-tight text-white leading-[1.12] drop-shadow-[0_16px_40px_rgba(0,0,0,0.9)]"
+                className="text-2xl xs:text-3xl sm:text-5xl md:text-6xl lg:text-[4.2rem] font-bold tracking-tight text-white leading-[1.12] drop-shadow-[0_16px_40px_rgba(0,0,0,0.9)]"
               >
                 Rewards that reshape <br className="hidden sm:inline" />
                 the daily life
