@@ -1,0 +1,919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebsiteCrafts E-Commerce Film</title>
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <!-- Embedded 3D Shoe Model Data -->
+    <script src="shoe_data.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            user-select: none;
+            overflow: hidden;
+        }
+
+        /* Purple-to-whitish-purple gradient frame */
+        .purple-gradient-frame {
+            background: linear-gradient(180deg, #521ae5 0%, #6835f5 42%, #8e5cff 68%, #d8c8ff 88%, #f3edff 100%);
+            padding: 10px;
+            border-radius: 36px;
+            box-shadow: 0 30px 60px -10px rgba(104, 53, 245, 0.28), 0 15px 35px rgba(216, 200, 255, 0.5);
+            max-width: 450px;
+            width: 100%;
+            height: 580px;
+            display: flex;
+            position: relative;
+        }
+
+        /* Inner pure white card container */
+        .inner-white-card {
+            background: #ffffff;
+            border-radius: 28px;
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        #webgl-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            inset: 0;
+            z-index: 12;
+            pointer-events: none;
+        }
+
+        /* Loading Overlay */
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            transition: opacity 0.4s ease;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 38px;
+            height: 38px;
+            border: 3.5px solid #e2e8f0;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Frame 1: Greyish Glassmorphism Frosted Box Card */
+        .product-box-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(1);
+            width: 86%;
+            height: 410px;
+            border: 1.5px solid rgba(255, 255, 255, 0.7);
+            border-radius: 28px;
+            background: linear-gradient(135deg, rgba(203, 213, 225, 0.60) 0%, rgba(148, 163, 184, 0.42) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            z-index: 5;
+            padding: 18px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            box-shadow: inset 0 1.5px 2.5px rgba(255, 255, 255, 0.85), 0 20px 40px rgba(15, 23, 42, 0.12);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            pointer-events: none;
+        }
+
+        .product-box-card.fade-out {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.88);
+        }
+
+        .price-tag-badge {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 800;
+            letter-spacing: 0.2px;
+            padding: 10px 18px;
+            border-radius: 999px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.18);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .box-footer {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 12px;
+            width: 100%;
+            position: relative;
+            z-index: 20;
+        }
+
+        /* Capsule Add to Cart Button */
+        .add-to-cart-btn {
+            background: #ffffff;
+            color: #0f172a;
+            border: 1.5px solid #cbd5e1;
+            font-size: 14px;
+            font-weight: 700;
+            padding: 10px 26px;
+            border-radius: 999px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+            cursor: pointer;
+            pointer-events: auto;
+            transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+        }
+
+        .add-to-cart-btn .plus-sign {
+            font-size: 17px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .add-to-cart-btn.clicked {
+            transform: scale(0.92);
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+        }
+
+        /* Virtual Cursor */
+        .virtual-cursor {
+            position: absolute;
+            z-index: 35;
+            width: 24px;
+            height: 24px;
+            top: 20%;
+            left: 80%;
+            pointer-events: none;
+            opacity: 0;
+            transition: top 1.1s cubic-bezier(0.4, 0, 0.2, 1), left 1.1s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+        }
+
+        .virtual-cursor svg {
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+        }
+
+        .virtual-cursor.visible {
+            opacity: 1;
+        }
+
+        /* Frame 2: Shopping Bag Container (Emerges from button) */
+        .shopping-bag-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 30%) scale(0.1);
+            width: 165px;
+            height: 205px;
+            z-index: 20;
+            pointer-events: none;
+            opacity: 0;
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.5s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .shopping-bag-container.active {
+            opacity: 1;
+            transform: translate(-50%, -48%) scale(1);
+        }
+
+        .shopping-bag-svg {
+            width: 100%;
+            height: 100%;
+            filter: drop-shadow(0 20px 30px rgba(15, 23, 42, 0.22));
+        }
+
+        /* Price Tag attached to Shopping Bag */
+        .bag-price-tag {
+            position: absolute;
+            top: 64%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.4);
+            background: #6366f1;
+            color: #ffffff;
+            font-size: 14px;
+            font-weight: 800;
+            padding: 7px 16px;
+            border-radius: 12px;
+            box-shadow: 0 8px 24px rgba(99, 102, 241, 0.5);
+            white-space: nowrap;
+            opacity: 0;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.4s ease;
+            z-index: 22;
+            text-align: center;
+        }
+
+        .bag-price-tag.show {
+            opacity: 1;
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .bag-price-tag.hide {
+            opacity: 0;
+            transform: translate(-50%, -50%) scale(0.4);
+        }
+
+        /* Frame 3: Fanned-Out Dark Obsidian Square Boxes Spread */
+        .cards-spread-container {
+            position: absolute;
+            inset: 0;
+            z-index: 25;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .cards-spread-container.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        /* Typewriter Heading */
+        .typing-heading-wrap {
+            position: absolute;
+            top: 55px;
+            width: 100%;
+            text-align: center;
+            z-index: 30;
+            pointer-events: none;
+            padding: 0 20px;
+        }
+
+        .typing-text {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.4px;
+            background: linear-gradient(135deg, #0f172a 0%, #334155 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .typing-cursor {
+            font-size: 21px;
+            font-weight: 700;
+            color: #6366f1;
+            animation: blink 0.7s infinite;
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        .square-box-item {
+            position: absolute;
+            width: 195px;
+            height: 195px; /* Square proportions */
+            background: linear-gradient(150deg, #1c2130 0%, #10131c 100%);
+            border: 1.5px solid rgba(255, 255, 255, 0.16);
+            border-radius: 24px;
+            padding: 16px;
+            box-shadow: -10px 20px 40px rgba(0, 0, 0, 0.45);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+            transform: translate(0, 100px) scale(0.1) rotate(0deg);
+            transition: transform 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.6s ease;
+            opacity: 0;
+        }
+
+        .square-box-item.show-card {
+            opacity: 1;
+        }
+
+        .box-wave-bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            opacity: 0.18;
+        }
+
+        /* Fanned Square Box Default Base Positions */
+        .cards-spread-container.active .box-left.show-card {
+            transform: translate(-72px, 35px) rotate(-14deg) scale(0.90);
+            z-index: 1;
+        }
+
+        .cards-spread-container.active .box-center.show-card {
+            transform: translate(0, 35px) rotate(0deg) scale(0.92);
+            z-index: 2;
+        }
+
+        .cards-spread-container.active .box-right.show-card {
+            transform: translate(72px, 35px) rotate(14deg) scale(0.90);
+            z-index: 1;
+        }
+
+        /* Spotlight Uplift Focus State */
+        .cards-spread-container.active .square-box-item.spotlight-active {
+            transform: translate(0, -12px) rotate(0deg) scale(1.08) !important;
+            z-index: 20 !important;
+            border-color: rgba(255, 255, 255, 0.45);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.65), 0 0 30px rgba(99, 102, 241, 0.35);
+        }
+
+
+        .card-top-header {
+            display: flex;
+            justify-content: flex-start;
+            position: relative;
+            z-index: 5;
+        }
+
+        .card-logo-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex: 1;
+            position: relative;
+            z-index: 5;
+            padding: 2px 0;
+        }
+
+        .card-brand-logo {
+            max-width: 148px;
+            max-height: 98px;
+            width: auto;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55));
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .square-box-item.spotlight-active .card-brand-logo {
+            transform: scale(1.08);
+        }
+
+        .card-reward-label {
+            position: relative;
+            z-index: 5;
+            font-size: 11px;
+            font-weight: 700;
+            color: #ffffff;
+            text-align: center;
+            line-height: 1.25;
+            letter-spacing: -0.2px;
+            opacity: 0;
+            transform: translateY(8px);
+            transition: opacity 0.4s ease, transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            background: rgba(255, 255, 255, 0.10);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            padding: 6px 10px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Reveal Reward Text when Uplifted */
+        .square-box-item.spotlight-active .card-reward-label {
+            opacity: 1;
+            transform: translateY(0);
+            box-shadow: 0 6px 18px rgba(99, 102, 241, 0.35);
+        }
+
+        .accent-dot-group {
+            display: flex;
+            gap: 4px;
+        }
+
+        .accent-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .accent-dot.active-dot {
+            background: #6366f1;
+        }
+
+
+    </style>
+</head>
+<body>
+
+    <div class="purple-gradient-frame">
+        <div class="inner-white-card" id="cardContainer">
+            
+            <!-- Loading Overlay -->
+            <div class="loading-overlay" id="loader">
+                <div class="spinner"></div>
+            </div>
+
+            <!-- Frame 1: Greyish Frosted Blurred Box Card -->
+            <div class="product-box-card" id="productBoxCard">
+                <div class="box-footer">
+                    <div class="price-tag-badge">₹4,299</div>
+                    <button class="add-to-cart-btn" id="addToCartBtn">
+                        Buy Now
+                    </button>
+                </div>
+            </div>
+
+            <!-- WebGL Canvas for 3D Shoe -->
+            <canvas id="webgl-canvas"></canvas>
+
+
+
+            <!-- Virtual Cursor for Auto Click -->
+            <div class="virtual-cursor" id="virtualCursor">
+                <svg viewBox="0 0 24 24" fill="#0f172a">
+                    <path d="M3 3l7 18 3-7 7-3L3 3z"/>
+                </svg>
+            </div>
+
+            <!-- Frame 2: Vector Ecommerce Shopping Bag -->
+            <div class="shopping-bag-container" id="bagContainer">
+                <svg class="shopping-bag-svg" viewBox="0 0 200 240" fill="none">
+                    <!-- Handles -->
+                    <path d="M65 80 C65 25, 135 25, 135 80" stroke="#1e293b" stroke-width="10" stroke-linecap="round"/>
+                    <!-- Bag Body -->
+                    <path d="M25 85 L175 85 L190 230 L10 230 Z" fill="#1e293b"/>
+                    <path d="M175 85 L190 230 L160 230 L150 85 Z" fill="#0f172a"/>
+                </svg>
+
+                <!-- Attached Price Tag on Bag -->
+                <div class="bag-price-tag" id="bagPriceTag">₹4,299</div>
+            </div>
+
+            <!-- Frame 3: Fanned-Out Dark Obsidian Square Boxes Spread -->
+            <div class="cards-spread-container" id="cardsSpreadContainer">
+                
+                <!-- Typewriter Heading -->
+                <div class="typing-heading-wrap">
+                    <span class="typing-text" id="typingText"></span><span class="typing-cursor">|</span>
+                </div>
+                <!-- Square Box 1 (Left Fanned Box - Swiggy) -->
+                <div class="square-box-item box-left">
+                    <svg class="box-wave-bg" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+                        <path d="M-20 60 Q 60 20, 140 60 T 260 60" stroke="white" stroke-width="1.2"/>
+                        <path d="M-20 100 Q 60 60, 140 100 T 260 100" stroke="white" stroke-width="1.2"/>
+                        <path d="M-20 140 Q 60 100, 140 140 T 260 140" stroke="white" stroke-width="1.2"/>
+                    </svg>
+                    <div class="card-top-header">
+                        <div class="accent-dot-group">
+                            <div class="accent-dot active-dot"></div>
+                            <div class="accent-dot"></div>
+                            <div class="accent-dot"></div>
+                        </div>
+                    </div>
+                    <div class="card-logo-wrap">
+                        <img src="Swiggy.png" alt="Swiggy Logo" class="card-brand-logo" />
+                    </div>
+                    <div class="card-reward-label">Swiggy's 500 coupon</div>
+                </div>
+
+                <!-- Square Box 2 (Center Main Box - BoAt) -->
+                <div class="square-box-item box-center">
+                    <svg class="box-wave-bg" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+                        <path d="M-20 50 Q 60 10, 140 50 T 260 50" stroke="white" stroke-width="1.5"/>
+                        <path d="M-20 90 Q 60 50, 140 90 T 260 90" stroke="white" stroke-width="1.5"/>
+                        <path d="M-20 130 Q 60 90, 140 130 T 260 130" stroke="white" stroke-width="1.5"/>
+                        <path d="M-20 170 Q 60 130, 140 170 T 260 170" stroke="white" stroke-width="1.5"/>
+                    </svg>
+                    <div class="card-top-header">
+                        <div class="accent-dot-group">
+                            <div class="accent-dot"></div>
+                            <div class="accent-dot active-dot"></div>
+                            <div class="accent-dot"></div>
+                        </div>
+                    </div>
+                    <div class="card-logo-wrap">
+                        <img src="Boat.png" alt="BoAt Logo" class="card-brand-logo" />
+                    </div>
+                    <div class="card-reward-label">BoAt Rockerz 430</div>
+                </div>
+
+                <!-- Square Box 3 (Right Fanned Box - Spotify) -->
+                <div class="square-box-item box-right">
+                    <svg class="box-wave-bg" viewBox="0 0 200 200" fill="none" stroke="currentColor">
+                        <path d="M-20 60 Q 60 20, 140 60 T 260 60" stroke="white" stroke-width="1.2"/>
+                        <path d="M-20 100 Q 60 60, 140 100 T 260 100" stroke="white" stroke-width="1.2"/>
+                        <path d="M-20 140 Q 60 100, 140 140 T 260 140" stroke="white" stroke-width="1.2"/>
+                    </svg>
+                    <div class="card-top-header">
+                        <div class="accent-dot-group">
+                            <div class="accent-dot"></div>
+                            <div class="accent-dot"></div>
+                            <div class="accent-dot active-dot"></div>
+                        </div>
+                    </div>
+                    <div class="card-logo-wrap">
+                        <img src="Spotify.png" alt="Spotify Logo" class="card-brand-logo" />
+                    </div>
+                    <div class="card-reward-label">Spotify's 3 months of subscription</div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('cardContainer');
+        const canvas = document.getElementById('webgl-canvas');
+        const loaderOverlay = document.getElementById('loader');
+
+        // Scene, Camera, Renderer Setup
+        const scene = new THREE.Scene();
+        scene.background = null;
+
+        const camera = new THREE.PerspectiveCamera(35, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.set(0, -0.05, 8.4);
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.outputEncoding = THREE.sRGBEncoding;
+
+        // Orbit Drag Controls
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.06;
+        controls.enableZoom = false;
+
+        // Studio Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 0.9);
+        mainLight.position.set(5, 8, 6);
+        scene.add(mainLight);
+
+        const fillLight = new THREE.DirectionalLight(0x818cf8, 0.4);
+        fillLight.position.set(-6, 3, -4);
+        scene.add(fillLight);
+
+        // Base64 to ArrayBuffer for local loading
+        function base64ToArrayBuffer(base64) {
+            const binaryString = window.atob(base64);
+            const len = binaryString.length;
+            const bytes = new Uint8Array(len);
+            for (let i = 0; i < len; i++) {
+                bytes[i] = binaryString.charCodeAt(i);
+            }
+            return bytes.buffer;
+        }
+
+        let shoeModel = null;
+        let isFilmAnimating = false;
+        let shoeTargetScale = 1.0;
+
+        // Load 3D Shoe Model
+        const gltfLoader = new THREE.GLTFLoader();
+        const modelBuffer = base64ToArrayBuffer(window.SHOE_MODEL_BASE64);
+
+        gltfLoader.parse(modelBuffer, '', function (gltf) {
+            shoeModel = gltf.scene;
+
+            const box = new THREE.Box3().setFromObject(shoeModel);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+
+            shoeModel.position.x += (shoeModel.position.x - center.x);
+            shoeModel.position.y += (shoeModel.position.y - center.y) - 0.12;
+            shoeModel.position.z += (shoeModel.position.z - center.z);
+
+            const maxDim = Math.max(size.x, size.y, size.z);
+            shoeTargetScale = 1.95 / maxDim;
+            shoeModel.scale.set(shoeTargetScale, shoeTargetScale, shoeTargetScale);
+
+            // Initial -28 degree tilt
+            shoeModel.rotation.set(0, 0, THREE.MathUtils.degToRad(-28));
+
+            // Matte finish
+            shoeModel.traverse((child) => {
+                if (child.isMesh && child.material) {
+                    const mats = Array.isArray(child.material) ? child.material : [child.material];
+                    mats.forEach((mat) => {
+                        mat.roughness = 0.9;
+                        mat.metalness = 0.0;
+                    });
+                }
+            });
+
+            scene.add(shoeModel);
+            loaderOverlay.classList.add('hidden');
+
+            // Start Film Animation Timeline
+            startFilmTimeline();
+        });
+
+        // Film Timeline UI Handles
+        const productBoxCard = document.getElementById('productBoxCard');
+        const addToCartBtn = document.getElementById('addToCartBtn');
+        const virtualCursor = document.getElementById('virtualCursor');
+        const bagContainer = document.getElementById('bagContainer');
+        const bagPriceTag = document.getElementById('bagPriceTag');
+        const cardsSpreadContainer = document.getElementById('cardsSpreadContainer');
+        const replayBtn = document.getElementById('replayBtn');
+
+        const boxLeft = document.querySelector('.box-left');
+        const boxCenter = document.querySelector('.box-center');
+        const boxRight = document.querySelector('.box-right');
+        const typingTextEl = document.getElementById('typingText');
+
+        let filmTimer1, filmTimer2, filmTimer3, filmTimer4, filmTimer5, filmTimer6, filmTimer7, filmTimer8, spotlightTimer;
+        let typeInterval = null;
+        let currentSpotlightIndex = 0;
+
+        function resetFilm() {
+            clearTimeout(filmTimer1);
+            clearTimeout(filmTimer2);
+            clearTimeout(filmTimer3);
+            clearTimeout(filmTimer4);
+            clearTimeout(filmTimer5);
+            clearTimeout(filmTimer6);
+            clearTimeout(filmTimer7);
+            clearTimeout(filmTimer8);
+            clearTimeout(spotlightTimer);
+            clearInterval(typeInterval);
+
+            // Reset UI States
+            productBoxCard.classList.remove('fade-out');
+            addToCartBtn.classList.remove('clicked');
+            virtualCursor.classList.remove('visible');
+            virtualCursor.style.top = '25%';
+            virtualCursor.style.left = '75%';
+
+            bagContainer.classList.remove('active');
+            bagPriceTag.classList.remove('show');
+            bagPriceTag.classList.remove('hide');
+
+            cardsSpreadContainer.classList.remove('active');
+            if (boxCenter) {
+                boxCenter.classList.remove('show-card');
+                boxCenter.classList.remove('spotlight-active');
+            }
+            if (boxLeft) {
+                boxLeft.classList.remove('show-card');
+                boxLeft.classList.remove('spotlight-active');
+            }
+            if (boxRight) {
+                boxRight.classList.remove('show-card');
+                boxRight.classList.remove('spotlight-active');
+            }
+            if (typingTextEl) typingTextEl.textContent = '';
+            currentSpotlightIndex = 0;
+
+            if (shoeModel) {
+                shoeModel.visible = true;
+                shoeModel.scale.set(shoeTargetScale, shoeTargetScale, shoeTargetScale);
+                shoeModel.position.set(0, -0.12, 0);
+                shoeModel.rotation.set(0, 0, THREE.MathUtils.degToRad(-28));
+            }
+        }
+
+        function triggerTypewriter(text, speed, callback) {
+            if (!typingTextEl) return;
+            typingTextEl.textContent = '';
+            let i = 0;
+            typeInterval = setInterval(() => {
+                if (i < text.length) {
+                    typingTextEl.textContent += text.charAt(i);
+                    i++;
+                } else {
+                    clearInterval(typeInterval);
+                    if (callback) callback();
+                }
+            }, speed);
+        }
+
+        function runCardSpotlightShowcase() {
+            const cards = [boxLeft, boxCenter, boxRight];
+            if (!cards[0] || !cards[1] || !cards[2]) return;
+
+            let step = 0;
+            function stepNextCard() {
+                cards.forEach(c => c.classList.remove('spotlight-active'));
+
+                if (step < cards.length) {
+                    cards[step].classList.add('spotlight-active');
+                    step++;
+                    spotlightTimer = setTimeout(stepNextCard, 2000);
+                } else {
+                    // All cards showcased once! Hold for 2.2s, then smooth crossfade back to Frame 1
+                    spotlightTimer = setTimeout(() => {
+                        // Smooth dissolve of Frame 3
+                        cardsSpreadContainer.classList.remove('active');
+
+                        // 700ms crossfade buffer before restarting Frame 1 timeline
+                        setTimeout(() => {
+                            startFilmTimeline();
+                        }, 700);
+                    }, 2200);
+                }
+            }
+
+            stepNextCard();
+        }
+
+        function startFilmTimeline() {
+            resetFilm();
+            isFilmAnimating = true;
+
+            // Ensure 3D shoe model is 100% visible at full target scale in Frame 1 with -28deg tilt
+            if (shoeModel) {
+                shoeModel.visible = true;
+                shoeModel.scale.set(shoeTargetScale, shoeTargetScale, shoeTargetScale);
+                shoeModel.position.set(0, -0.12, 0);
+                shoeModel.rotation.set(0, 0, THREE.MathUtils.degToRad(-28));
+            }
+
+            // Step 1: Hold in box for 1.4s, then move virtual cursor to button
+            filmTimer1 = setTimeout(() => {
+                const btnRect = addToCartBtn.getBoundingClientRect();
+                const containerRect = container.getBoundingClientRect();
+                const targetX = btnRect.left - containerRect.left + btnRect.width / 2;
+                const targetY = btnRect.top - containerRect.top + btnRect.height / 2;
+
+                virtualCursor.classList.add('visible');
+                virtualCursor.style.left = `${targetX}px`;
+                virtualCursor.style.top = `${targetY}px`;
+
+                // Step 2: Auto Click at Buy Now button
+                filmTimer2 = setTimeout(() => {
+                    addToCartBtn.classList.add('clicked');
+                    virtualCursor.classList.remove('visible');
+
+                    // Step 3: Product Box Card fades out & Bag emerges from button position
+                    filmTimer3 = setTimeout(() => {
+                        productBoxCard.classList.add('fade-out');
+                        bagContainer.classList.add('active');
+
+                        // Unhurried 3D Shoe animation: Float UPWARDS first, then lower into cart!
+                        if (shoeModel) {
+                            const startTime = Date.now();
+                            const duration = 1800; // Unhurried duration
+                            const initialScale = shoeModel.scale.x;
+                            const animateMerge = () => {
+                                const elapsed = Date.now() - startTime;
+                                const progress = Math.min(elapsed / duration, 1);
+
+                                if (progress < 0.35) {
+                                    // Float UPWARDS phase
+                                    const pUp = progress / 0.35;
+                                    shoeModel.position.y = -0.12 + pUp * 0.32;
+                                    shoeModel.rotation.y -= 0.012;
+                                } else {
+                                    // Merge DOWNWARD into cart bag phase
+                                    const pDown = (progress - 0.35) / 0.65;
+                                    shoeModel.position.y = 0.20 - pDown * 0.52;
+                                    shoeModel.scale.set(
+                                        initialScale * (1 - pDown * 0.75),
+                                        initialScale * (1 - pDown * 0.75),
+                                        initialScale * (1 - pDown * 0.75)
+                                    );
+                                    shoeModel.rotation.y -= 0.012;
+                                }
+
+                                if (progress < 1) {
+                                    requestAnimationFrame(animateMerge);
+                                }
+                            };
+                            animateMerge();
+                        }
+
+                        // Step 4: AFTER merging completes (1.9s), the ₹4,299 price tag pops onto the bag
+                        filmTimer4 = setTimeout(() => {
+                            bagPriceTag.classList.add('show');
+
+                            // Step 5: STAY THERE on bag for 2.2s, then transition to rewards tab
+                            filmTimer5 = setTimeout(() => {
+                                bagPriceTag.classList.remove('show');
+                                bagPriceTag.classList.add('hide');
+                                bagContainer.classList.remove('active');
+
+                                // Hide 3D shoe model for Frame 3 rewards tab
+                                if (shoeModel) shoeModel.visible = false;
+
+                                // Step 6: Rewards Tab activates with Typewriter "Get Rewards like"
+                                filmTimer6 = setTimeout(() => {
+                                    cardsSpreadContainer.classList.add('active');
+                                    triggerTypewriter('Get Rewards like', 70, () => {
+                                        // Staggered Showcase: Card 1 (Center) -> Card 2 (Left) -> Card 3 (Right)
+                                        filmTimer7 = setTimeout(() => {
+                                            if (boxCenter) boxCenter.classList.add('show-card');
+                                            filmTimer8 = setTimeout(() => {
+                                                if (boxLeft) boxLeft.classList.add('show-card');
+                                                setTimeout(() => {
+                                                    if (boxRight) boxRight.classList.add('show-card');
+                                                    isFilmAnimating = false;
+                                                    // Start single-pass card showcase, hold, then auto-loop full film from Frame 1
+                                                    setTimeout(runCardSpotlightShowcase, 600);
+                                                }, 350);
+                                            }, 350);
+                                        }, 250);
+                                    });
+                                }, 400);
+
+                            }, 2200);
+
+                        }, 1900);
+
+                    }, 500);
+
+                }, 1100);
+
+            }, 1400);
+        }
+
+
+
+        // Buy Now / Box Card Click Listener
+        addToCartBtn.addEventListener('click', () => {
+            if (!productBoxCard.classList.contains('fade-out')) {
+                startFilmTimeline();
+            }
+        });
+
+        // Interactive Card Click Spotlighting
+        [boxLeft, boxCenter, boxRight].forEach((card, idx) => {
+            if (card) {
+                card.addEventListener('click', () => {
+                    clearTimeout(spotlightTimer);
+                    [boxLeft, boxCenter, boxRight].forEach(c => c && c.classList.remove('spotlight-active'));
+                    card.classList.add('spotlight-active');
+                    spotlightTimer = setTimeout(runCardSpotlightShowcase, 2800);
+                });
+            }
+        });
+
+        // Resize handler
+        window.addEventListener('resize', () => {
+            const width = container.clientWidth;
+            const height = container.clientHeight;
+            camera.aspect = width / height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(width, height);
+        });
+
+        // Render Loop
+        function animate() {
+            requestAnimationFrame(animate);
+
+            if (isFilmAnimating && shoeModel && bagContainer.classList.contains('active') === false) {
+                shoeModel.rotation.y -= 0.006;
+            } else {
+                controls.update();
+            }
+
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+</html>

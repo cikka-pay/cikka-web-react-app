@@ -61,27 +61,7 @@ export function SimplifyPaySection() {
           transition={{ duration: 0.7, delay: 0.2, ease: [0.16, 1, 0.3, 1] }}
           className="absolute bottom-3 xs:bottom-4 left-3 xs:left-4 right-3 xs:right-4 z-30 p-3 xs:p-3.5 sm:p-4 rounded-2xl bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl flex items-center justify-between text-white hover:bg-black/50 transition-colors"
         >
-          <div className="space-y-1">
-            <div className="flex items-center -space-x-2">
-              <motion.img
-                whileHover={{ scale: 1.15, zIndex: 10 }}
-                className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white/80 object-cover shadow-sm transition-transform cursor-pointer"
-                src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=100&auto=format&fit=crop&q=80"
-                alt="avatar1"
-              />
-              <motion.img
-                whileHover={{ scale: 1.15, zIndex: 10 }}
-                className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white/80 object-cover shadow-sm transition-transform cursor-pointer"
-                src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&auto=format&fit=crop&q=80"
-                alt="avatar2"
-              />
-              <motion.img
-                whileHover={{ scale: 1.15, zIndex: 10 }}
-                className="w-6 h-6 xs:w-7 xs:h-7 sm:w-8 sm:h-8 rounded-full border-2 border-white/80 object-cover shadow-sm transition-transform cursor-pointer"
-                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100&auto=format&fit=crop&q=80"
-                alt="avatar3"
-              />
-            </div>
+          <div>
             <p className="font-semibold text-[11px] xs:text-xs sm:text-sm text-white drop-shadow-sm leading-snug">
               Welcome to our finance
               <br />
@@ -157,20 +137,20 @@ export function SimplifyPaySection() {
             className="space-y-1.5 cursor-default group"
           >
             <p className="text-4xl sm:text-5xl font-bold text-black tracking-tight flex items-baseline">
-              <span>20</span>
+              <span>767</span>
               <motion.span
                 animate={{ scale: [1, 1.12, 1] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                className="text-[#6366f1] inline-block ml-0.5"
+                className="text-[#6366f1] inline-block ml-1 text-3xl sm:text-4xl"
               >
-                m
+                ms
               </motion.span>
             </p>
             <p className="text-sm font-bold text-slate-900 group-hover:text-[#6366f1] transition-colors">
-              Active users
+              Bill fetch time
             </p>
             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-              Active users engaging regularly on platform
+              AVG bill fetch time we are taking to fetch bills.
             </p>
           </motion.div>
 
@@ -180,7 +160,7 @@ export function SimplifyPaySection() {
             className="space-y-1.5 sm:border-l sm:border-slate-200 sm:pl-8 cursor-default group"
           >
             <p className="text-4xl sm:text-5xl font-bold text-black tracking-tight flex items-baseline">
-              <span>100</span>
+              <span>700</span>
               <motion.span
                 animate={{ scale: [1, 1.15, 1] }}
                 transition={{ duration: 3, repeat: Infinity, ease: "easeInOut", delay: 1 }}
@@ -190,10 +170,10 @@ export function SimplifyPaySection() {
               </motion.span>
             </p>
             <p className="text-sm font-bold text-slate-900 group-hover:text-[#6366f1] transition-colors">
-              Team member
+              Brands
             </p>
             <p className="text-xs sm:text-sm text-slate-500 leading-relaxed">
-              Skilled team driving success together
+              Points that you can redeem for more than 700 brands
             </p>
           </motion.div>
         </motion.div>

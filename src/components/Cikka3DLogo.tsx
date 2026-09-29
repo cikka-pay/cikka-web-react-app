@@ -274,8 +274,18 @@ export function Cikka3DLogo({
     container.addEventListener("mousemove", handleMouseMove);
     container.addEventListener("mouseleave", handleMouseLeave);
 
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry?.isIntersecting ?? true;
+      },
+      { rootMargin: "100px" }
+    );
+    observer.observe(container);
+
     const animate = () => {
       animId = requestAnimationFrame(animate);
+      if (!isVisible) return;
 
       // Interpolate theme color smoothly
       const targetT = isLightRef.current ? 1.0 : 0.0;
@@ -306,6 +316,7 @@ export function Cikka3DLogo({
     window.addEventListener("resize", handleResize);
 
     return () => {
+      observer.disconnect();
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", handleResize);
       container.removeEventListener("mousemove", handleMouseMove);

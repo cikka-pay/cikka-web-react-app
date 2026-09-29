@@ -29,7 +29,7 @@ export function RevenueInsightsBentoSection() {
         className="text-center max-w-2xl mx-auto px-2"
       >
         <h2 className="text-2xl xs:text-3xl sm:text-4xl md:text-[2.85rem] font-bold tracking-tight text-black leading-tight">
-          Gain weekly revenue insights for smarter business decisions
+          Manage. Track. Grow. All in one dashboard.
         </h2>
       </motion.div>
 
@@ -72,7 +72,7 @@ export function RevenueInsightsBentoSection() {
               whileHover={{ scale: 1.05 }}
               className="inline-block bg-white text-slate-950 font-extrabold text-[10px] xs:text-[11px] tracking-widest px-3.5 xs:px-4 py-1 xs:py-1.5 rounded-full uppercase shadow-sm cursor-default"
             >
-              FINANCE
+              SELLERS
             </motion.span>
             <h3 className="text-xl xs:text-2xl sm:text-3xl font-extrabold tracking-tight mt-4 sm:mt-6 leading-tight max-w-[260px]">
               Keep track of your income and payment

@@ -49,17 +49,17 @@ export function GetTheAppSection() {
     <section
       id="get-app-section"
       ref={containerRef}
-      className="relative w-full bg-[#000000] text-white pt-12 sm:pt-16 md:pt-20 pb-20 sm:pb-28 px-4 sm:px-6 overflow-hidden flex flex-col items-center justify-center select-none"
+      className="relative w-full bg-[#000000] text-white pt-20 sm:pt-28 md:pt-36 pb-32 sm:pb-44 md:pb-52 px-4 sm:px-6 overflow-hidden flex flex-col items-center justify-center select-none"
     >
-      {/* Warm Beige / Sand & Mauve Ambient Radial Glow at the Bottom */}
-      <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 w-[750px] sm:w-[1050px] md:w-[1250px] h-[360px] sm:h-[420px] bg-[radial-gradient(ellipse_at_bottom,rgba(238,200,165,0.30)_0%,rgba(220,165,140,0.18)_25%,rgba(192,132,252,0.10)_50%,transparent_75%)] blur-[95px] z-0" />
-      <div className="pointer-events-none absolute -bottom-12 left-1/2 -translate-x-1/2 w-[480px] sm:w-[680px] md:w-[820px] h-[220px] sm:h-[260px] bg-[radial-gradient(ellipse_at_bottom,rgba(254,220,185,0.24)_0%,rgba(244,114,182,0.10)_35%,transparent_65%)] blur-[75px] z-0" />
+      {/* Soft Expanded Purple Ambient Radial Glow reaching up to the button */}
+      <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 w-[850px] sm:w-[1200px] md:w-[1450px] h-[560px] sm:h-[700px] md:h-[800px] bg-[radial-gradient(ellipse_at_bottom,rgba(168,85,247,0.22)_0%,rgba(147,51,234,0.13)_35%,rgba(109,40,217,0.05)_65%,transparent_80%)] blur-[120px] z-0" />
+      <div className="pointer-events-none absolute bottom-12 sm:bottom-20 left-1/2 -translate-x-1/2 w-[480px] sm:w-[720px] md:w-[860px] h-[300px] sm:h-[380px] bg-[radial-gradient(ellipse_at_center,rgba(192,132,252,0.16)_0%,rgba(168,85,247,0.08)_45%,transparent_70%)] blur-[90px] z-0" />
 
       {/* ------------------------------------------------------------- */}
       {/* 3-PHONE TRIPTYCH SHOWCASE (Solid, Opaque & Widely Spread with Bottom Fade) */}
       {/* ------------------------------------------------------------- */}
       <div
-        className="relative w-full max-w-4xl h-[300px] xs:h-[350px] sm:h-[450px] md:h-[500px] mt-2 sm:mt-4 flex items-center justify-center pointer-events-none"
+        className="relative w-full max-w-4xl h-[320px] xs:h-[370px] sm:h-[460px] md:h-[510px] mt-4 sm:mt-8 mb-6 sm:mb-10 flex items-center justify-center pointer-events-none"
         style={{
           maskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.5) 80%, transparent 98%)",
           WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.5) 80%, transparent 98%)",
@@ -127,7 +127,7 @@ export function GetTheAppSection() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0.3 }}
         transition={{ duration: 0.65, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
-        className="relative z-30 -mt-2 sm:-mt-4 md:-mt-5 text-center flex flex-col items-center max-w-2xl px-4 pointer-events-auto"
+        className="relative z-30 text-center flex flex-col items-center max-w-2xl px-4 pointer-events-auto"
       >
         <h2 className="font-sans font-bold tracking-tight text-3xl xs:text-4xl sm:text-6xl md:text-[4.4rem] text-white leading-none drop-shadow-md">
           Get the App.
@@ -142,12 +142,12 @@ export function GetTheAppSection() {
         <motion.div
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.96 }}
-          className="mt-5 sm:mt-6"
+          className="mt-6 sm:mt-8 mb-4 sm:mb-8"
         >
           <a
             href="#download"
             style={{ color: "#000000" }}
-            className="inline-flex items-center justify-center bg-white text-black !text-black font-semibold text-xs sm:text-sm px-7 sm:px-9 py-2.5 sm:py-3 rounded-full hover:bg-neutral-200 transition-all shadow-[0_3px_25px_rgba(255,255,255,0.25)] active:scale-95 cursor-pointer"
+            className="inline-flex items-center justify-center bg-white text-black !text-black font-semibold text-xs sm:text-sm px-7 sm:px-9 py-2.5 sm:py-3 rounded-full hover:bg-neutral-200 transition-all shadow-[0_4px_25px_rgba(168,85,247,0.3)] active:scale-95 cursor-pointer"
           >
             <span style={{ color: "#000000" }} className="text-black !text-black font-semibold">
               Get the app

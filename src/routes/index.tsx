@@ -763,7 +763,7 @@ function CardsScene() {
           style={{ y: titleY, opacity: titleOpacity }}
           className="font-sans font-bold tracking-[-0.035em] text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white text-center mb-2 select-none"
         >
-          Say <span className="bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">bye</span> to cards
+          Manage <span className="bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">all</span> cards in one place
         </motion.h2>
 
         {/* Fanned Cards Showcase (Scroll Scrubbed) */}
@@ -778,7 +778,8 @@ function CardsScene() {
             }}
             className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
           >
-            <div className="flex justify-end">
+            <div className="flex items-center justify-between">
+              <IndianBankLogo />
               <EmvChip />
             </div>
             <div className="my-auto flex items-center justify-between pl-0.5">
@@ -787,7 +788,7 @@ function CardsScene() {
               </div>
               <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
                 <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
-                <p className="font-semibold text-white">Haley Baylee</p>
+                <p className="font-semibold text-white">Kunal Shah</p>
                 <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
                 <p className="font-semibold text-white">02/30</p>
               </div>
@@ -810,7 +811,8 @@ function CardsScene() {
             {/* Topographic Lines Overlay */}
             <TopoPattern />
 
-            <div className="relative z-10 flex justify-end">
+            <div className="relative z-10 flex items-center justify-between">
+              <IndianBankLogo />
               <EmvChip />
             </div>
 
@@ -820,7 +822,7 @@ function CardsScene() {
               </div>
               <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-300 space-y-0.5">
                 <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400">Card holder name</p>
-                <p className="font-semibold text-white">Haley Baylee</p>
+                <p className="font-semibold text-white">Kunal Shah</p>
                 <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400 pt-1 sm:pt-1.5">Expiry date</p>
                 <p className="font-semibold text-white">02/30</p>
               </div>
@@ -842,7 +844,8 @@ function CardsScene() {
             }}
             className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
           >
-            <div className="flex justify-end">
+            <div className="flex items-center justify-between">
+              <IndianBankLogo />
               <EmvChip />
             </div>
             <div className="my-auto flex items-center justify-between pl-0.5">
@@ -851,7 +854,7 @@ function CardsScene() {
               </div>
               <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
                 <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
-                <p className="font-semibold text-white">Haley Baylee</p>
+                <p className="font-semibold text-white">Kunal Shah</p>
                 <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
                 <p className="font-semibold text-white">02/30</p>
               </div>
@@ -864,6 +867,34 @@ function CardsScene() {
         </div>
       </div>
     </section>
+  );
+}
+
+function IndianBankLogo({ className = "" }: { className?: string }) {
+  return (
+    <div className={`flex items-center gap-1.5 ${className}`}>
+      {/* Official Indian Bank Tri-Petal Flame Emblem in Deep Blue Circle */}
+      <svg
+        viewBox="0 0 32 32"
+        className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 shrink-0"
+        fill="none"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <circle cx="16" cy="16" r="15" fill="#00338D" stroke="#1d4ed8" strokeWidth="0.75" />
+        <path
+          d="M16 5.5C17.5 9.5 21 12 24.5 12.8C22.2 16.8 18.2 19 16 26.5C13.8 19 9.8 16.8 7.5 12.8C11 12 14.5 9.5 16 5.5Z"
+          fill="#FFB81C"
+        />
+        <path
+          d="M16 8.5C17.2 11.8 19.8 13.8 22.5 14.2C20.8 17.2 17.8 18.5 16 23.5C14.2 18.5 11.2 17.2 9.5 14.2C12.2 13.8 14.8 11.8 16 8.5Z"
+          fill="#00338D"
+        />
+        <circle cx="16" cy="15.5" r="2.2" fill="#FFB81C" />
+      </svg>
+      <span className="text-[7px] xs:text-[7.5px] sm:text-[8.5px] font-bold text-white/95 tracking-wide uppercase font-sans whitespace-nowrap">
+        Indian Bank
+      </span>
+    </div>
   );
 }
 
@@ -954,44 +985,146 @@ function LightContinuation() {
               className="text-center pb-12 border-b border-slate-200"
             >
               <p className="text-sm font-semibold text-slate-700 tracking-wide mb-8 select-none">
-                Trusted by 15,000+ founders &amp; business owners
+                Built with Industry lead to serve Best
               </p>
-              <div className="overflow-hidden relative mask-linear">
-                <div className="flex items-center justify-around flex-wrap gap-8 sm:gap-14 text-slate-400 font-semibold text-base sm:text-lg select-none">
+              <div className="overflow-hidden relative">
+                <div className="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-7 gap-y-4 sm:gap-y-5 select-none max-w-5xl mx-auto">
+                  {/* Axis Bank */}
                   <motion.div
-                    whileHover={{ scale: 1.05, color: "#334155" }}
-                    className="flex items-center gap-2 transition-colors cursor-pointer"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    transition={{ duration: 0.18 }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
                   >
-                    <span className="text-xl font-bold font-mono">‹</span>
-                    <span>Brand Name</span>
+                    <svg viewBox="0 0 100 100" className="w-5 h-5 shrink-0" fill="none">
+                      <path d="M50 8L4 88H26.8L50 48L73.2 88H96L50 8Z" fill="#97144D" />
+                      <path d="M50 51.5L38 72H62L50 51.5Z" fill="#FFFFFF" />
+                    </svg>
+                    <span className="font-extrabold text-xs sm:text-sm tracking-tight text-[#97144D] font-sans">
+                      AXIS BANK
+                    </span>
                   </motion.div>
+
+                  {/* Setu */}
                   <motion.div
-                    whileHover={{ scale: 1.05, color: "#334155" }}
-                    className="flex items-center gap-2 transition-colors cursor-pointer"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    transition={{ duration: 0.18 }}
+                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
                   >
-                    <span className="text-xl">◒</span>
-                    <span>Logo ipsum</span>
+                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
+                      <rect width="32" height="32" rx="7" fill="#13B58C" />
+                      <path d="M8 20C8 14.4772 12.4772 10 18 10H24M24 10L19.5 5.5M24 10L19.5 14.5" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#1A202C] font-sans">
+                      setu<span className="text-[#13B58C]">.</span>
+                    </span>
                   </motion.div>
+
+                  {/* Shipway */}
                   <motion.div
-                    whileHover={{ scale: 1.05, color: "#334155" }}
-                    className="flex items-center gap-2 transition-colors cursor-pointer"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    transition={{ duration: 0.18 }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
                   >
-                    <span className="text-xl">◎</span>
-                    <span>Dummy Logo</span>
+                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
+                      <circle cx="16" cy="16" r="15" fill="#0284C7" />
+                      <path d="M9 16L23 9L18 23L15 17L9 16Z" fill="#FFFFFF" />
+                    </svg>
+                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#0F172A] font-sans">
+                      ship<span className="text-[#0284C7]">way</span>
+                    </span>
                   </motion.div>
+
+                  {/* InstantPay */}
                   <motion.div
-                    whileHover={{ scale: 1.05, color: "#334155" }}
-                    className="flex items-center gap-2 transition-colors cursor-pointer"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    transition={{ duration: 0.18 }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
                   >
-                    <span className="text-xl">☯</span>
-                    <span>Digital Dummy</span>
+                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
+                      <circle cx="16" cy="16" r="15" fill="#F97316" />
+                      <path d="M17.5 5L9 17.5H15.5L14.5 27L23 14.5H16.5L17.5 5Z" fill="#FFFFFF" />
+                    </svg>
+                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#0F172A] font-sans">
+                      Instant<span className="text-[#F97316]">Pay</span>
+                    </span>
                   </motion.div>
+
+                  {/* Razorpay */}
                   <motion.div
-                    whileHover={{ scale: 1.05, color: "#334155" }}
-                    className="flex items-center gap-2 transition-colors cursor-pointer"
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    transition={{ duration: 0.18 }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
                   >
-                    <span className="text-xl">✺</span>
-                    <span>Logo Text</span>
+                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
+                      <path d="M20 4H10.5L7 19H14.5L12.5 28L26 12.5H18L20 4Z" fill="#0C2340" />
+                      <path d="M15 10H10.5L7 19H14.5L12.5 28L22 16.5H16L18 10Z" fill="#3395FF" />
+                    </svg>
+                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#0C2340] font-sans">
+                      Razorpay
+                    </span>
+                  </motion.div>
+
+                  {/* Route Mobile */}
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    transition={{ duration: 0.18 }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
+                  >
+                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
+                      <circle cx="8" cy="24" r="4" fill="#6366F1" />
+                      <circle cx="24" cy="8" r="4" fill="#4F46E5" />
+                      <path d="M11 21L21 11M8 20V12C8 9.79086 9.79086 8 12 8H20" stroke="#4F46E5" strokeWidth="2.5" strokeLinecap="round" />
+                    </svg>
+                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#1E1B4B] font-sans">
+                      route<span className="text-[#6366F1] font-medium text-[10px] sm:text-xs ml-0.5">mobile</span>
+                    </span>
+                  </motion.div>
+
+                  {/* Airtel */}
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    transition={{ duration: 0.18 }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
+                  >
+                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
+                      <path d="M16 4C9.37258 4 4 9.37258 4 16C4 22.6274 9.37258 28 16 28C20.4183 28 24.237 25.6176 26.2625 22.0963C24.4754 22.0963 22.4286 21.3787 21.0504 19.9863C19.6723 18.5939 18.9669 16.5471 18.9669 14.3382C18.9669 8.62939 14.5097 4 8.80088 4C11.134 4 13.6765 4 16 4Z" fill="#ED1C24" />
+                    </svg>
+                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#ED1C24] font-sans">
+                      airtel
+                    </span>
+                  </motion.div>
+
+                  {/* Google */}
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    transition={{ duration: 0.18 }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
+                  >
+                    <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0">
+                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
+                      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335" />
+                    </svg>
+                    <span className="font-semibold text-xs sm:text-sm tracking-tight text-[#475569] font-sans">
+                      Google
+                    </span>
+                  </motion.div>
+
+                  {/* Hubble Money */}
+                  <motion.div
+                    whileHover={{ scale: 1.05, y: -2 }}
+                    transition={{ duration: 0.18 }}
+                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
+                  >
+                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
+                      <circle cx="16" cy="16" r="14" fill="#7C3AED" />
+                      <circle cx="16" cy="16" r="8" stroke="#FDE047" strokeWidth="2.5" />
+                      <circle cx="19" cy="13" r="2" fill="#FDE047" />
+                    </svg>
+                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#4C1D95] font-sans">
+                      Hubble<span className="text-[#7C3AED] font-medium text-[10px] sm:text-xs ml-1">Money</span>
+                    </span>
                   </motion.div>
                 </div>
               </div>
@@ -1007,15 +1140,13 @@ function LightContinuation() {
             <div className="py-6 sm:py-10 border-y border-slate-200/80 overflow-hidden select-none -mx-6 sm:-mx-12 md:-mx-16">
               <div className="flex whitespace-nowrap animate-marquee">
                 <h2 className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black flex items-center gap-6 px-4">
-                  <span>Pay faster</span>
+                  <span>Every Purchase</span>
                   <span className="text-slate-300 font-light">—</span>
-                  <span>Receive payments faster</span>
+                  <span>Turns Into Rewards</span>
                   <span className="text-slate-300 font-light">—</span>
-                  <span>Move money globally</span>
+                  <span>Every Purchase</span>
                   <span className="text-slate-300 font-light">—</span>
-                  <span>Pay faster</span>
-                  <span className="text-slate-300 font-light">—</span>
-                  <span>Receive payments faster</span>
+                  <span>Turns Into Rewards</span>
                   <span className="text-slate-300 font-light">—</span>
                 </h2>
               </div>
