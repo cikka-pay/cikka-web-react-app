@@ -10,8 +10,9 @@ export function RevenueInsightsBentoSection() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 80,
-    damping: 20,
+    stiffness: 130,
+    damping: 28,
+    mass: 0.1,
     restDelta: 0.001,
   });
 

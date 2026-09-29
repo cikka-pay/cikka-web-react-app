@@ -6,15 +6,18 @@ export function SmoothScroll() {
   useEffect(() => {
     if (typeof window === "undefined" || prefersReducedMotion()) return;
 
-    // Initialize Lenis with optimized ultra-smooth physics
+    const isTouch = "ontouchstart" in window || (typeof navigator !== "undefined" && navigator.maxTouchPoints > 0);
+
+    // Initialize Lenis with optimized ultra-smooth physics (native 120Hz touch on mobile)
     const lenis = new Lenis({
-      duration: 1.0,
+      duration: isTouch ? 0.8 : 1.0,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
+      syncTouch: false,
+      touchMultiplier: 1.0,
       wheelMultiplier: 0.95,
-      touchMultiplier: 1.2,
       autoResize: true,
       infinite: false,
     });

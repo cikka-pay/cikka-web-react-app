@@ -115,6 +115,14 @@
 
 html {
   background: var(--page-black);
+  -webkit-text-size-adjust: 100%;
+}
+
+@media (max-width: 768px) {
+  html, body {
+    -webkit-overflow-scrolling: touch;
+    touch-action: pan-y;
+  }
 }
 
 html.lenis,

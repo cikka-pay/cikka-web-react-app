@@ -172,11 +172,11 @@ function UnifiedPhoneShowcase() {
     offset: ["start start", "end end"],
   });
 
-  // Butter-smooth spring interpolation
+  // Butter-smooth instantaneous zero-lag spring interpolation
   const smoothProgress = useSpring(scrollYProgress, {
-    damping: 30,
-    stiffness: 100,
-    mass: 0.25,
+    damping: 24,
+    stiffness: 160,
+    mass: 0.05,
   });
 
   // --- 1. HERO STAGE ("We've Got You") ---
@@ -234,16 +234,16 @@ function UnifiedPhoneShowcase() {
     [heroStartY, 20, isMobile ? -120 : 0, isMobile ? -120 : 0]
   );
 
-  // 3D Perspective Tilt
+  // 3D Perspective Tilt (zero tilt on mobile for maximum 120fps GPU performance)
   const phoneRotateX = useTransform(
     smoothProgress,
     [0.0, 0.28, 0.38, 0.58, 0.76, 1.0],
-    [isMobile ? 8 : 20, 0, 0, 0, 0, 0]
+    isMobile ? [0, 0, 0, 0, 0, 0] : [20, 0, 0, 0, 0, 0]
   );
   const phoneRotateY = useTransform(
     smoothProgress,
     [0.0, 0.22, 0.38, 0.58, 0.76, 1.0],
-    [0, isMobile ? 0 : -3, isMobile ? 0 : -3, isMobile ? 0 : 3, isMobile ? 0 : 3, isMobile ? 0 : 3]
+    isMobile ? [0, 0, 0, 0, 0, 0] : [0, -3, -3, 3, 3, 3]
   );
   const phoneScale = useTransform(
     smoothProgress,
@@ -287,11 +287,11 @@ function UnifiedPhoneShowcase() {
           {/* Main Following Purple Halo behind Phone */}
           <motion.div
             style={{ x: glowX }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[550px] sm:w-[900px] lg:w-[1050px] h-[450px] sm:h-[650px] bg-[radial-gradient(circle,rgba(168,85,247,0.26)_0%,rgba(217,70,239,0.15)_30%,rgba(129,140,248,0.1)_55%,transparent_75%)] blur-[100px] sm:blur-[120px]"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] sm:w-[850px] lg:w-[1000px] h-[400px] sm:h-[600px] bg-[radial-gradient(circle,rgba(168,85,247,0.28)_0%,rgba(217,70,239,0.14)_35%,rgba(129,140,248,0.08)_60%,transparent_75%)] blur-[40px] sm:blur-[60px] will-change-transform"
           />
           {/* Side Soft Lavender & Peach Highlights */}
-          <div className="absolute top-1/2 right-[12%] -translate-y-1/2 w-[320px] sm:w-[420px] h-[400px] sm:h-[480px] bg-[radial-gradient(circle,rgba(192,132,252,0.16)_0%,transparent_70%)] blur-[80px] sm:blur-[100px]" />
-          <div className="absolute top-1/2 left-[12%] -translate-y-1/2 w-[320px] sm:w-[420px] h-[400px] sm:h-[480px] bg-[radial-gradient(circle,rgba(244,114,182,0.12)_0%,transparent_70%)] blur-[80px] sm:blur-[100px]" />
+          <div className="absolute top-1/2 right-[12%] -translate-y-1/2 w-[280px] sm:w-[400px] h-[350px] sm:h-[450px] bg-[radial-gradient(circle,rgba(192,132,252,0.14)_0%,transparent_70%)] blur-[35px] sm:blur-[50px]" />
+          <div className="absolute top-1/2 left-[12%] -translate-y-1/2 w-[280px] sm:w-[400px] h-[350px] sm:h-[450px] bg-[radial-gradient(circle,rgba(244,114,182,0.10)_0%,transparent_70%)] blur-[35px] sm:blur-[50px]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#000000_95%)]" />
         </div>
 
@@ -437,7 +437,7 @@ function UnifiedPhoneShowcase() {
               scale: phoneScale,
               transformStyle: "preserve-3d",
             }}
-            className="relative w-[260px] sm:w-[290px] md:w-[320px] lg:w-[340px] h-[520px] sm:h-[580px] md:h-[630px] lg:h-[660px] pointer-events-auto"
+            className="relative w-[260px] sm:w-[290px] md:w-[320px] lg:w-[340px] h-[520px] sm:h-[580px] md:h-[630px] lg:h-[660px] pointer-events-auto will-change-transform"
           >
             {/* Titanium Frame & Specular Rim */}
             <div className="relative w-full h-full rounded-[44px] sm:rounded-[50px] p-2 sm:p-2.5 bg-gradient-to-b from-[#3a3a46] via-[#1c1c24] to-[#0c0c12] border border-white/20 shadow-[0_0_0_1px_rgba(255,255,255,0.15),_0_-25px_80px_rgba(168,85,247,0.35),_0_35px_100px_rgba(0,0,0,0.95)]">
@@ -714,9 +714,9 @@ function CardsScene() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    damping: 26,
-    stiffness: 80,
-    mass: 0.2,
+    damping: 28,
+    stiffness: 130,
+    mass: 0.1,
   });
 
   // Headline scroll animation: Starts closer to cards (+165px down), floats smoothly upwards to +15px on scroll

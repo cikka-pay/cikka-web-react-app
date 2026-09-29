@@ -25,8 +25,9 @@ export function GetTheAppSection() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 85,
-    damping: 26,
+    stiffness: 130,
+    damping: 28,
+    mass: 0.1,
     restDelta: 0.001,
   });
 

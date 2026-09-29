@@ -11,8 +11,9 @@ export function SimplifyPaySection() {
   });
 
   const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 70,
-    damping: 20,
+    stiffness: 130,
+    damping: 28,
+    mass: 0.1,
     restDelta: 0.001,
   });
 
