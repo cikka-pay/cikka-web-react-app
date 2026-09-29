@@ -439,7 +439,7 @@ export function WaitlistSection() {
               }}
               className="absolute inset-0 flex items-center justify-center pointer-events-none will-change-transform"
             >
-              <div className="animate-orbit-cw w-[360px] h-[360px] xs:w-[460px] xs:h-[460px] sm:w-[740px] sm:h-[740px] md:w-[840px] md:h-[840px] lg:w-[940px] lg:h-[940px] rounded-full relative pointer-events-none">
+              <div className="animate-orbit-cw w-[290px] h-[290px] xs:w-[380px] xs:h-[380px] sm:w-[680px] sm:h-[680px] md:w-[800px] md:h-[800px] lg:w-[940px] lg:h-[940px] rounded-full relative pointer-events-none">
                 {OUTER_CIRCLE_LOGOS.map((app) => {
                   const coords = getExactCircleCoords(app.angle);
                   return (
@@ -457,7 +457,7 @@ export function WaitlistSection() {
                         style={{ transform: `rotate(${app.tilt}deg)` }}
                         className="animate-orbit-logo-ccw flex items-center justify-center pointer-events-auto hover:scale-115 transition-transform"
                       >
-                        <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-12 sm:h-12 drop-shadow-xl">
+                        <div className="w-7 h-7 xs:w-8.5 xs:h-8.5 sm:w-11 sm:h-11 md:w-12 md:h-12 drop-shadow-xl">
                           {app.component}
                         </div>
                       </div>
@@ -476,7 +476,7 @@ export function WaitlistSection() {
               }}
               className="absolute inset-0 flex items-center justify-center pointer-events-none will-change-transform"
             >
-              <div className="animate-orbit-ccw w-[240px] h-[240px] xs:w-[300px] xs:h-[300px] sm:w-[480px] sm:h-[480px] md:w-[560px] md:h-[560px] lg:w-[620px] lg:h-[620px] rounded-full relative pointer-events-none">
+              <div className="animate-orbit-ccw w-[190px] h-[190px] xs:w-[250px] xs:h-[250px] sm:w-[440px] sm:h-[440px] md:w-[540px] md:h-[540px] lg:w-[620px] lg:h-[620px] rounded-full relative pointer-events-none">
                 {INNER_CIRCLE_LOGOS.map((app) => {
                   const coords = getExactCircleCoords(app.angle);
                   return (
@@ -494,7 +494,7 @@ export function WaitlistSection() {
                         style={{ transform: `rotate(${app.tilt}deg)` }}
                         className="animate-orbit-logo-cw flex items-center justify-center pointer-events-auto hover:scale-115 transition-transform"
                       >
-                        <div className="w-9 h-9 xs:w-11 xs:h-11 sm:w-13 sm:h-13 drop-shadow-xl">
+                        <div className="w-7.5 h-7.5 xs:w-9 xs:h-9 sm:w-12 sm:h-12 md:w-13 md:h-13 drop-shadow-xl">
                           {app.component}
                         </div>
                       </div>

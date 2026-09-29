@@ -76,23 +76,31 @@ function useHeaderTheme() {
   const [isLight, setIsLight] = React.useState(false);
 
   React.useEffect(() => {
+    let ticking = false;
+
     const handleCheck = () => {
-      const lightSections = document.querySelectorAll('[data-theme-light="true"]');
-      const headerTriggerY = 60;
-      let lightActive = false;
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          const lightSections = document.querySelectorAll('[data-theme-light="true"]');
+          const headerTriggerY = 60;
+          let lightActive = false;
 
-      lightSections.forEach((sec) => {
-        const r = sec.getBoundingClientRect();
-        if (r.top <= headerTriggerY && r.bottom >= headerTriggerY) {
-          lightActive = true;
-        }
-      });
+          lightSections.forEach((sec) => {
+            const r = sec.getBoundingClientRect();
+            if (r.top <= headerTriggerY && r.bottom >= headerTriggerY) {
+              lightActive = true;
+            }
+          });
 
-      setIsLight(lightActive);
+          setIsLight(lightActive);
+          ticking = false;
+        });
+        ticking = true;
+      }
     };
 
     window.addEventListener("scroll", handleCheck, { passive: true });
-    window.addEventListener("resize", handleCheck);
+    window.addEventListener("resize", handleCheck, { passive: true });
     handleCheck();
 
     return () => {
@@ -161,44 +169,43 @@ function UnifiedPhoneShowcase() {
   const isTablet = width >= 640 && width < 1024;
 
   // Responsive phone X offset (how far it shifts left/right)
-  // On mobile, phone stays centered while text sits cleanly below
   const phoneShiftX = isMobile ? 0 : isTablet ? 175 : 260;
   // Hero start Y: phone enters from below, slides up as user scrolls
-  const heroStartY = isMobile ? 150 : 250;
+  const heroStartY = isMobile ? 120 : 250;
 
-  // Track scroll throughout the 480vh sequence
+  // Track scroll throughout the sequence
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Butter-smooth spring interpolation
+  // Zero-lag calibrated spring interpolation
   const smoothProgress = useSpring(scrollYProgress, {
-    damping: 30,
-    stiffness: 100,
-    mass: 0.25,
+    damping: 26,
+    stiffness: 120,
+    mass: 0.15,
   });
 
   // --- 1. HERO STAGE ("We've Got You") ---
-  const heroOpacity = useTransform(smoothProgress, [0.0, 0.18, 0.30], [1, 0.9, 0]);
-  const heroY = useTransform(smoothProgress, [0.0, 0.30], [0, -90]);
-  const heroScale = useTransform(smoothProgress, [0.0, 0.30], [1, 0.94]);
+  const heroOpacity = useTransform(smoothProgress, [0.0, 0.16, 0.28], [1, 0.9, 0]);
+  const heroY = useTransform(smoothProgress, [0.0, 0.28], [0, -75]);
+  const heroScale = useTransform(smoothProgress, [0.0, 0.28], [1, 0.95]);
 
   // --- 2. QUICK ACTIONS STAGE (Left Column on desktop / Bottom on mobile) ---
   const quickActionsOpacity = useTransform(
     smoothProgress,
-    [0.24, 0.36, 0.58, 0.68],
+    [0.22, 0.34, 0.58, 0.68],
     [0, 1, 1, 0]
   );
   const quickActionsX = useTransform(
     smoothProgress,
-    [0.24, 0.36, 0.58, 0.68],
+    [0.22, 0.34, 0.58, 0.68],
     isMobile ? [0, 0, 0, 0] : [-50, 0, 0, -50]
   );
   const quickActionsY = useTransform(
     smoothProgress,
-    [0.24, 0.36, 0.58, 0.68],
-    isMobile ? [25, 0, 0, -25] : [40, 0, 0, -40]
+    [0.22, 0.34, 0.58, 0.68],
+    isMobile ? [20, 0, 0, -20] : [40, 0, 0, -40]
   );
 
   // --- 3. LARGE PAYMENTS STAGE (Right Column on desktop / Bottom on mobile) ---
@@ -215,54 +222,54 @@ function UnifiedPhoneShowcase() {
   const largePaymentsY = useTransform(
     smoothProgress,
     [0.64, 0.76],
-    isMobile ? [25, 0] : [40, 0]
+    isMobile ? [20, 0] : [40, 0]
   );
 
   // --- 4. THE SINGLE CONTINUOUS PHONE MOCKUP ---
   // Phone shifts RIGHT for Quick Actions, LEFT for Large Payments
   const phoneX = useTransform(
     smoothProgress,
-    [0.0, 0.20, 0.36, 0.58, 0.76, 1.0],
+    [0.0, 0.20, 0.34, 0.58, 0.76, 1.0],
     [0, isMobile ? 0 : 100, phoneShiftX, phoneShiftX, -phoneShiftX, -phoneShiftX]
   );
 
   // KEY SCROLL PARALLAX: Phone starts lower and moves upward.
-  // On mobile, phone docks safely in the top half (-120px) to give clear headroom for the interactive controls below
+  // On mobile, phone docks cleanly in the upper portion (-105px) so controls sit below with headroom
   const phoneY = useTransform(
     smoothProgress,
-    [0.0, 0.26, 0.38, 1.0],
-    [heroStartY, 20, isMobile ? -120 : 0, isMobile ? -120 : 0]
+    [0.0, 0.24, 0.36, 1.0],
+    [heroStartY, 15, isMobile ? -105 : 0, isMobile ? -105 : 0]
   );
 
   // 3D Perspective Tilt
   const phoneRotateX = useTransform(
     smoothProgress,
-    [0.0, 0.28, 0.38, 0.58, 0.76, 1.0],
-    [isMobile ? 8 : 20, 0, 0, 0, 0, 0]
+    [0.0, 0.26, 0.36, 0.58, 0.76, 1.0],
+    [isMobile ? 6 : 18, 0, 0, 0, 0, 0]
   );
   const phoneRotateY = useTransform(
     smoothProgress,
-    [0.0, 0.22, 0.38, 0.58, 0.76, 1.0],
+    [0.0, 0.20, 0.36, 0.58, 0.76, 1.0],
     [0, isMobile ? 0 : -3, isMobile ? 0 : -3, isMobile ? 0 : 3, isMobile ? 0 : 3, isMobile ? 0 : 3]
   );
   const phoneScale = useTransform(
     smoothProgress,
-    [0.0, 0.26, 0.38, 0.58, 0.76, 1.0],
+    [0.0, 0.24, 0.36, 0.58, 0.76, 1.0],
     [
-      isMobile ? 0.70 : 0.86,
-      isMobile ? 0.73 : 0.88,
-      isMobile ? 0.74 : 0.88,
-      isMobile ? 0.74 : 0.88,
-      isMobile ? 0.74 : 0.88,
-      isMobile ? 0.74 : 0.88,
+      isMobile ? 0.74 : 0.86,
+      isMobile ? 0.76 : 0.88,
+      isMobile ? 0.76 : 0.88,
+      isMobile ? 0.76 : 0.88,
+      isMobile ? 0.76 : 0.88,
+      isMobile ? 0.76 : 0.88,
     ]
   );
 
   // Screen Content Crossfades inside the SINGLE Phone
-  const screen1Opacity = useTransform(smoothProgress, [0.0, 0.22, 0.30], [1, 0.7, 0]);
+  const screen1Opacity = useTransform(smoothProgress, [0.0, 0.20, 0.28], [1, 0.7, 0]);
   const screen2Opacity = useTransform(
     smoothProgress,
-    [0.24, 0.34, 0.58, 0.68],
+    [0.22, 0.32, 0.58, 0.68],
     [0, 1, 1, 0]
   );
   const screen3Opacity = useTransform(smoothProgress, [0.64, 0.74, 1.0], [0, 1, 1]);
@@ -270,18 +277,18 @@ function UnifiedPhoneShowcase() {
   // Ambient Dynamic Purple Glow — also follows phone X
   const glowX = useTransform(
     smoothProgress,
-    [0.0, 0.28, 0.38, 0.58, 0.76, 1.0],
+    [0.0, 0.26, 0.36, 0.58, 0.76, 1.0],
     [0, phoneShiftX * 0.85, phoneShiftX * 0.85, -phoneShiftX * 0.85, -phoneShiftX * 0.85, -phoneShiftX * 0.85]
   );
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full bg-[#000000] text-white selection:bg-purple-500/30 overflow-visible"
-      style={{ height: "480vh" }}
+      className="relative w-full bg-[#000000] text-white selection:bg-purple-500/30 overflow-visible will-change-transform"
+      style={{ height: isMobile ? "390vh" : "460vh" }}
     >
       {/* Sticky Fullscreen Viewport */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-16 sm:pt-24 pb-4 sm:pb-8 px-4 sm:px-12 lg:px-20">
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-14 sm:pt-24 pb-4 sm:pb-8 px-4 sm:px-12 lg:px-20">
         {/* Ambient Radial Background Glows matching Reference */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
           {/* Main Following Purple Halo behind Phone */}
@@ -305,9 +312,9 @@ function UnifiedPhoneShowcase() {
             scale: heroScale,
             pointerEvents: useTransform(smoothProgress, (v) => (v < 0.22 ? "auto" : "none")),
           }}
-          className="absolute top-12 xs:top-14 sm:top-18 md:top-20 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-4 max-w-4xl"
+          className="absolute top-14 xs:top-18 sm:top-20 md:top-24 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-3 max-w-4xl"
         >
-          <h1 className="font-sans font-bold tracking-[-0.04em] leading-[0.92] text-5xl xs:text-6xl sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
+          <h1 className="font-sans font-bold tracking-[-0.045em] leading-[0.88] text-[4.85rem] xs:text-[5.6rem] sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
             {/* Top Line: "We've" */}
             <span className="inline-block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] via-[#f472b6] via-[#c084fc] to-[#a5b4fc] bg-clip-text text-transparent drop-shadow-[0_10px_35px_rgba(244,114,182,0.12)]">
               We've
