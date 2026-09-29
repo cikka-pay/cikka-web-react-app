@@ -970,11 +970,7 @@ function LightContinuation() {
   return (
     <>
       <div id="light-continuation-wrap" className="w-full">
-        <section id="company" data-theme-light="true" className="relative z-20 mt-64 sm:mt-60 md:mt-56 bg-[#f4f5f8] text-black pt-16 pb-28 px-6 sm:px-12 md:px-16 shadow-[0_-30px_70px_rgba(0,0,0,0.7)]">
-          {/* Inverted / Opposite Concave Corners */}
-          <InvertedCornerLeft />
-          <InvertedCornerRight />
-
+        <section id="company" data-theme-light="true" className="relative z-20 mt-64 sm:mt-60 md:mt-56 bg-[#f4f5f8] text-black pt-16 pb-28 px-6 sm:px-12 md:px-16 shadow-[0_-30px_70px_rgba(0,0,0,0.7)] w-full">
           <div className="max-w-6xl mx-auto space-y-24 sm:space-y-32">
             {/* LOGO MARQUEE STRIP */}
             <motion.div
