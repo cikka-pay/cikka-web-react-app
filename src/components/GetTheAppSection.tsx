@@ -76,7 +76,7 @@ export function GetTheAppSection() {
           whileInView={{ opacity: 1, x: 0, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute left-1/2 -translate-x-[calc(50%+54px)] xs:-translate-x-[calc(50%+80px)] sm:-translate-x-[calc(50%+115px)] md:-translate-x-[calc(50%+138px)] z-10 w-[110px] xs:w-[150px] sm:w-[195px] md:w-[220px] h-[230px] xs:h-[310px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom"
+          className="absolute left-1/2 -translate-x-[calc(50%+65px)] xs:-translate-x-[calc(50%+85px)] sm:-translate-x-[calc(50%+115px)] md:-translate-x-[calc(50%+138px)] z-10 w-[120px] xs:w-[155px] sm:w-[195px] md:w-[220px] h-[250px] xs:h-[320px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom"
         >
           <PhoneFrame>
             <LeftPhoneDashboardScreen />
@@ -94,7 +94,7 @@ export function GetTheAppSection() {
           whileInView={{ opacity: 1, x: 0, y: 0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute left-1/2 translate-x-[calc(-50%+54px)] xs:translate-x-[calc(-50%+80px)] sm:translate-x-[calc(-50%+115px)] md:translate-x-[calc(-50%+138px)] z-10 w-[110px] xs:w-[150px] sm:w-[195px] md:w-[220px] h-[230px] xs:h-[310px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom"
+          className="absolute left-1/2 translate-x-[calc(-50%+65px)] xs:translate-x-[calc(-50%+85px)] sm:translate-x-[calc(-50%+115px)] md:translate-x-[calc(-50%+138px)] z-10 w-[120px] xs:w-[155px] sm:w-[195px] md:w-[220px] h-[250px] xs:h-[320px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom"
         >
           <PhoneFrame>
             <RightPhoneTransferScreen />
@@ -111,7 +111,7 @@ export function GetTheAppSection() {
           whileInView={{ opacity: 1, y: 0, scale: 1.0 }}
           viewport={{ once: true, amount: 0.2 }}
           transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-20 w-[125px] xs:w-[165px] sm:w-[210px] md:w-[238px] h-[260px] xs:h-[335px] sm:h-[425px] md:h-[475px] pointer-events-auto shadow-[0_25px_70px_rgba(0,0,0,0.95),_0_0_35px_rgba(168,85,247,0.22)] rounded-[26px] xs:rounded-[34px] sm:rounded-[42px]"
+          className="relative z-20 w-[135px] xs:w-[170px] sm:w-[210px] md:w-[238px] h-[275px] xs:h-[345px] sm:h-[425px] md:h-[475px] pointer-events-auto shadow-[0_25px_70px_rgba(0,0,0,0.95),_0_0_35px_rgba(168,85,247,0.22)] rounded-[26px] xs:rounded-[34px] sm:rounded-[42px]"
         >
           <PhoneFrame isCenter>
             <CenterPhoneHeroScreen />
