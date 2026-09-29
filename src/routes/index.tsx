@@ -76,31 +76,23 @@ function useHeaderTheme() {
   const [isLight, setIsLight] = React.useState(false);
 
   React.useEffect(() => {
-    let ticking = false;
-
     const handleCheck = () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const lightSections = document.querySelectorAll('[data-theme-light="true"]');
-          const headerTriggerY = 60;
-          let lightActive = false;
+      const lightSections = document.querySelectorAll('[data-theme-light="true"]');
+      const headerTriggerY = 60;
+      let lightActive = false;
 
-          lightSections.forEach((sec) => {
-            const r = sec.getBoundingClientRect();
-            if (r.top <= headerTriggerY && r.bottom >= headerTriggerY) {
-              lightActive = true;
-            }
-          });
+      lightSections.forEach((sec) => {
+        const r = sec.getBoundingClientRect();
+        if (r.top <= headerTriggerY && r.bottom >= headerTriggerY) {
+          lightActive = true;
+        }
+      });
 
-          setIsLight(lightActive);
-          ticking = false;
-        });
-        ticking = true;
-      }
+      setIsLight(lightActive);
     };
 
     window.addEventListener("scroll", handleCheck, { passive: true });
-    window.addEventListener("resize", handleCheck, { passive: true });
+    window.addEventListener("resize", handleCheck);
     handleCheck();
 
     return () => {
@@ -169,43 +161,44 @@ function UnifiedPhoneShowcase() {
   const isTablet = width >= 640 && width < 1024;
 
   // Responsive phone X offset (how far it shifts left/right)
+  // On mobile, phone stays centered while text sits cleanly below
   const phoneShiftX = isMobile ? 0 : isTablet ? 175 : 260;
   // Hero start Y: phone enters from below, slides up as user scrolls
-  const heroStartY = isMobile ? 120 : 250;
+  const heroStartY = isMobile ? 150 : 250;
 
-  // Track scroll throughout the sequence
+  // Track scroll throughout the 480vh sequence
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
   });
 
-  // Zero-lag calibrated spring interpolation
+  // Butter-smooth spring interpolation
   const smoothProgress = useSpring(scrollYProgress, {
-    damping: 26,
-    stiffness: 120,
-    mass: 0.15,
+    damping: 30,
+    stiffness: 100,
+    mass: 0.25,
   });
 
   // --- 1. HERO STAGE ("We've Got You") ---
-  const heroOpacity = useTransform(smoothProgress, [0.0, 0.16, 0.28], [1, 0.9, 0]);
-  const heroY = useTransform(smoothProgress, [0.0, 0.28], [0, -75]);
-  const heroScale = useTransform(smoothProgress, [0.0, 0.28], [1, 0.95]);
+  const heroOpacity = useTransform(smoothProgress, [0.0, 0.18, 0.30], [1, 0.9, 0]);
+  const heroY = useTransform(smoothProgress, [0.0, 0.30], [0, -90]);
+  const heroScale = useTransform(smoothProgress, [0.0, 0.30], [1, 0.94]);
 
   // --- 2. QUICK ACTIONS STAGE (Left Column on desktop / Bottom on mobile) ---
   const quickActionsOpacity = useTransform(
     smoothProgress,
-    [0.22, 0.34, 0.58, 0.68],
+    [0.24, 0.36, 0.58, 0.68],
     [0, 1, 1, 0]
   );
   const quickActionsX = useTransform(
     smoothProgress,
-    [0.22, 0.34, 0.58, 0.68],
+    [0.24, 0.36, 0.58, 0.68],
     isMobile ? [0, 0, 0, 0] : [-50, 0, 0, -50]
   );
   const quickActionsY = useTransform(
     smoothProgress,
-    [0.22, 0.34, 0.58, 0.68],
-    isMobile ? [20, 0, 0, -20] : [40, 0, 0, -40]
+    [0.24, 0.36, 0.58, 0.68],
+    isMobile ? [25, 0, 0, -25] : [40, 0, 0, -40]
   );
 
   // --- 3. LARGE PAYMENTS STAGE (Right Column on desktop / Bottom on mobile) ---
@@ -222,54 +215,54 @@ function UnifiedPhoneShowcase() {
   const largePaymentsY = useTransform(
     smoothProgress,
     [0.64, 0.76],
-    isMobile ? [20, 0] : [40, 0]
+    isMobile ? [25, 0] : [40, 0]
   );
 
   // --- 4. THE SINGLE CONTINUOUS PHONE MOCKUP ---
   // Phone shifts RIGHT for Quick Actions, LEFT for Large Payments
   const phoneX = useTransform(
     smoothProgress,
-    [0.0, 0.20, 0.34, 0.58, 0.76, 1.0],
+    [0.0, 0.20, 0.36, 0.58, 0.76, 1.0],
     [0, isMobile ? 0 : 100, phoneShiftX, phoneShiftX, -phoneShiftX, -phoneShiftX]
   );
 
   // KEY SCROLL PARALLAX: Phone starts lower and moves upward.
-  // On mobile, phone docks cleanly in the upper portion (-105px) so controls sit below with headroom
+  // On mobile, phone docks safely in the top half (-120px) to give clear headroom for the interactive controls below
   const phoneY = useTransform(
     smoothProgress,
-    [0.0, 0.24, 0.36, 1.0],
-    [heroStartY, 15, isMobile ? -105 : 0, isMobile ? -105 : 0]
+    [0.0, 0.26, 0.38, 1.0],
+    [heroStartY, 20, isMobile ? -120 : 0, isMobile ? -120 : 0]
   );
 
   // 3D Perspective Tilt
   const phoneRotateX = useTransform(
     smoothProgress,
-    [0.0, 0.26, 0.36, 0.58, 0.76, 1.0],
-    [isMobile ? 6 : 18, 0, 0, 0, 0, 0]
+    [0.0, 0.28, 0.38, 0.58, 0.76, 1.0],
+    [isMobile ? 8 : 20, 0, 0, 0, 0, 0]
   );
   const phoneRotateY = useTransform(
     smoothProgress,
-    [0.0, 0.20, 0.36, 0.58, 0.76, 1.0],
+    [0.0, 0.22, 0.38, 0.58, 0.76, 1.0],
     [0, isMobile ? 0 : -3, isMobile ? 0 : -3, isMobile ? 0 : 3, isMobile ? 0 : 3, isMobile ? 0 : 3]
   );
   const phoneScale = useTransform(
     smoothProgress,
-    [0.0, 0.24, 0.36, 0.58, 0.76, 1.0],
+    [0.0, 0.26, 0.38, 0.58, 0.76, 1.0],
     [
-      isMobile ? 0.74 : 0.86,
-      isMobile ? 0.76 : 0.88,
-      isMobile ? 0.76 : 0.88,
-      isMobile ? 0.76 : 0.88,
-      isMobile ? 0.76 : 0.88,
-      isMobile ? 0.76 : 0.88,
+      isMobile ? 0.70 : 0.86,
+      isMobile ? 0.73 : 0.88,
+      isMobile ? 0.74 : 0.88,
+      isMobile ? 0.74 : 0.88,
+      isMobile ? 0.74 : 0.88,
+      isMobile ? 0.74 : 0.88,
     ]
   );
 
   // Screen Content Crossfades inside the SINGLE Phone
-  const screen1Opacity = useTransform(smoothProgress, [0.0, 0.20, 0.28], [1, 0.7, 0]);
+  const screen1Opacity = useTransform(smoothProgress, [0.0, 0.22, 0.30], [1, 0.7, 0]);
   const screen2Opacity = useTransform(
     smoothProgress,
-    [0.22, 0.32, 0.58, 0.68],
+    [0.24, 0.34, 0.58, 0.68],
     [0, 1, 1, 0]
   );
   const screen3Opacity = useTransform(smoothProgress, [0.64, 0.74, 1.0], [0, 1, 1]);
@@ -277,18 +270,18 @@ function UnifiedPhoneShowcase() {
   // Ambient Dynamic Purple Glow — also follows phone X
   const glowX = useTransform(
     smoothProgress,
-    [0.0, 0.26, 0.36, 0.58, 0.76, 1.0],
+    [0.0, 0.28, 0.38, 0.58, 0.76, 1.0],
     [0, phoneShiftX * 0.85, phoneShiftX * 0.85, -phoneShiftX * 0.85, -phoneShiftX * 0.85, -phoneShiftX * 0.85]
   );
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full bg-[#000000] text-white selection:bg-purple-500/30 overflow-visible will-change-transform"
-      style={{ height: isMobile ? "390vh" : "460vh" }}
+      className="relative w-full bg-[#000000] text-white selection:bg-purple-500/30 overflow-visible"
+      style={{ height: "480vh" }}
     >
       {/* Sticky Fullscreen Viewport */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-14 sm:pt-24 pb-4 sm:pb-8 px-4 sm:px-12 lg:px-20">
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-16 sm:pt-24 pb-4 sm:pb-8 px-4 sm:px-12 lg:px-20">
         {/* Ambient Radial Background Glows matching Reference */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
           {/* Main Following Purple Halo behind Phone */}
