@@ -18,8 +18,9 @@ export function EcommerceRewardsFilmCard() {
   const [cardsVisible, setCardsVisible] = useState({ center: false, left: false, right: false });
   const [isModelLoaded, setIsModelLoaded] = useState(false);
   const [isInView, setIsInView] = useState(false);
+  const isInViewRef = useRef(false);
 
-  // Trigger animation only when user scrolls to this section
+  // Trigger animation and pause/resume WebGL rendering based on viewport intersection
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
@@ -27,12 +28,13 @@ export function EcommerceRewardsFilmCard() {
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
+          isInViewRef.current = entry.isIntersecting;
           if (entry.isIntersecting) {
             setIsInView(true);
           }
         });
       },
-      { threshold: 0.25 }
+      { threshold: 0.1, rootMargin: "80px" }
     );
 
     observer.observe(el);
@@ -89,14 +91,16 @@ export function EcommerceRewardsFilmCard() {
     const camera = new THREE.PerspectiveCamera(34, width / height, 0.1, 100);
     camera.position.set(0, -0.05, 8.4);
 
+    const isMobile = window.innerWidth < 768;
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
-      antialias: true,
+      antialias: !isMobile, // Disable MSAA on mobile for 120fps lock
       alpha: true,
       powerPreference: "high-performance",
+      precision: isMobile ? "mediump" : "highp",
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.25 : 1.75));
 
     // Studio Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
@@ -176,11 +180,13 @@ export function EcommerceRewardsFilmCard() {
       }
     );
 
-    // Animation Render Loop
+    // Animation Render Loop (only active when in viewport)
     let animId: number;
 
     const renderLoop = () => {
       animId = requestAnimationFrame(renderLoop);
+      if (!isInViewRef.current) return;
+
       const pivot = threeRefs.current.shoePivot;
 
       if (pivot) {

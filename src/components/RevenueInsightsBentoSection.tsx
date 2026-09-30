@@ -23,15 +23,19 @@ export function RevenueInsightsBentoSection() {
     offset: ["start end", "end start"],
   });
 
-  const smoothProgress = useSpring(scrollYProgress, {
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  const springProgress = useSpring(scrollYProgress, {
     stiffness: 130,
     damping: 28,
     mass: 0.1,
     restDelta: 0.001,
   });
 
-  const ribbonY = useTransform(smoothProgress, [0, 1], [15, -15]);
-  const ribbonRotate = useTransform(smoothProgress, [0, 1], [-2, 4]);
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
+
+  const ribbonY = useTransform(smoothProgress, [0, 1], isMobile ? [5, -5] : [15, -15]);
+  const ribbonRotate = useTransform(smoothProgress, [0, 1], isMobile ? [0, 0] : [-2, 4]);
 
   // ---------------------------------------------------------------------------
   // LOGICAL DATASETS BASED ON TIMEFRAME
@@ -803,13 +807,13 @@ export function RevenueInsightsBentoSection() {
                             alt={prod.name}
                             loading="eager"
                             onError={(e) => {
-                              // If image fails to load, gracefully hide broken icon and show subtle cosmetic icon
+                              // If image fails to load, gracefully hide broken icon
                               (e.target as HTMLImageElement).style.display = "none";
                             }}
                             className="w-full h-full object-cover rounded-lg"
                           />
                         ) : (
-                          prod.svgIcon
+                          <Package className="w-4 h-4 text-purple-400" />
                         )}
                       </div>
                       <div className="min-w-0">

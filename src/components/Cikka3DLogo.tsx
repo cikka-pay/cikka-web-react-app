@@ -41,9 +41,15 @@ export function Cikka3DLogo({
     const camera = new THREE.PerspectiveCamera(38, width / height, 0.1, 1000);
     camera.position.set(0, 0, 750);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+    const renderer = new THREE.WebGLRenderer({
+      antialias: !isMobile,
+      alpha: true,
+      powerPreference: "high-performance",
+      precision: isMobile ? "mediump" : "highp",
+    });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.5));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.25 : 1.5));
     renderer.outputColorSpace = THREE.SRGBColorSpace;
     container.innerHTML = "";
     container.appendChild(renderer.domElement);
@@ -283,9 +289,13 @@ export function Cikka3DLogo({
     );
     observer.observe(container);
 
+    let needsRenderCount = 10; // Render initial frames then idle
+
     const animate = () => {
       animId = requestAnimationFrame(animate);
       if (!isVisible) return;
+
+      let changed = false;
 
       // Interpolate theme color smoothly
       const targetT = isLightRef.current ? 1.0 : 0.0;
@@ -293,13 +303,26 @@ export function Cikka3DLogo({
         currentThemeT += (targetT - currentThemeT) * 0.07;
         renderGradient(currentThemeT);
         sideMat.color = lerpColor(sideDarkColor, sideLightColor, currentThemeT);
+        changed = true;
       }
 
       // Smooth subtle tilt interpolation
-      logoGroup.rotation.x += (targetRotX - logoGroup.rotation.x) * 0.1;
-      logoGroup.rotation.y += (targetRotY - logoGroup.rotation.y) * 0.1;
+      const diffX = targetRotX - logoGroup.rotation.x;
+      const diffY = targetRotY - logoGroup.rotation.y;
+      if (Math.abs(diffX) > 0.0005 || Math.abs(diffY) > 0.0005) {
+        logoGroup.rotation.x += diffX * 0.1;
+        logoGroup.rotation.y += diffY * 0.1;
+        changed = true;
+      }
 
-      renderer.render(scene, camera);
+      if (changed) {
+        needsRenderCount = 5;
+      }
+
+      if (needsRenderCount > 0) {
+        renderer.render(scene, camera);
+        needsRenderCount--;
+      }
     };
 
     animate();

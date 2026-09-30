@@ -37,9 +37,12 @@ import { Footer } from "../components/Footer";
 import { SmoothScroll } from "../components/SmoothScroll";
 import { Cikka3DLogo } from "../components/Cikka3DLogo";
 
-// Responsive window size hook
+// Responsive window size hook with SSR-safe initial detection
 function useWindowSize() {
-  const [size, setSize] = useState({ width: 1280, height: 800 });
+  const [size, setSize] = useState(() => ({
+    width: typeof window !== "undefined" ? window.innerWidth : 1280,
+    height: typeof window !== "undefined" ? window.innerHeight : 800,
+  }));
   useEffect(() => {
     const update = () => setSize({ width: window.innerWidth, height: window.innerHeight });
     update();
@@ -174,7 +177,7 @@ function UnifiedPhoneShowcase() {
   // On mobile, phone stays centered while text sits cleanly below
   const phoneShiftX = isMobile ? 0 : isTablet ? 175 : 260;
   // Hero start Y: phone enters from below, slides up as user scrolls
-  const heroStartY = isMobile ? 150 : 250;
+  const heroStartY = isMobile ? 180 : 250;
 
   // Track scroll throughout the 480vh sequence
   const { scrollYProgress } = useScroll({
@@ -182,12 +185,13 @@ function UnifiedPhoneShowcase() {
     offset: ["start start", "end end"],
   });
 
-  // Butter-smooth instantaneous zero-lag spring interpolation
-  const smoothProgress = useSpring(scrollYProgress, {
-    damping: 24,
-    stiffness: 160,
-    mass: 0.05,
+  // Butter-smooth zero-lag spring on desktop, direct scroll tracking on mobile with Lenis
+  const springProgress = useSpring(scrollYProgress, {
+    damping: 26,
+    stiffness: 170,
+    mass: 0.04,
   });
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // --- 1. HERO STAGE ("We've Got You") ---
   const heroOpacity = useTransform(smoothProgress, [0.0, 0.18, 0.30], [1, 0.9, 0]);
@@ -288,7 +292,7 @@ function UnifiedPhoneShowcase() {
     <div
       ref={containerRef}
       className="relative w-full bg-[#000000] text-white selection:bg-purple-500/30 overflow-visible"
-      style={{ height: "480vh" }}
+      style={{ height: isMobile ? "340vh" : "480vh" }}
     >
       {/* Sticky Fullscreen Viewport */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-16 sm:pt-24 pb-4 sm:pb-8 px-4 sm:px-12 lg:px-20">
@@ -297,11 +301,11 @@ function UnifiedPhoneShowcase() {
           {/* Main Following Purple Halo behind Phone */}
           <motion.div
             style={{ x: glowX }}
-            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] sm:w-[850px] lg:w-[1000px] h-[400px] sm:h-[600px] bg-[radial-gradient(circle,rgba(168,85,247,0.28)_0%,rgba(217,70,239,0.14)_35%,rgba(129,140,248,0.08)_60%,transparent_75%)] blur-[40px] sm:blur-[60px] will-change-transform"
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[360px] sm:w-[850px] lg:w-[1000px] h-[320px] sm:h-[600px] bg-[radial-gradient(circle,rgba(168,85,247,0.24)_0%,rgba(217,70,239,0.12)_35%,rgba(129,140,248,0.06)_60%,transparent_75%)] blur-[24px] sm:blur-[60px] will-change-transform"
           />
           {/* Side Soft Lavender & Peach Highlights */}
-          <div className="absolute top-1/2 right-[12%] -translate-y-1/2 w-[280px] sm:w-[400px] h-[350px] sm:h-[450px] bg-[radial-gradient(circle,rgba(192,132,252,0.14)_0%,transparent_70%)] blur-[35px] sm:blur-[50px]" />
-          <div className="absolute top-1/2 left-[12%] -translate-y-1/2 w-[280px] sm:w-[400px] h-[350px] sm:h-[450px] bg-[radial-gradient(circle,rgba(244,114,182,0.10)_0%,transparent_70%)] blur-[35px] sm:blur-[50px]" />
+          <div className="absolute top-1/2 right-[12%] -translate-y-1/2 w-[240px] sm:w-[400px] h-[300px] sm:h-[450px] bg-[radial-gradient(circle,rgba(192,132,252,0.12)_0%,transparent_70%)] blur-[24px] sm:blur-[50px]" />
+          <div className="absolute top-1/2 left-[12%] -translate-y-1/2 w-[240px] sm:w-[400px] h-[300px] sm:h-[450px] bg-[radial-gradient(circle,rgba(244,114,182,0.08)_0%,transparent_70%)] blur-[24px] sm:blur-[50px]" />
           <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_30%,#000000_95%)]" />
         </div>
 
@@ -313,11 +317,10 @@ function UnifiedPhoneShowcase() {
             opacity: heroOpacity,
             y: heroY,
             scale: heroScale,
-            pointerEvents: useTransform(smoothProgress, (v) => (v < 0.22 ? "auto" : "none")),
           }}
-          className="absolute top-8 xs:top-12 sm:top-20 md:top-24 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-2 max-w-4xl"
+          className="absolute top-[130px] xs:top-[145px] sm:top-20 md:top-24 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-2 max-w-4xl pointer-events-none will-change-transform"
         >
-          <h1 className="font-sans font-bold tracking-[-0.045em] leading-[0.88] text-[7.5rem] xs:text-[8.5rem] sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
+          <h1 className="font-sans font-bold tracking-[-0.045em] leading-[0.88] text-[4.75rem] xs:text-[5.5rem] sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
             {/* Top Line: "We've" */}
             <span className="inline-block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] via-[#f472b6] via-[#c084fc] to-[#a5b4fc] bg-clip-text text-transparent drop-shadow-[0_10px_35px_rgba(244,114,182,0.12)] pb-1">
               We've
@@ -796,11 +799,12 @@ function CardsScene() {
     offset: ["start 90%", "end 30%"],
   });
 
-  const smoothProgress = useSpring(scrollYProgress, {
+  const springProgress = useSpring(scrollYProgress, {
     damping: 28,
     stiffness: 130,
     mass: 0.1,
   });
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // Headline scroll animation: Starts closer to cards (+165px down), floats smoothly upwards to +15px on scroll
   const titleY = useTransform(smoothProgress, [0.0, 0.75], [isMobile ? 100 : 165, 15]);

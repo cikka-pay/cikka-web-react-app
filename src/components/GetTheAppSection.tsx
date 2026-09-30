@@ -24,24 +24,28 @@ export function GetTheAppSection() {
     offset: ["start end", "end start"],
   });
 
-  const smoothProgress = useSpring(scrollYProgress, {
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  const springProgress = useSpring(scrollYProgress, {
     stiffness: 130,
     damping: 28,
     mass: 0.1,
     restDelta: 0.001,
   });
 
-  // Parallax shifts for the 3 phones
-  const leftPhoneY = useTransform(smoothProgress, [0, 1], [40, -25]);
-  const leftPhoneRotate = useTransform(smoothProgress, [0, 0.5, 1], [-15, -13, -11]);
-  const leftPhoneX = useTransform(smoothProgress, [0, 0.5, 1], [-20, 0, 10]);
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
-  const centerPhoneY = useTransform(smoothProgress, [0, 1], [25, -25]);
+  // Parallax shifts for the 3 phones
+  const leftPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [15, -10] : [40, -25]);
+  const leftPhoneRotate = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [-5, -4, -3] : [-15, -13, -11]);
+  const leftPhoneX = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [-8, 0, 4] : [-20, 0, 10]);
+
+  const centerPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [10, -10] : [25, -25]);
   const centerPhoneScale = useTransform(smoothProgress, [0, 0.5, 1], [0.97, 1.0, 0.98]);
 
-  const rightPhoneY = useTransform(smoothProgress, [0, 1], [40, -25]);
-  const rightPhoneRotate = useTransform(smoothProgress, [0, 0.5, 1], [15, 13, 11]);
-  const rightPhoneX = useTransform(smoothProgress, [0, 0.5, 1], [20, 0, -10]);
+  const rightPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [15, -10] : [40, -25]);
+  const rightPhoneRotate = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [5, 4, 3] : [15, 13, 11]);
+  const rightPhoneX = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [8, 0, -4] : [20, 0, -10]);
 
   const glowScale = useTransform(smoothProgress, [0, 0.5, 1], [0.85, 1.15, 0.95]);
   const glowOpacity = useTransform(smoothProgress, [0, 0.5, 1], [0.35, 0.65, 0.4]);

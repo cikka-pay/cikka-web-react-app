@@ -408,12 +408,16 @@ export function WaitlistSection() {
     offset: ["start start", "end end"],
   });
 
-  // Zero-lag spring synchronized with Lenis inertia
-  const smoothProgress = useSpring(scrollYProgress, {
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  // Zero-lag spring synchronized with Lenis inertia on desktop, direct scroll tracking on mobile
+  const springProgress = useSpring(scrollYProgress, {
     damping: 32,
     stiffness: 140,
     mass: 0.1,
   });
+
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // 1. OUTER CIRCLE ZOOM-IN TRANSFORMS
   const outerScale = useTransform(smoothProgress, [0, 0.25, 0.45, 0.55], [0.72, 1.0, 1.9, 3.4]);

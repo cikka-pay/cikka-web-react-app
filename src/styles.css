@@ -119,6 +119,9 @@ html {
     -webkit-overflow-scrolling: touch;
     touch-action: pan-y;
   }
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
 }
 
 html.lenis,
@@ -136,6 +139,17 @@ html.lenis body {
 
 .lenis.lenis-stopped {
   overflow: hidden;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+.will-change-transform {
+  will-change: transform;
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
 body {

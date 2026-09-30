@@ -6,18 +6,23 @@ export function SmoothScroll() {
   useEffect(() => {
     if (typeof window === "undefined" || prefersReducedMotion()) return;
 
-    const isTouch = "ontouchstart" in window || (typeof navigator !== "undefined" && navigator.maxTouchPoints > 0);
+    const isTouch =
+      "ontouchstart" in window ||
+      (typeof navigator !== "undefined" && navigator.maxTouchPoints > 0) ||
+      window.innerWidth < 768;
 
-    // Initialize Lenis with optimized ultra-smooth physics (native 120Hz touch on mobile)
+    // Initialize Lenis with ultra-smooth physics optimized for mobile 120Hz touch & desktop
     const lenis = new Lenis({
-      duration: isTouch ? 0.8 : 1.0,
+      duration: isTouch ? 0.9 : 1.15,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      syncTouch: false,
-      touchMultiplier: 1.0,
-      wheelMultiplier: 0.95,
+      syncTouch: true, // Enables buttery-smooth touch inertia synchronization
+      syncTouchLerp: 0.1,
+      touchInertiaExponent: 1.6,
+      touchMultiplier: 1.6,
+      wheelMultiplier: 1.0,
       autoResize: true,
       infinite: false,
     });
@@ -31,8 +36,8 @@ export function SmoothScroll() {
     };
 
     gsap.ticker.add(updateTicker);
-    // Enable lagSmoothing to prevent scroll stutter on frame spikes
-    gsap.ticker.lagSmoothing(500, 33);
+    // lagSmoothing(0) is critical to prevent GSAP ScrollTrigger and Lenis from stuttering/lagging during frame drops
+    gsap.ticker.lagSmoothing(0);
 
     // Make lenis globally available
     (window as unknown as { lenis?: Lenis }).lenis = lenis;
@@ -56,7 +61,7 @@ export function SmoothScroll() {
       e.preventDefault();
       lenis.scrollTo(el, {
         offset: window.innerWidth < 640 ? -60 : -75,
-        duration: 1.1,
+        duration: 1.0,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
     };

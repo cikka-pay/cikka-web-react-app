@@ -239,14 +239,16 @@ function Product3DCanvas({ modelUrl, id }: { modelUrl: string; id: string }) {
     const camera = new THREE.PerspectiveCamera(32, width / height, 0.1, 100);
     camera.position.set(0, 0.02, 5.8);
 
+    const isMobile = window.innerWidth < 768;
     const renderer = new THREE.WebGLRenderer({
       canvas: canvas,
-      antialias: true,
+      antialias: !isMobile,
       alpha: true,
       powerPreference: "high-performance",
+      precision: isMobile ? "mediump" : "highp",
     });
     renderer.setSize(width, height);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 1.25 : 1.75));
 
     // Studio Lighting
     const ambientLight = new THREE.AmbientLight(0xffffff, 1.6);
@@ -352,10 +354,21 @@ function Product3DCanvas({ modelUrl, id }: { modelUrl: string; id: string }) {
       );
     }
 
+    // Intersection Observer to only render when in viewport
+    let isVisible = true;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        isVisible = entry?.isIntersecting ?? true;
+      },
+      { rootMargin: "80px" }
+    );
+    observer.observe(container);
+
     // Render loop with in-place horizontal rotation
     let animId: number;
     const renderLoop = () => {
       animId = requestAnimationFrame(renderLoop);
+      if (!isVisible) return;
       if (productPivot) {
         productPivot.rotation.y -= 0.008;
       }
@@ -375,6 +388,7 @@ function Product3DCanvas({ modelUrl, id }: { modelUrl: string; id: string }) {
     window.addEventListener("resize", handleResize);
 
     return () => {
+      observer.disconnect();
       cancelAnimationFrame(animId);
       window.removeEventListener("resize", handleResize);
       renderer.dispose();

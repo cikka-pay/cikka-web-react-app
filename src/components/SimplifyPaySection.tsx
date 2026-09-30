@@ -10,18 +10,22 @@ export function SimplifyPaySection() {
     offset: ["start end", "end start"],
   });
 
-  const smoothProgress = useSpring(scrollYProgress, {
+  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
+
+  const springProgress = useSpring(scrollYProgress, {
     stiffness: 130,
     damping: 28,
     mass: 0.1,
     restDelta: 0.001,
   });
 
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
+
   // Parallax and 3D tilts for the visual showcase
-  const cardRotateY = useTransform(smoothProgress, [0, 0.5, 1], [-3, 0, 3]);
-  const cardRotateX = useTransform(smoothProgress, [0, 0.5, 1], [3, 0, -3]);
-  const phoneParallaxY = useTransform(smoothProgress, [0, 1], [25, -25]);
-  const cushionsParallaxY = useTransform(smoothProgress, [0, 1], [-15, 15]);
+  const cardRotateY = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [0, 0, 0] : [-3, 0, 3]);
+  const cardRotateX = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [0, 0, 0] : [3, 0, -3]);
+  const phoneParallaxY = useTransform(smoothProgress, [0, 1], isMobile ? [12, -12] : [25, -25]);
+  const cushionsParallaxY = useTransform(smoothProgress, [0, 1], isMobile ? [-8, 8] : [-15, 15]);
 
   return (
     <div
