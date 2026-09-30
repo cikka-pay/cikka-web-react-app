@@ -55,10 +55,10 @@ function useWindowSize() {
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Payer — Borderless Payments" },
-      { name: "description", content: "Fast, secure and borderless payments, powered by Payer." },
-      { property: "og:title", content: "Payer — Borderless Payments" },
-      { property: "og:description", content: "Fast, secure and borderless payments, powered by Payer." },
+      { title: "Cikka - A perfect place for all of your credit card activity" },
+      { name: "description", content: "A perfect place for all of your credit card activity, powered by Cikka." },
+      { property: "og:title", content: "Cikka - A perfect place for all of your credit card activity" },
+      { property: "og:description", content: "A perfect place for all of your credit card activity, powered by Cikka." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],

@@ -51,7 +51,7 @@ export function GetTheAppSection() {
     <section
       id="get-app-section"
       ref={containerRef}
-      className="relative w-full bg-[#000000] text-white pt-14 sm:pt-20 md:pt-24 pb-12 sm:pb-16 md:pb-20 px-4 sm:px-6 overflow-hidden flex flex-col items-center justify-center select-none"
+      className="relative w-full bg-[#000000] text-white pt-14 sm:pt-20 md:pt-24 pb-6 sm:pb-8 md:pb-10 px-4 sm:px-6 overflow-hidden flex flex-col items-center justify-center select-none"
     >
       {/* Balanced Purple Ambient Radial Glow */}
       <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 w-[700px] sm:w-[950px] md:w-[1150px] h-[340px] sm:h-[420px] bg-[radial-gradient(ellipse_at_bottom,rgba(168,85,247,0.18)_0%,rgba(147,51,234,0.09)_38%,rgba(109,40,217,0.03)_65%,transparent_80%)] blur-[95px] z-0" />
