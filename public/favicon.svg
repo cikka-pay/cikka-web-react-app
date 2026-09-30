@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="89 106 324 279" fill="none">
+  <defs>
+    <linearGradient id="cikkaFaviconGrad" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f3e8ff" />
+      <stop offset="20%" stop-color="#d8b4fe" />
+      <stop offset="50%" stop-color="#a855f7" />
+      <stop offset="80%" stop-color="#7e22ce" />
+      <stop offset="100%" stop-color="#581c87" />
+    </linearGradient>
+    <linearGradient id="cikkaDotGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffffff" />
+      <stop offset="40%" stop-color="#c084fc" />
+      <stop offset="100%" stop-color="#7e22ce" />
+    </linearGradient>
+  </defs>
+
+  <!-- Top Wing -->
+  <polygon points="285,106 413,106 289,241 223,241 223,173" fill="url(#cikkaFaviconGrad)" />
+
+  <!-- Bottom Polygon -->
+  <polygon points="89,242 222,242 299,319 299,385 232,385" fill="url(#cikkaFaviconGrad)" />
+
+  <!-- Dot -->
+  <circle cx="166" cy="192" r="30" fill="url(#cikkaDotGrad)" />
+</svg>
