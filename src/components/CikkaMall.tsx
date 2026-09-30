@@ -653,14 +653,14 @@ export function CikkaMall() {
                   <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 flex items-center justify-between gap-2">
                     <div>
                       <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
-                        {activePartner.name} Voucher Unlocked
+                        {activePartner?.name} Voucher Unlocked
                       </span>
                       <span className="text-xs xs:text-sm font-bold text-white tracking-wider">
-                        {activePartner.code}
+                        {activePartner?.code}
                       </span>
                     </div>
                     <button
-                      onClick={() => handleCopyCode(activePartner.code)}
+                      onClick={() => activePartner?.code && handleCopyCode(activePartner.code)}
                       className="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold transition-all cursor-pointer shadow-md active:scale-95 shrink-0"
                     >
                       {copiedCode ? "Copied!" : "Claim & Copy"}

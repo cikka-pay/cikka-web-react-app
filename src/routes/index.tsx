@@ -10,12 +10,16 @@ import {
   Database,
   Eye,
   EyeOff,
+  Gift,
+  History,
   Home,
   Landmark,
   Mail,
   Plus,
   QrCode,
   Send,
+  Sparkles,
+  Trophy,
   Users,
   WalletCards,
   Activity,
@@ -311,11 +315,11 @@ function UnifiedPhoneShowcase() {
             scale: heroScale,
             pointerEvents: useTransform(smoothProgress, (v) => (v < 0.22 ? "auto" : "none")),
           }}
-          className="absolute top-14 xs:top-18 sm:top-20 md:top-24 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-3 max-w-4xl"
+          className="absolute top-8 xs:top-12 sm:top-20 md:top-24 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-2 max-w-4xl"
         >
-          <h1 className="font-sans font-bold tracking-[-0.045em] leading-[0.88] text-[4.85rem] xs:text-[5.6rem] sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
+          <h1 className="font-sans font-bold tracking-[-0.045em] leading-[0.88] text-[7.5rem] xs:text-[8.5rem] sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
             {/* Top Line: "We've" */}
-            <span className="inline-block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] via-[#f472b6] via-[#c084fc] to-[#a5b4fc] bg-clip-text text-transparent drop-shadow-[0_10px_35px_rgba(244,114,182,0.12)]">
+            <span className="inline-block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] via-[#f472b6] via-[#c084fc] to-[#a5b4fc] bg-clip-text text-transparent drop-shadow-[0_10px_35px_rgba(244,114,182,0.12)] pb-1">
               We've
             </span>
             {/* Bottom Line: "Got You" with exact horizontal gradient matching We've + vertical shadow fade to black */}
@@ -352,77 +356,123 @@ function UnifiedPhoneShowcase() {
             flex flex-col justify-center items-center sm:items-start
             text-center sm:text-left px-2 sm:px-0"
         >
-          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.0] text-3xl xs:text-4xl sm:text-5xl lg:text-[4.75rem]">
-            <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-2 sm:mr-0">
-              Quick
+          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.15] sm:leading-[1.1] text-3xl xs:text-4xl sm:text-5xl lg:text-[4.75rem] pb-1 overflow-visible">
+            <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-2 sm:mr-0 pb-1">
+              Cikka
             </span>
-            <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">
-              Actions
+            <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent pb-1.5 sm:pb-2.5">
+              Rewards
             </span>
           </h2>
-          <p className="mt-2 sm:mt-5 text-xs sm:text-base text-slate-400 font-normal leading-relaxed max-w-md hidden sm:block">
-            All major actions are just a tap away, right on the home screen. Enjoy a seamless and
-            efficient user experience.
+          <p className="mt-2 sm:mt-4 text-xs sm:text-base text-slate-400 font-normal leading-relaxed max-w-md">
+            Turn your Cikka Points into rewards you actually want.
           </p>
-          <div className="grid grid-cols-4 sm:grid-cols-2 gap-2.5 sm:gap-3.5 mt-3 sm:mt-8 w-full max-w-[260px] xs:max-w-[290px] sm:max-w-[280px] md:max-w-[320px]">
-            <div className="h-12 xs:h-14 sm:h-20 rounded-xl xs:rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
-              <ArrowUp className="w-4 xs:w-5 sm:w-6 h-4 xs:h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
+          <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mt-3 sm:mt-5 w-full max-w-[220px] xs:max-w-[245px] sm:max-w-[270px] md:max-w-[295px]">
+            {/* Box 1: Redeem Points */}
+            <div className="rounded-xl sm:rounded-2xl bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3 flex flex-col items-center text-center shadow-md backdrop-blur-xl group transition-all cursor-pointer">
+              <Gift className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
+              <p className="font-semibold text-white text-[9.5px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1.5 leading-tight">
+                Redeem Points
+              </p>
             </div>
-            <div className="h-12 xs:h-14 sm:h-20 rounded-xl xs:rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
-              <Mail className="w-4 xs:w-5 sm:w-6 h-4 xs:h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
+
+            {/* Box 2: Real Products */}
+            <div className="rounded-xl sm:rounded-2xl bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3 flex flex-col items-center text-center shadow-md backdrop-blur-xl group transition-all cursor-pointer">
+              <Sparkles className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
+              <p className="font-semibold text-white text-[9.5px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1.5 leading-tight">
+                Real Products
+              </p>
             </div>
-            <div className="h-12 xs:h-14 sm:h-20 rounded-xl xs:rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
-              <Database className="w-4 xs:w-5 sm:w-6 h-4 xs:h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
+
+            {/* Box 3: Selective Rewards */}
+            <div className="rounded-xl sm:rounded-2xl bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3 flex flex-col items-center text-center shadow-md backdrop-blur-xl group transition-all cursor-pointer">
+              <Trophy className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
+              <p className="font-semibold text-white text-[9.5px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1.5 leading-tight">
+                Selective Rewards
+              </p>
             </div>
-            <div className="h-12 xs:h-14 sm:h-20 rounded-xl xs:rounded-2xl bg-[#0e0e14]/90 border border-white/10 hover:border-white/25 hover:bg-[#151520] transition-all duration-300 flex items-center justify-center shadow-lg group cursor-pointer">
-              <Users className="w-4 xs:w-5 sm:w-6 h-4 xs:h-5 sm:h-6 text-slate-200 group-hover:scale-110 transition-transform" />
+
+            {/* Box 4: Never Expired */}
+            <div className="rounded-xl sm:rounded-2xl bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3 flex flex-col items-center text-center shadow-md backdrop-blur-xl group transition-all cursor-pointer">
+              <History className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
+              <p className="font-semibold text-white text-[9.5px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1.5 leading-tight">
+                Never Expired
+              </p>
             </div>
           </div>
         </motion.div>
 
         {/* ========================================================================= */}
-        {/* POSITION 3: LARGE PAYMENTS VIEW (Right Column on desktop / Bottom on mobile) */}
+        {/* POSITION 3: SMART NAVIGATION VIEW (Right Column on desktop / Bottom on mobile) */}
         {/* ========================================================================= */}
         <motion.div
           style={{
             opacity: largePaymentsOpacity,
             x: largePaymentsX,
             y: largePaymentsY,
-            pointerEvents: useTransform(smoothProgress, (v) => (v >= 0.66 ? "auto" : "none")),
+            pointerEvents: useTransform(smoothProgress, (v) => (v >= 0.64 ? "auto" : "none")),
           }}
           className="absolute
-            left-0 right-0 mx-auto sm:left-auto sm:right-12 lg:right-20 xl:right-28
-            bottom-4 xs:bottom-6 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2
-            z-30 w-full max-w-[92%] sm:max-w-md lg:max-w-lg
+            left-0 right-0 mx-auto sm:left-auto sm:right-6 lg:right-10 xl:right-16
+            bottom-3 xs:bottom-5 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2
+            z-30 w-full max-w-[95%] sm:max-w-xl lg:max-w-2xl xl:max-w-3xl
             flex flex-col justify-center items-center sm:items-end
             text-center sm:text-right px-2 sm:px-0"
         >
-          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.0] text-3xl xs:text-4xl sm:text-5xl lg:text-[4.75rem]">
-            <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-2 sm:mr-0">
-              Large
-            </span>
-            <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">
-              Payments
-            </span>
-          </h2>
-          <p className="mt-2 sm:mt-5 text-xs sm:text-base text-slate-400 font-normal leading-relaxed max-w-md hidden sm:block">
-            Send payments over $1,000,000 USD with ease and confidence. Experience unmatched
-            security for high-value transactions.
-          </p>
-          <div className="mt-3 sm:mt-8 w-full max-w-[240px] xs:max-w-[280px] sm:max-w-[320px] md:max-w-[360px] rounded-xl xs:rounded-2xl sm:rounded-3xl bg-[#0c0c14]/90 border border-white/10 p-2.5 xs:p-3.5 sm:p-5 md:p-7 shadow-2xl backdrop-blur-xl text-left">
-            <p className="text-xl xs:text-2xl sm:text-3xl md:text-4xl font-extrabold text-white tracking-tight">
-              $1,000,000
+          <div className="w-full max-w-2xl flex flex-col items-center sm:items-end">
+            <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.18] sm:leading-[1.12] text-3xl xs:text-4xl sm:text-5xl lg:text-[4.35rem] text-center sm:text-right pb-1 overflow-visible">
+              <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-2 sm:mr-0 pb-1">
+                Smart
+              </span>
+              <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent pb-1.5 sm:pb-2.5">
+                Navigation
+              </span>
+            </h2>
+
+            <p className="mt-2 sm:mt-4 text-xs sm:text-sm md:text-base text-slate-400 font-normal leading-relaxed max-w-md text-center sm:text-right">
+              Everything you need, one tap away. Pay bills, track orders, and stay ahead with smart
+              reminders.
             </p>
-            <div className="flex items-center gap-2 xs:gap-2.5 mt-3 sm:mt-5">
-              <div className="flex-1 bg-[#181824] border border-white/10 rounded-full px-3 xs:px-4 py-1.5 xs:py-2.5 text-[11px] xs:text-xs text-slate-400 truncate">
-                Add Note (Optional)
+
+            <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-3 sm:mt-6 w-full max-w-[280px] xs:max-w-[310px] sm:max-w-[380px] md:max-w-[420px]">
+              {/* Card 1: One-Click Orders */}
+              <div className="rounded-xl xs:rounded-2xl sm:rounded-[18px] bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3.5 flex flex-col items-center text-center shadow-lg backdrop-blur-xl group transition-all">
+                <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center mb-1.5 sm:mb-2 group-hover:scale-105 transition-transform">
+                  <ShoppingBagNavIcon className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5.5 sm:h-5.5" />
+                </div>
+                <h3 className="font-bold text-white text-[9.5px] xs:text-[10.5px] sm:text-[12px] md:text-[13px] leading-tight">
+                  One-Click Orders
+                </h3>
+                <p className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] md:text-[10px] text-slate-400 mt-0.5 leading-tight">
+                  Reorder in one tap
+                </p>
               </div>
-              <button
-                aria-label="Send Payment"
-                className="w-8 h-8 xs:w-10 xs:h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all shadow-md shrink-0"
-              >
-                <Send className="w-3 xs:w-3.5 h-3 xs:h-3.5 fill-black text-black ml-0.5" />
-              </button>
+
+              {/* Card 2: One-Click Payments */}
+              <div className="rounded-xl xs:rounded-2xl sm:rounded-[18px] bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3.5 flex flex-col items-center text-center shadow-lg backdrop-blur-xl group transition-all">
+                <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center mb-1.5 sm:mb-2 group-hover:scale-105 transition-transform">
+                  <CardLightningNavIcon className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5.5 sm:h-5.5" />
+                </div>
+                <h3 className="font-bold text-white text-[9.5px] xs:text-[10.5px] sm:text-[12px] md:text-[13px] leading-tight">
+                  One-Click Payments
+                </h3>
+                <p className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] md:text-[10px] text-slate-400 mt-0.5 leading-tight">
+                  Pay bills instantly
+                </p>
+              </div>
+
+              {/* Card 3: Smart Reminders */}
+              <div className="rounded-xl xs:rounded-2xl sm:rounded-[18px] bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3.5 flex flex-col items-center text-center shadow-lg backdrop-blur-xl group transition-all">
+                <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center mb-1.5 sm:mb-2 group-hover:scale-105 transition-transform">
+                  <BellClockNavIcon className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5.5 sm:h-5.5" />
+                </div>
+                <h3 className="font-bold text-white text-[9.5px] xs:text-[10.5px] sm:text-[12px] md:text-[13px] leading-tight">
+                  Smart Reminders
+                </h3>
+                <p className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] md:text-[10px] text-slate-400 mt-0.5 leading-tight">
+                  Never miss a due date
+                </p>
+              </div>
             </div>
           </div>
         </motion.div>
@@ -589,27 +639,27 @@ function UnifiedPhoneShowcase() {
                   <div className="grid grid-cols-4 gap-1.5 mt-2 text-center">
                     <div className="flex flex-col items-center gap-1">
                       <div className="w-7.5 h-7.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <ArrowUp className="w-3.5 h-3.5" />
+                        <Gift className="w-3.5 h-3.5" />
                       </div>
-                      <span className="text-[9px] text-slate-300 font-medium">Transfer</span>
+                      <span className="text-[8.5px] text-slate-300 font-medium">Redeem</span>
                     </div>
                     <div className="flex flex-col items-center gap-1">
                       <div className="w-7.5 h-7.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <Mail className="w-3.5 h-3.5" />
+                        <Sparkles className="w-3.5 h-3.5" />
                       </div>
-                      <span className="text-[9px] text-slate-300 font-medium">Request</span>
+                      <span className="text-[8.5px] text-slate-300 font-medium">Rewards</span>
                     </div>
                     <div className="flex flex-col items-center gap-1">
                       <div className="w-7.5 h-7.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <Database className="w-3.5 h-3.5" />
+                        <Trophy className="w-3.5 h-3.5" />
                       </div>
-                      <span className="text-[9px] text-slate-300 font-medium">Savings</span>
+                      <span className="text-[8.5px] text-slate-300 font-medium">Trophy</span>
                     </div>
                     <div className="flex flex-col items-center gap-1">
                       <div className="w-7.5 h-7.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <Users className="w-3.5 h-3.5" />
+                        <History className="w-3.5 h-3.5" />
                       </div>
-                      <span className="text-[9px] text-slate-300 font-medium">Contact</span>
+                      <span className="text-[8.5px] text-slate-300 font-medium">History</span>
                     </div>
                   </div>
 
@@ -650,52 +700,79 @@ function UnifiedPhoneShowcase() {
                 </motion.div>
 
                 {/* ------------------------------------------------------------- */}
-                {/* SCREEN 3: LARGE PAYMENTS STATE (Transfer $44,000 Screen) */}
+                {/* SCREEN 3: SMART NAVIGATION STATE */}
                 {/* ------------------------------------------------------------- */}
                 <motion.div
                   style={{ opacity: screen3Opacity }}
-                  className="absolute inset-0 pt-10 px-5 pb-5 flex flex-col justify-between z-30"
+                  className="absolute inset-0 pt-10 px-4 pb-4 flex flex-col justify-between z-30"
                 >
                   <div>
                     <div className="flex items-center justify-between pt-0.5">
                       <div className="w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white">
                         <ChevronLeft className="w-3.5 h-3.5" />
                       </div>
-                      <p className="text-xs sm:text-sm font-semibold text-white">Transfer Money</p>
+                      <p className="text-xs font-semibold text-white">Smart Hub</p>
                       <div className="w-7" />
                     </div>
 
-                    <div className="mt-3.5 bg-white/5 border border-white/10 rounded-2xl p-2 px-3 flex items-center gap-2.5 mx-auto max-w-[200px]">
-                      <img
-                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
-                        alt="Haley"
-                        className="w-7 h-7 rounded-full object-cover ring-1 ring-white/20"
-                      />
-                      <div className="text-left">
-                        <p className="text-[11px] font-bold text-white leading-tight">Haley Baylee</p>
-                        <p className="text-[8px] text-slate-400 font-mono">
-                          1234 - 5678 - 9012 - 3456
-                        </p>
+                    <div className="mt-3 bg-white/5 border border-white/10 rounded-2xl p-2.5 flex items-center justify-between">
+                      <div>
+                        <p className="text-[9px] text-slate-400">Total Saved This Month</p>
+                        <p className="text-base font-extrabold text-white mt-0.5">₹14,850</p>
                       </div>
+                      <span className="text-[9px] font-bold text-[#22c55e] bg-[#22c55e]/15 px-2 py-0.5 rounded-md">
+                        ↑ 34%
+                      </span>
                     </div>
                   </div>
 
-                  <div className="my-auto text-center">
-                    <p className="text-4xl sm:text-5xl font-black text-white tracking-tight drop-shadow-md">
-                      $44,000
-                    </p>
+                  <div className="space-y-1.5 my-auto">
+                    <div className="bg-[#141420] border border-white/10 rounded-xl p-2 flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-[#f472b6]/10 border border-[#f472b6]/20 flex items-center justify-center shrink-0">
+                        <ShoppingBagNavIcon className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] font-bold text-white leading-tight">One-Click Orders</p>
+                        <p className="text-[7.5px] text-slate-400 truncate">2 repeat orders ready</p>
+                      </div>
+                      <span className="text-[9px] font-semibold text-purple-300">Reorder</span>
+                    </div>
+
+                    <div className="bg-[#141420] border border-white/10 rounded-xl p-2 flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-[#818cf8]/10 border border-[#818cf8]/20 flex items-center justify-center shrink-0">
+                        <CardLightningNavIcon className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] font-bold text-white leading-tight">One-Click Payments</p>
+                        <p className="text-[7.5px] text-slate-400 truncate">Electricity bill due</p>
+                      </div>
+                      <span className="text-[9px] font-semibold text-indigo-300">Pay</span>
+                    </div>
+
+                    <div className="bg-[#141420] border border-white/10 rounded-xl p-2 flex items-center gap-2">
+                      <div className="w-7 h-7 rounded-lg bg-[#c084fc]/10 border border-[#c084fc]/20 flex items-center justify-center shrink-0">
+                        <BellClockNavIcon className="w-3.5 h-3.5" />
+                      </div>
+                      <div className="flex-1 min-w-0">
+                        <p className="text-[10px] font-bold text-white leading-tight">Smart Reminders</p>
+                        <p className="text-[7.5px] text-slate-400 truncate">Credit card bill 5th Oct</p>
+                      </div>
+                      <span className="text-[9px] font-semibold text-pink-300">Active</span>
+                    </div>
                   </div>
 
-                  <div className="absolute bottom-14 inset-x-3 h-40 bg-gradient-to-t from-indigo-600/35 via-purple-600/25 to-transparent rounded-b-3xl pointer-events-none" />
-
-                  <div className="relative z-20 flex items-center gap-2 bg-[#12121e] border border-white/10 rounded-full p-1.5 pl-3">
-                    <span className="text-[11px] text-slate-400 flex-1">Add Note (Optional)</span>
-                    <button
-                      aria-label="Send"
-                      className="w-7 h-7 rounded-full bg-white text-black flex items-center justify-center"
-                    >
-                      <Send className="w-3.5 h-3.5 fill-black text-black ml-0.5" />
-                    </button>
+                  <div className="mt-auto bg-[#13131a]/95 border border-white/10 rounded-full px-3.5 py-1.5 flex items-center justify-between shadow-xl">
+                    <Home className="w-3.5 h-3.5 text-slate-400" />
+                    <CreditCard className="w-3.5 h-3.5 text-slate-400" />
+                    <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-pink-400 to-purple-400 flex items-center justify-center text-black shadow-sm">
+                      <QrCode className="w-3.5 h-3.5 text-black" />
+                    </div>
+                    <Activity className="w-3.5 h-3.5 text-white" />
+                    <img
+                      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
+                      alt="Haley"
+                      className="w-4.5 h-4.5 rounded-full object-cover"
+                    />
                   </div>
                 </motion.div>
               </div>
@@ -774,7 +851,7 @@ function CardsScene() {
 
         {/* Fanned Cards Showcase (Scroll Scrubbed) */}
         <div className="relative w-full max-w-2xl h-[260px] xs:h-[280px] sm:h-[320px] md:h-[350px] flex items-center justify-center select-none mt-6 sm:mt-12 md:mt-14">
-          {/* Left Card */}
+          {/* Left Card - Axis Bank */}
           <motion.div
             style={{
               x: leftCardX,
@@ -785,7 +862,7 @@ function CardsScene() {
             className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
           >
             <div className="flex items-center justify-between">
-              <IndianBankLogo />
+              <AxisBankLogo />
               <EmvChip />
             </div>
             <div className="my-auto flex items-center justify-between pl-0.5">
@@ -805,7 +882,7 @@ function CardsScene() {
             </div>
           </motion.div>
 
-          {/* Center Card (Front Card with Topo Pattern) */}
+          {/* Center Card (Front Card with Topo Pattern) - HDFC Bank */}
           <motion.div
             style={{
               y: centerCardY,
@@ -818,7 +895,7 @@ function CardsScene() {
             <TopoPattern />
 
             <div className="relative z-10 flex items-center justify-between">
-              <IndianBankLogo />
+              <HdfcBankLogo />
               <EmvChip />
             </div>
 
@@ -840,7 +917,7 @@ function CardsScene() {
             </div>
           </motion.div>
 
-          {/* Right Card */}
+          {/* Right Card - SBI */}
           <motion.div
             style={{
               x: rightCardX,
@@ -851,7 +928,7 @@ function CardsScene() {
             className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
           >
             <div className="flex items-center justify-between">
-              <IndianBankLogo />
+              <SbiBankLogo />
               <EmvChip />
             </div>
             <div className="my-auto flex items-center justify-between pl-0.5">
@@ -876,29 +953,55 @@ function CardsScene() {
   );
 }
 
-function IndianBankLogo({ className = "" }: { className?: string }) {
+function AxisBankLogo({ className = "" }: { className?: string }) {
   return (
-    <div className={`flex items-center gap-1.5 ${className}`}>
-      {/* Official Indian Bank Tri-Petal Flame Emblem in Deep Blue Circle */}
-      <svg
-        viewBox="0 0 32 32"
-        className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-5 sm:h-5 shrink-0"
-        fill="none"
-        xmlns="http://www.w3.org/2000/svg"
-      >
-        <circle cx="16" cy="16" r="15" fill="#00338D" stroke="#1d4ed8" strokeWidth="0.75" />
-        <path
-          d="M16 5.5C17.5 9.5 21 12 24.5 12.8C22.2 16.8 18.2 19 16 26.5C13.8 19 9.8 16.8 7.5 12.8C11 12 14.5 9.5 16 5.5Z"
-          fill="#FFB81C"
-        />
-        <path
-          d="M16 8.5C17.2 11.8 19.8 13.8 22.5 14.2C20.8 17.2 17.8 18.5 16 23.5C14.2 18.5 11.2 17.2 9.5 14.2C12.2 13.8 14.8 11.8 16 8.5Z"
-          fill="#00338D"
-        />
-        <circle cx="16" cy="15.5" r="2.2" fill="#FFB81C" />
-      </svg>
-      <span className="text-[7px] xs:text-[7.5px] sm:text-[8.5px] font-bold text-white/95 tracking-wide uppercase font-sans whitespace-nowrap">
-        Indian Bank
+    <div className={`flex items-center gap-1.5 sm:gap-2 ${className}`}>
+      <img
+        src="/logo/axis_logo_clean.png"
+        alt="Axis Bank"
+        className="h-5 xs:h-6 sm:h-7 w-auto max-w-[85px] xs:max-w-[105px] sm:max-w-[120px] object-contain shrink-0 filter drop-shadow-sm"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = "/logo/axis_bank_clean.png";
+        }}
+      />
+      <span className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] font-bold text-white tracking-wider uppercase font-sans whitespace-nowrap">
+        Axis Bank
+      </span>
+    </div>
+  );
+}
+
+function HdfcBankLogo({ className = "" }: { className?: string }) {
+  return (
+    <div className={`flex items-center gap-1.5 sm:gap-2 ${className}`}>
+      <img
+        src="/logo/hdfc.png"
+        alt="HDFC Bank"
+        className="h-5 xs:h-6 sm:h-7 w-auto max-w-[85px] xs:max-w-[105px] sm:max-w-[120px] object-contain shrink-0 filter drop-shadow-sm"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = "/logo/hdfc.jpg";
+        }}
+      />
+      <span className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] font-bold text-white tracking-wider uppercase font-sans whitespace-nowrap">
+        HDFC Bank
+      </span>
+    </div>
+  );
+}
+
+function SbiBankLogo({ className = "" }: { className?: string }) {
+  return (
+    <div className={`flex items-center gap-1.5 sm:gap-2 ${className}`}>
+      <img
+        src="/logo/sbi.png"
+        alt="State Bank of India"
+        className="h-5 xs:h-6 sm:h-7 w-auto max-w-[85px] xs:max-w-[105px] sm:max-w-[120px] object-contain shrink-0 filter drop-shadow-sm"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = "/logo/SBI-logo.jfif";
+        }}
+      />
+      <span className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] font-bold text-white tracking-wider uppercase font-sans whitespace-nowrap">
+        State Bank of India
       </span>
     </div>
   );
@@ -920,6 +1023,80 @@ function EmvChip() {
         </div>
       </div>
     </div>
+  );
+}
+
+function ShoppingBagNavIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M9 10.5H23L21.7 25C21.6 25.8 20.9 26.5 20.1 26.5H11.9C11.1 26.5 10.4 25.8 10.3 25L9 10.5Z"
+        stroke="#f472b6"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M12.5 10.5V8C12.5 6.1 14.1 4.5 16 4.5C17.9 4.5 19.5 6.1 19.5 8V10.5"
+        stroke="#f472b6"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+    </svg>
+  );
+}
+
+function CardLightningNavIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+      <rect
+        x="5"
+        y="7.5"
+        width="22"
+        height="17"
+        rx="4"
+        stroke="#818cf8"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <path d="M5 12.5H27" stroke="#818cf8" strokeWidth="2" />
+      <circle cx="21" cy="19.5" r="4.5" fill="#0c0c14" stroke="#818cf8" strokeWidth="1.5" />
+      <path
+        d="M21.5 17L19.5 19.5H22.5L20.5 22"
+        stroke="#818cf8"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+function BellClockNavIcon({ className = "" }: { className?: string }) {
+  return (
+    <svg viewBox="0 0 32 32" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
+      <path
+        d="M16 5.5C13.5 5.5 11.5 7.5 11.5 10V15C11.5 16 11 17 10.2 17.6L9.2 18.4C8.6 18.9 9 19.8 9.8 19.8H18.5"
+        stroke="#c084fc"
+        strokeWidth="2"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+      <path
+        d="M13.5 23C14 23.6 14.8 24 16 24C16.8 24 17.5 23.7 18 23.2"
+        stroke="#c084fc"
+        strokeWidth="2"
+        strokeLinecap="round"
+      />
+      <circle cx="21.5" cy="18.5" r="4.5" fill="#0c0c14" stroke="#c084fc" strokeWidth="1.5" />
+      <path
+        d="M21.5 16.5V18.5L23 19.5"
+        stroke="#c084fc"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }
 
