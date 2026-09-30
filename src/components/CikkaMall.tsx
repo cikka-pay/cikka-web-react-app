@@ -628,14 +628,14 @@ export function CikkaMall() {
                           <img
                             src={partner.logo}
                             alt={partner.name}
-                            className="h-6 w-auto object-contain rounded-md mb-1.5"
+                            className="h-6 w-6 object-contain rounded-md mb-1.5"
                             onError={(e) => {
                               (e.target as HTMLImageElement).src =
                                 partner.id === "boat"
-                                  ? "Boat.jfif"
+                                  ? "/logo/Boat.jfif"
                                   : partner.id === "swiggy"
-                                  ? "Swiggy.png"
-                                  : "spotify.svg";
+                                  ? "/logo/swiggy.png"
+                                  : "/logo/spotify.svg";
                             }}
                           />
                           <span className="text-xs font-bold text-white leading-tight">
@@ -681,7 +681,7 @@ export function CikkaMall() {
                         alt="boAt"
                         className="h-5.5 w-auto rounded-md object-contain opacity-90"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = "Boat.jfif";
+                          (e.target as HTMLImageElement).src = "/logo/Boat.jfif";
                         }}
                       />
                       <img
@@ -689,7 +689,7 @@ export function CikkaMall() {
                         alt="Swiggy"
                         className="h-5.5 w-auto rounded-md object-contain opacity-90"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = "Swiggy.png";
+                          (e.target as HTMLImageElement).src = "/logo/swiggy.png";
                         }}
                       />
                       <img
@@ -697,7 +697,7 @@ export function CikkaMall() {
                         alt="Spotify"
                         className="h-5.5 w-auto rounded-md object-contain opacity-90"
                         onError={(e) => {
-                          (e.target as HTMLImageElement).src = "spotify.svg";
+                          (e.target as HTMLImageElement).src = "/logo/spotify.svg";
                         }}
                       />
                     </div>

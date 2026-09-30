@@ -5,119 +5,133 @@ import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 // ACCURATE BRAND LOGO ICONS FOR INNER & OUTER ORBITS
 // =========================================================================
 
-// --- INNER CIRCLE LOGOS (10 Brands) ---
+// --- INNER CIRCLE LOGOS (10 Official Brand Logos) ---
 
 function SwiggyIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#FC8019] flex items-center justify-center shadow-lg p-2.5">
-      <svg viewBox="0 0 100 100" className="w-full h-full fill-white">
-        <path d="M50 12 C34 12 24 22 24 38 C24 53 36 65 42 74 C47 81 50 88 50 88 C50 88 53 81 58 74 C64 65 76 53 76 38 C76 22 66 12 50 12 Z M50 24 C57 24 62 29 62 36 C62 44 56 48 50 54 C46 50 42 46 42 40 C42 36 45 33 49 33 C53 33 55 35 55 38 L60 38 C60 33 56 29 50 29 C44 29 38 34 38 41 C38 48 44 53 49 57 C53 53 58 48 58 41 C58 36 54 32 50 32 C46 32 43 35 43 38 L38 38 C38 30 43 24 50 24 Z" />
-      </svg>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#FC8019] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/swiggy.png"
+        alt="Swiggy"
+        className="w-full h-full object-cover scale-[1.2] transform"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = "/logo/swiggy.jfif";
+        }}
+      />
     </div>
   );
 }
 
 function ZomatoIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#E23744] flex items-center justify-center shadow-lg p-1.5 select-none">
-      <span className="text-white font-black text-xs xs:text-sm tracking-tighter italic font-sans">
-        zomato
-      </span>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#E23744] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/zomato"
+        alt="Zomato"
+        className="w-full h-full object-cover scale-[1.3] transform"
+      />
     </div>
   );
 }
 
 function McDonaldsIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#DA291C] flex items-center justify-center shadow-lg p-2">
-      <svg viewBox="0 0 100 100" className="w-full h-full fill-[#FFC72C]">
-        <path d="M22 82 L22 52 C22 36 31 24 40 24 C48 24 50 34 50 42 C50 34 52 24 60 24 C69 24 78 36 78 52 L78 82 L70 82 L70 52 C70 40 64 32 58 32 C52 32 47 40 47 52 L47 82 L39 82 L39 52 C39 40 33 32 27 32 C21 32 16 40 16 52 L16 82 Z" />
-      </svg>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#DA291C] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/mcdonald"
+        alt="McDonald's"
+        className="w-full h-full object-cover scale-[1.22] transform"
+      />
     </div>
   );
 }
 
 function DominosIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#006491] flex items-center justify-center shadow-lg p-2">
-      <svg viewBox="0 0 100 100" className="w-full h-full">
-        <g transform="rotate(45 50 50)">
-          <rect x="25" y="15" width="50" height="34" rx="4" fill="#E31837" />
-          <circle cx="50" cy="32" r="5" fill="white" />
-          <rect x="25" y="51" width="50" height="34" rx="4" fill="#006491" />
-          <circle cx="38" cy="68" r="4.5" fill="white" />
-          <circle cx="62" cy="68" r="4.5" fill="white" />
-        </g>
-      </svg>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#006491] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/dominons"
+        alt="Domino's"
+        className="w-full h-full object-cover scale-[1.25] transform"
+      />
     </div>
   );
 }
 
 function StarbucksIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#006241] flex items-center justify-center shadow-lg p-1.5">
-      <svg viewBox="0 0 100 100" className="w-full h-full">
-        <circle cx="50" cy="50" r="44" fill="#006241" stroke="white" strokeWidth="3" />
-        <circle cx="50" cy="50" r="30" fill="white" />
-        <circle cx="50" cy="46" r="14" fill="#006241" />
-        <path d="M38 64 C42 58 58 58 62 64 C60 74 40 74 38 64 Z" fill="#006241" />
-        <polygon points="50,22 53,29 60,30 55,35 56,42 50,38 44,42 45,35 40,30 47,29" fill="white" />
-      </svg>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#006241] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/Starbucks"
+        alt="Starbucks"
+        className="w-full h-full object-cover scale-[1.08] transform"
+      />
     </div>
   );
 }
 
 function BookMyShowIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#C4242B] flex items-center justify-center shadow-lg p-1 select-none">
-      <div className="flex flex-col items-center leading-none">
-        <span className="text-white font-black text-[11px] xs:text-xs tracking-tight">book</span>
-        <span className="text-white/90 font-bold text-[8px] tracking-wider uppercase">myshow</span>
-      </div>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#E51837] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/BookMyShow.svg"
+        alt="BookMyShow"
+        className="w-full h-full object-contain"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = "/logo/BookMyShow.jfif";
+        }}
+      />
     </div>
   );
 }
 
 function NetflixIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#000000] border border-white/10 flex items-center justify-center shadow-lg p-2.5">
-      <svg viewBox="0 0 100 100" className="w-full h-full">
-        <path d="M28 15 L40 15 L40 85 L28 85 Z" fill="#B81D24" />
-        <path d="M60 15 L72 15 L72 85 L60 85 Z" fill="#B81D24" />
-        <path d="M28 15 L64 85 L72 85 L36 15 Z" fill="#E50914" />
-      </svg>
+    <div className="w-full h-full rounded-full overflow-hidden bg-black flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/Netflix"
+        alt="Netflix"
+        className="w-full h-full object-cover scale-[1.32] transform"
+      />
     </div>
   );
 }
 
 function SpotifyIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#121212] border border-white/10 flex items-center justify-center shadow-lg p-2.5">
-      <svg viewBox="0 0 100 100" className="w-full h-full fill-[#1ed760]">
-        <circle cx="50" cy="50" r="44" fill="#1ed760" />
-        <path d="M28 38 C42 34 62 35 74 42" stroke="#121212" strokeWidth="7" strokeLinecap="round" fill="none" />
-        <path d="M31 50 C43 47 59 48 69 54" stroke="#121212" strokeWidth="6" strokeLinecap="round" fill="none" />
-        <path d="M34 62 C43 59 56 60 64 65" stroke="#121212" strokeWidth="5" strokeLinecap="round" fill="none" />
-      </svg>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#121212] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/Spotify.jfif"
+        alt="Spotify"
+        className="w-full h-full object-cover scale-[1.04] transform"
+        onError={(e) => {
+          (e.target as HTMLImageElement).src = "/logo/spotify.svg";
+        }}
+      />
     </div>
   );
 }
 
 function UberIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#000000] border border-white/15 flex items-center justify-center shadow-lg p-1.5 select-none">
-      <span className="text-white font-sans font-bold text-xs xs:text-sm tracking-tight">Uber</span>
+    <div className="w-full h-full rounded-full overflow-hidden bg-black flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/uber.jfif"
+        alt="Uber"
+        className="w-full h-full object-cover scale-[1.12] transform"
+      />
     </div>
   );
 }
 
 function MakeMyTripIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-gradient-to-br from-[#EA2330] to-[#0A2540] flex items-center justify-center shadow-lg p-1 select-none">
-      <div className="flex flex-col items-center leading-none text-center">
-        <span className="text-white font-black text-[10px] xs:text-[11px] tracking-tight">make</span>
-        <span className="text-[#FFB81C] font-black text-[10px] xs:text-[11px] tracking-tight">mytrip</span>
-      </div>
+    <div className="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center p-2 shadow-lg select-none">
+      <img
+        src="/logo/MakeMyTrip"
+        alt="MakeMyTrip"
+        className="w-full h-full object-contain"
+      />
     </div>
   );
 }
@@ -126,67 +140,79 @@ function MakeMyTripIcon() {
 
 function KFCIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#E4002B] flex items-center justify-center shadow-lg p-1.5 select-none border border-white/10">
-      <span className="text-white font-black text-[11px] xs:text-xs tracking-widest font-sans">KFC</span>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#E4002B] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/kfc"
+        alt="KFC"
+        className="w-full h-full object-cover scale-[1.08] transform"
+      />
     </div>
   );
 }
 
 function PVRInoxIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#0a0f1d] border border-amber-500/40 flex items-center justify-center shadow-lg p-1 select-none">
-      <div className="flex flex-col items-center leading-none">
-        <span className="text-[#FFB81C] font-black text-[10px] xs:text-[11px] tracking-wider">PVR</span>
-        <span className="text-white font-bold text-[8px] tracking-wider uppercase">INOX</span>
-      </div>
+    <div className="w-full h-full rounded-full overflow-hidden bg-black flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/pvr"
+        alt="PVR INOX"
+        className="w-full h-full object-cover scale-[1.05] transform"
+      />
     </div>
   );
 }
 
 function OYOIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#EE2E24] flex items-center justify-center shadow-lg p-1.5 select-none">
-      <span className="text-white font-black text-xs xs:text-sm tracking-tighter font-sans">OYO</span>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#EE2E24] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/oyo.jfif"
+        alt="OYO"
+        className="w-full h-full object-cover scale-[1.08] transform"
+      />
     </div>
   );
 }
 
 function LenskartIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#000042] border border-cyan-400/30 flex items-center justify-center shadow-lg p-2">
-      <svg viewBox="0 0 100 100" className="w-full h-full fill-none stroke-white" strokeWidth="7">
-        <circle cx="34" cy="50" r="16" />
-        <circle cx="66" cy="50" r="16" />
-        <line x1="48" y1="46" x2="52" y2="46" strokeWidth="5" />
-      </svg>
+    <div className="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center p-1.5 shadow-lg select-none">
+      <img
+        src="/logo/lenskart"
+        alt="Lenskart"
+        className="w-full h-full object-contain"
+      />
     </div>
   );
 }
 
 function TanishqIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#5C061E] border border-amber-400/40 flex items-center justify-center shadow-lg p-1 select-none">
-      <span className="text-[#FFD700] font-serif font-bold text-[9px] xs:text-[10px] tracking-wider">
-        TANISHQ
-      </span>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#4E1416] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/Tanishq"
+        alt="Tanishq"
+        className="w-full h-full object-cover scale-[1.05] transform"
+      />
     </div>
   );
 }
 
 function CultfitIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#111111] border border-[#FF3278]/40 flex items-center justify-center shadow-lg p-1 select-none">
-      <div className="flex flex-col items-center leading-none">
-        <span className="text-[#FF3278] font-black text-xs xs:text-sm tracking-tighter">cult</span>
-        <span className="text-white font-medium text-[8px] tracking-wider">.fit</span>
-      </div>
+    <div className="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center p-1.5 shadow-lg select-none">
+      <img
+        src="/logo/Cult_fit"
+        alt="Cult.fit"
+        className="w-full h-full object-contain"
+      />
     </div>
   );
 }
 
 function RapidoIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#F9D616] flex items-center justify-center shadow-lg p-1.5 select-none">
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#F9D616] flex items-center justify-center shadow-lg p-1 select-none">
       <span className="text-[#1E293B] font-black text-[10px] xs:text-xs tracking-tight font-sans">
         rapido
       </span>
@@ -196,8 +222,8 @@ function RapidoIcon() {
 
 function YouTubePremiumIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#0f0f0f] border border-red-500/30 flex items-center justify-center shadow-lg p-2">
-      <div className="w-6 h-4.5 bg-[#FF0000] rounded-sm flex items-center justify-center">
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#0f0f0f] border border-white/10 flex items-center justify-center shadow-lg p-2 select-none">
+      <div className="w-6 h-4 bg-[#FF0000] rounded-[4px] flex items-center justify-center shadow">
         <svg viewBox="0 0 24 24" className="w-2.5 h-2.5 fill-white ml-0.5">
           <polygon points="5,3 19,12 5,21" />
         </svg>
@@ -208,87 +234,108 @@ function YouTubePremiumIcon() {
 
 function SonyLIVIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-gradient-to-br from-[#0c0d1e] to-[#1e1b4b] border border-blue-400/30 flex items-center justify-center shadow-lg p-1 select-none">
-      <div className="flex flex-col items-center leading-none">
-        <span className="text-white font-bold text-[8px] tracking-widest uppercase">SONY</span>
-        <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-fuchsia-400 font-black text-[10px] xs:text-xs tracking-wider">
-          LIV
-        </span>
-      </div>
+    <div className="w-full h-full rounded-full overflow-hidden bg-black flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/sonyliv"
+        alt="SonyLIV"
+        className="w-full h-full object-cover scale-[1.15] transform"
+      />
     </div>
   );
 }
 
 function ZEE5Icon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#8230C6] flex items-center justify-center shadow-lg p-1.5 select-none">
-      <span className="text-white font-black text-[11px] xs:text-xs tracking-tight">ZEE5</span>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#0c081e] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/zee5"
+        alt="ZEE5"
+        className="w-full h-full object-cover scale-[1.15] transform"
+      />
     </div>
   );
 }
 
 function TataPlayIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-gradient-to-br from-[#E00069] to-[#7B1FA2] flex items-center justify-center shadow-lg p-1 select-none">
-      <div className="flex flex-col items-center leading-none text-center">
-        <span className="text-white/90 text-[7px] font-bold tracking-widest uppercase">TATA</span>
-        <span className="text-white font-black text-[10px] xs:text-[11px] tracking-tight">play</span>
-      </div>
+    <div className="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center p-1.5 shadow-lg select-none">
+      <img
+        src="/logo/tataplay"
+        alt="Tata Play"
+        className="w-full h-full object-contain"
+      />
     </div>
   );
 }
 
 function IndiGoIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#001B94] flex items-center justify-center shadow-lg p-1.5 select-none border border-blue-400/20">
-      <span className="text-white font-black text-[10px] xs:text-[11px] tracking-tight">IndiGo</span>
+    <div className="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center p-1.5 shadow-lg select-none">
+      <img
+        src="/logo/IndiGo"
+        alt="IndiGo"
+        className="w-full h-full object-contain"
+      />
     </div>
   );
 }
 
 function AirIndiaIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#ED1B24] flex items-center justify-center shadow-lg p-1 select-none">
-      <div className="flex flex-col items-center leading-none text-center">
-        <span className="text-amber-300 font-serif font-black text-[8px] tracking-wider uppercase">AIR INDIA</span>
-      </div>
+    <div className="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center p-1.5 shadow-lg select-none">
+      <img
+        src="/logo/Air India"
+        alt="Air India"
+        className="w-full h-full object-contain"
+      />
     </div>
   );
 }
 
 function IRCTCIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#1E3A8A] flex items-center justify-center shadow-lg p-1.5 select-none border border-white/20">
-      <span className="text-white font-black text-[10px] xs:text-xs tracking-wider font-mono">IRCTC</span>
+    <div className="w-full h-full rounded-full overflow-hidden bg-white flex items-center justify-center p-1.5 shadow-lg select-none">
+      <img
+        src="/logo/IRCTC"
+        alt="IRCTC"
+        className="w-full h-full object-contain"
+      />
     </div>
   );
 }
 
 function CleartripIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#F26722] flex items-center justify-center shadow-lg p-1 select-none">
-      <span className="text-white font-bold text-[9px] xs:text-[10px] tracking-tight">cleartrip</span>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#F26722] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/Cleartrip"
+        alt="Cleartrip"
+        className="w-full h-full object-cover scale-[1.08] transform"
+      />
     </div>
   );
 }
 
 function YatraIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-[#EA2330] flex items-center justify-center shadow-lg p-1.5 select-none">
-      <span className="text-white font-bold italic text-[11px] xs:text-xs tracking-tight font-sans">
-        yatra
-      </span>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#EA2330] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/yatra"
+        alt="Yatra"
+        className="w-full h-full object-cover scale-[1.1] transform"
+      />
     </div>
   );
 }
 
 function JioHotstarIcon() {
   return (
-    <div className="w-full h-full rounded-[18px] bg-gradient-to-br from-[#0c1638] via-[#023e8a] to-[#0077b6] border border-cyan-400/40 flex items-center justify-center shadow-lg p-1 select-none">
-      <div className="flex flex-col items-center leading-none text-center">
-        <span className="text-cyan-300 font-black text-[8px] tracking-wider uppercase">JIO</span>
-        <span className="text-white font-black text-[10px] xs:text-[11px] tracking-tight">hotstar</span>
-      </div>
+    <div className="w-full h-full rounded-full overflow-hidden bg-[#0c1638] flex items-center justify-center shadow-lg select-none">
+      <img
+        src="/logo/JioHotstar"
+        alt="JioHotstar"
+        className="w-full h-full object-cover scale-[1.12] transform"
+      />
     </div>
   );
 }

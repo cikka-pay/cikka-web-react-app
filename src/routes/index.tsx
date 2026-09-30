@@ -939,7 +939,7 @@ function TopoPattern() {
   );
 }
 
-function InvertedCornerLeft({ className = "w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16" }: { className?: string }) {
+function InvertedCornerLeft({ className = "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 48 48"
@@ -954,7 +954,7 @@ function InvertedCornerLeft({ className = "w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:
   );
 }
 
-function InvertedCornerRight({ className = "w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16" }: { className?: string }) {
+function InvertedCornerRight({ className = "w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20" }: { className?: string }) {
   return (
     <svg
       viewBox="0 0 48 48"
@@ -977,6 +977,10 @@ function LightContinuation() {
     <>
       <div id="light-continuation-wrap" className="w-full">
         <section id="company" data-theme-light="true" className="relative z-20 mt-64 sm:mt-60 md:mt-56 bg-[#f4f5f8] text-black pt-16 pb-28 px-6 sm:px-12 md:px-16 shadow-[0_-30px_70px_rgba(0,0,0,0.7)] w-full">
+          {/* Inverted / Concave Upward Curving Corners */}
+          <InvertedCornerLeft />
+          <InvertedCornerRight />
+
           <div className="max-w-6xl mx-auto space-y-24 sm:space-y-32">
             {/* LOGO MARQUEE STRIP */}
             <motion.div
