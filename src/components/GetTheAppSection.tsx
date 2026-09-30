@@ -26,14 +26,11 @@ export function GetTheAppSection() {
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
-  const springProgress = useSpring(scrollYProgress, {
-    stiffness: 130,
-    damping: 28,
-    mass: 0.1,
-    restDelta: 0.001,
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 220,
+    damping: 30,
+    mass: 0.02,
   });
-
-  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // Parallax shifts for the 3 phones
   const leftPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [15, -10] : [40, -25]);
@@ -77,11 +74,11 @@ export function GetTheAppSection() {
             x: leftPhoneX,
             rotateZ: leftPhoneRotate,
           }}
-          initial={{ opacity: 0, x: -60, y: 40 }}
-          whileInView={{ opacity: 1, x: 0, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute left-1/2 -translate-x-[calc(50%+65px)] xs:-translate-x-[calc(50%+85px)] sm:-translate-x-[calc(50%+115px)] md:-translate-x-[calc(50%+138px)] z-10 w-[120px] xs:w-[155px] sm:w-[195px] md:w-[220px] h-[250px] xs:h-[320px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="absolute left-1/2 -translate-x-[calc(50%+65px)] xs:-translate-x-[calc(50%+85px)] sm:-translate-x-[calc(50%+115px)] md:-translate-x-[calc(50%+138px)] z-10 w-[120px] xs:w-[155px] sm:w-[195px] md:w-[220px] h-[250px] xs:h-[320px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom will-change-transform"
         >
           <PhoneFrame>
             <LeftPhoneDashboardScreen />
@@ -95,11 +92,11 @@ export function GetTheAppSection() {
             x: rightPhoneX,
             rotateZ: rightPhoneRotate,
           }}
-          initial={{ opacity: 0, x: 60, y: 40 }}
-          whileInView={{ opacity: 1, x: 0, y: 0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.85, ease: [0.16, 1, 0.3, 1] }}
-          className="absolute left-1/2 translate-x-[calc(-50%+65px)] xs:translate-x-[calc(-50%+85px)] sm:translate-x-[calc(-50%+115px)] md:translate-x-[calc(-50%+138px)] z-10 w-[120px] xs:w-[155px] sm:w-[195px] md:w-[220px] h-[250px] xs:h-[320px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="absolute left-1/2 translate-x-[calc(-50%+65px)] xs:translate-x-[calc(-50%+85px)] sm:translate-x-[calc(-50%+115px)] md:translate-x-[calc(-50%+138px)] z-10 w-[120px] xs:w-[155px] sm:w-[195px] md:w-[220px] h-[250px] xs:h-[320px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom will-change-transform"
         >
           <PhoneFrame>
             <RightPhoneTransferScreen />
@@ -112,11 +109,11 @@ export function GetTheAppSection() {
             y: centerPhoneY,
             scale: centerPhoneScale,
           }}
-          initial={{ opacity: 0, y: 35, scale: 0.94 }}
-          whileInView={{ opacity: 1, y: 0, scale: 1.0 }}
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.8, delay: 0.08, ease: [0.16, 1, 0.3, 1] }}
-          className="relative z-20 w-[135px] xs:w-[170px] sm:w-[210px] md:w-[238px] h-[275px] xs:h-[345px] sm:h-[425px] md:h-[475px] pointer-events-auto shadow-[0_20px_55px_rgba(0,0,0,0.95)] rounded-[26px] xs:rounded-[34px] sm:rounded-[42px]"
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true, amount: 0.15 }}
+          transition={{ duration: 0.6, ease: "easeOut" }}
+          className="relative z-20 w-[135px] xs:w-[170px] sm:w-[210px] md:w-[238px] h-[275px] xs:h-[345px] sm:h-[425px] md:h-[475px] pointer-events-auto shadow-[0_20px_55px_rgba(0,0,0,0.95)] rounded-[26px] xs:rounded-[34px] sm:rounded-[42px] will-change-transform"
         >
           <PhoneFrame isCenter>
             <CenterPhoneHeroScreen />

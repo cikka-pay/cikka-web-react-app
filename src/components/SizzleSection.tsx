@@ -23,12 +23,12 @@ export function SizzleSection() {
       items.forEach((w, i) => {
         tl.fromTo(
           w,
-          { opacity: 0, scale: 0.86, filter: "blur(14px)" },
-          { opacity: 1, scale: 1, filter: "blur(0px)", duration: 1 },
+          { opacity: 0, scale: 0.88, y: 30 },
+          { opacity: 1, scale: 1, y: 0, duration: 1, ease: "power2.out" },
           i,
         ).to(
           w,
-          { opacity: 0, scale: 1.14, filter: "blur(14px)", duration: 0.8 },
+          { opacity: 0, scale: 1.12, y: -30, duration: 0.8, ease: "power2.in" },
           i + 1,
         );
       });

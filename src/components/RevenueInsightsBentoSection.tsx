@@ -25,14 +25,11 @@ export function RevenueInsightsBentoSection() {
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
-  const springProgress = useSpring(scrollYProgress, {
-    stiffness: 130,
-    damping: 28,
-    mass: 0.1,
-    restDelta: 0.001,
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 220,
+    damping: 30,
+    mass: 0.02,
   });
-
-  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   const ribbonY = useTransform(smoothProgress, [0, 1], isMobile ? [5, -5] : [15, -15]);
   const ribbonRotate = useTransform(smoothProgress, [0, 1], isMobile ? [0, 0] : [-2, 4]);

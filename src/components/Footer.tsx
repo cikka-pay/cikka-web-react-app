@@ -35,18 +35,17 @@ export function Footer() {
     const ctx = gsap.context(() => {
       gsap.fromTo(
         "[data-footer-word]",
-        { yPercent: 22, opacity: 0, scale: 0.94, clipPath: "inset(0 0 100% 0)" },
+        { yPercent: 15, opacity: 0, scale: 0.96 },
         {
           yPercent: 0,
           opacity: 1,
           scale: 1,
-          clipPath: "inset(0 0 0% 0)",
-          ease: "power3.out",
+          ease: "power2.out",
           scrollTrigger: {
             trigger: root.current as HTMLElement,
             start: "top 85%",
             end: "bottom bottom",
-            scrub: 1,
+            scrub: 0.5,
           },
         },
       );

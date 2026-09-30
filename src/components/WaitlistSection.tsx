@@ -427,13 +427,11 @@ export function WaitlistSection() {
   // 3. CENTER CIKKA LOGO (STABLE DURING FIRST PHASE)
   const cikkaLogoOpacity = useTransform(smoothProgress, [0, 0.1, 0.38, 0.48], [1, 1, 1, 0]);
   const cikkaLogoScale = useTransform(smoothProgress, [0, 0.35, 0.48], [1.0, 1.06, 0.82]);
-  const cikkaLogoBlur = useTransform(smoothProgress, [0, 0.38, 0.48], ["blur(0px)", "blur(0px)", "blur(12px)"]);
 
   // 4. CONVERTED TEXT: "Rewards that reshape the daily life" (POPPINS FONT)
   const textOpacity = useTransform(smoothProgress, [0.46, 0.55, 0.92, 1.0], [0, 1, 1, 0.92]);
   const textScale = useTransform(smoothProgress, [0.46, 0.55, 0.92, 1.0], [0.88, 1.0, 1.03, 1.0]);
   const textY = useTransform(smoothProgress, [0.46, 0.55, 0.92, 1.0], [24, 0, 0, -8]);
-  const textBlur = useTransform(smoothProgress, [0.46, 0.55, 0.92, 1.0], ["blur(12px)", "blur(0px)", "blur(0px)", "blur(0px)"]);
 
   // 5. AMBIENT ATMOSPHERIC GLOW DYNAMICS
   const glowScale = useTransform(smoothProgress, [0, 0.5, 1], [0.85, 1.3, 1.6]);
@@ -562,7 +560,6 @@ export function WaitlistSection() {
               style={{
                 opacity: cikkaLogoOpacity,
                 scale: cikkaLogoScale,
-                filter: cikkaLogoBlur,
               }}
               className="absolute flex flex-col items-center justify-center pointer-events-none select-none will-change-transform"
             >
@@ -579,7 +576,6 @@ export function WaitlistSection() {
                 opacity: textOpacity,
                 scale: textScale,
                 y: textY,
-                filter: textBlur,
               }}
               className="absolute flex flex-col items-center justify-center text-center px-4 sm:px-12 max-w-4xl pointer-events-none select-none will-change-transform"
             >
