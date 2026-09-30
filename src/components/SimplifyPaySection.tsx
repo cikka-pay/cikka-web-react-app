@@ -12,14 +12,11 @@ export function SimplifyPaySection() {
 
   const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
 
-  const springProgress = useSpring(scrollYProgress, {
-    stiffness: 130,
-    damping: 28,
-    mass: 0.1,
-    restDelta: 0.001,
+  const smoothProgress = useSpring(scrollYProgress, {
+    stiffness: 220,
+    damping: 30,
+    mass: 0.02,
   });
-
-  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // Parallax and 3D tilts for the visual showcase
   const cardRotateY = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [0, 0, 0] : [-3, 0, 3]);

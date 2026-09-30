@@ -185,83 +185,91 @@ function UnifiedPhoneShowcase() {
     offset: ["start start", "end end"],
   });
 
-  // Butter-smooth zero-lag spring on desktop, direct scroll tracking on mobile with Lenis
-  const springProgress = useSpring(scrollYProgress, {
-    damping: 26,
-    stiffness: 170,
-    mass: 0.04,
+  // Ultra-responsive zero-lag spring with stable reference across all devices
+  const smoothProgress = useSpring(scrollYProgress, {
+    damping: 30,
+    stiffness: 220,
+    mass: 0.02,
   });
-  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // --- 1. HERO STAGE ("We've Got You") ---
-  const heroOpacity = useTransform(smoothProgress, [0.0, 0.18, 0.30], [1, 0.9, 0]);
-  const heroY = useTransform(smoothProgress, [0.0, 0.30], [0, -90]);
-  const heroScale = useTransform(smoothProgress, [0.0, 0.30], [1, 0.94]);
+  const heroOpacity = useTransform(smoothProgress, [0.0, 0.04, 0.09], [1, 0.1, 0]);
+  const heroVisibility = useTransform(smoothProgress, (p) => (p > 0.09 ? "hidden" : "visible"));
+  const heroY = useTransform(smoothProgress, [0.0, 0.10], [0, -70]);
+  const heroScale = useTransform(smoothProgress, [0.0, 0.10], [1, 0.94]);
 
   // --- 2. QUICK ACTIONS STAGE (Left Column on desktop / Bottom on mobile) ---
   const quickActionsOpacity = useTransform(
     smoothProgress,
-    [0.24, 0.36, 0.58, 0.68],
+    [0.14, 0.24, 0.54, 0.62],
     [0, 1, 1, 0]
+  );
+  const quickActionsVisibility = useTransform(
+    smoothProgress,
+    (p) => (p > 0.12 && p < 0.64 ? "visible" : "hidden")
   );
   const quickActionsX = useTransform(
     smoothProgress,
-    [0.24, 0.36, 0.58, 0.68],
+    [0.14, 0.24, 0.56, 0.64],
     isMobile ? [0, 0, 0, 0] : [-50, 0, 0, -50]
   );
   const quickActionsY = useTransform(
     smoothProgress,
-    [0.24, 0.36, 0.58, 0.68],
-    isMobile ? [25, 0, 0, -25] : [40, 0, 0, -40]
+    [0.14, 0.24, 0.56, 0.64],
+    isMobile ? [20, 0, 0, -20] : [40, 0, 0, -40]
   );
 
   // --- 3. LARGE PAYMENTS STAGE (Right Column on desktop / Bottom on mobile) ---
   const largePaymentsOpacity = useTransform(
     smoothProgress,
-    [0.64, 0.76, 0.96, 1.0],
+    [0.64, 0.74, 0.96, 1.0],
     [0, 1, 1, 1]
+  );
+  const largePaymentsVisibility = useTransform(
+    smoothProgress,
+    (p) => (p > 0.60 ? "visible" : "hidden")
   );
   const largePaymentsX = useTransform(
     smoothProgress,
-    [0.64, 0.76],
+    [0.64, 0.74],
     isMobile ? [0, 0] : [50, 0]
   );
   const largePaymentsY = useTransform(
     smoothProgress,
-    [0.64, 0.76],
-    isMobile ? [25, 0] : [40, 0]
+    [0.64, 0.74],
+    isMobile ? [20, 0] : [40, 0]
   );
 
   // --- 4. THE SINGLE CONTINUOUS PHONE MOCKUP ---
   // Phone shifts RIGHT for Quick Actions, LEFT for Large Payments
   const phoneX = useTransform(
     smoothProgress,
-    [0.0, 0.20, 0.36, 0.58, 0.76, 1.0],
-    [0, isMobile ? 0 : 100, phoneShiftX, phoneShiftX, -phoneShiftX, -phoneShiftX]
+    [0.0, 0.16, 0.30, 0.56, 0.72, 1.0],
+    [0, isMobile ? 0 : 80, phoneShiftX, phoneShiftX, -phoneShiftX, -phoneShiftX]
   );
 
   // KEY SCROLL PARALLAX: Phone starts lower and moves upward.
   // On mobile, phone docks safely in the top half (-120px) to give clear headroom for the interactive controls below
   const phoneY = useTransform(
     smoothProgress,
-    [0.0, 0.26, 0.38, 1.0],
+    [0.0, 0.18, 0.30, 1.0],
     [heroStartY, 20, isMobile ? -120 : 0, isMobile ? -120 : 0]
   );
 
   // 3D Perspective Tilt (zero tilt on mobile for maximum 120fps GPU performance)
   const phoneRotateX = useTransform(
     smoothProgress,
-    [0.0, 0.28, 0.38, 0.58, 0.76, 1.0],
+    [0.0, 0.18, 0.30, 0.56, 0.72, 1.0],
     isMobile ? [0, 0, 0, 0, 0, 0] : [20, 0, 0, 0, 0, 0]
   );
   const phoneRotateY = useTransform(
     smoothProgress,
-    [0.0, 0.22, 0.38, 0.58, 0.76, 1.0],
+    [0.0, 0.16, 0.30, 0.56, 0.72, 1.0],
     isMobile ? [0, 0, 0, 0, 0, 0] : [0, -3, -3, 3, 3, 3]
   );
   const phoneScale = useTransform(
     smoothProgress,
-    [0.0, 0.26, 0.38, 0.58, 0.76, 1.0],
+    [0.0, 0.18, 0.30, 0.56, 0.72, 1.0],
     [
       isMobile ? 0.70 : 0.86,
       isMobile ? 0.73 : 0.88,
@@ -273,18 +281,24 @@ function UnifiedPhoneShowcase() {
   );
 
   // Screen Content Crossfades inside the SINGLE Phone
-  const screen1Opacity = useTransform(smoothProgress, [0.0, 0.22, 0.30], [1, 0.7, 0]);
+  const screen1Opacity = useTransform(smoothProgress, [0.0, 0.05, 0.10], [1, 0.2, 0]);
+  const screen1Visibility = useTransform(smoothProgress, (p) => (p > 0.10 ? "hidden" : "visible"));
   const screen2Opacity = useTransform(
     smoothProgress,
-    [0.24, 0.34, 0.58, 0.68],
+    [0.14, 0.24, 0.56, 0.64],
     [0, 1, 1, 0]
   );
-  const screen3Opacity = useTransform(smoothProgress, [0.64, 0.74, 1.0], [0, 1, 1]);
+  const screen2Visibility = useTransform(
+    smoothProgress,
+    (p) => (p > 0.12 && p < 0.66 ? "visible" : "hidden")
+  );
+  const screen3Opacity = useTransform(smoothProgress, [0.62, 0.72, 1.0], [0, 1, 1]);
+  const screen3Visibility = useTransform(smoothProgress, (p) => (p > 0.60 ? "visible" : "hidden"));
 
   // Ambient Dynamic Purple Glow — also follows phone X
   const glowX = useTransform(
     smoothProgress,
-    [0.0, 0.28, 0.38, 0.58, 0.76, 1.0],
+    [0.0, 0.18, 0.30, 0.56, 0.72, 1.0],
     [0, phoneShiftX * 0.85, phoneShiftX * 0.85, -phoneShiftX * 0.85, -phoneShiftX * 0.85, -phoneShiftX * 0.85]
   );
 
@@ -315,6 +329,7 @@ function UnifiedPhoneShowcase() {
         <motion.div
           style={{
             opacity: heroOpacity,
+            visibility: heroVisibility,
             y: heroY,
             scale: heroScale,
           }}
@@ -346,18 +361,16 @@ function UnifiedPhoneShowcase() {
         <motion.div
           style={{
             opacity: quickActionsOpacity,
+            visibility: quickActionsVisibility,
             x: quickActionsX,
             y: quickActionsY,
-            pointerEvents: useTransform(smoothProgress, (v) =>
-              v >= 0.24 && v <= 0.66 ? "auto" : "none"
-            ),
           }}
           className="absolute
-            left-0 right-0 mx-auto sm:left-12 sm:right-auto lg:left-20 xl:left-28
-            bottom-4 xs:bottom-6 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2
+            left-0 right-0 mx-auto sm:left-16 md:left-24 lg:left-32 xl:left-40 2xl:left-48 sm:right-auto
+            bottom-24 xs:bottom-28 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2
             z-30 w-full max-w-[92%] sm:max-w-md lg:max-w-lg
             flex flex-col justify-center items-center sm:items-start
-            text-center sm:text-left px-2 sm:px-0"
+            text-center sm:text-left px-2 sm:px-0 will-change-transform"
         >
           <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.15] sm:leading-[1.1] text-3xl xs:text-4xl sm:text-5xl lg:text-[4.75rem] pb-1 overflow-visible">
             <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-2 sm:mr-0 pb-1">
@@ -411,16 +424,16 @@ function UnifiedPhoneShowcase() {
         <motion.div
           style={{
             opacity: largePaymentsOpacity,
+            visibility: largePaymentsVisibility,
             x: largePaymentsX,
             y: largePaymentsY,
-            pointerEvents: useTransform(smoothProgress, (v) => (v >= 0.64 ? "auto" : "none")),
           }}
           className="absolute
-            left-0 right-0 mx-auto sm:left-auto sm:right-6 lg:right-10 xl:right-16
-            bottom-3 xs:bottom-5 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2
+            left-0 right-0 mx-auto sm:left-auto sm:right-16 md:right-24 lg:right-32 xl:right-40 2xl:right-48
+            bottom-20 xs:bottom-24 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2
             z-30 w-full max-w-[95%] sm:max-w-xl lg:max-w-2xl xl:max-w-3xl
             flex flex-col justify-center items-center sm:items-end
-            text-center sm:text-right px-2 sm:px-0"
+            text-center sm:text-right px-2 sm:px-0 will-change-transform"
         >
           <div className="w-full max-w-2xl flex flex-col items-center sm:items-end">
             <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.18] sm:leading-[1.12] text-3xl xs:text-4xl sm:text-5xl lg:text-[4.35rem] text-center sm:text-right pb-1 overflow-visible">
@@ -532,7 +545,10 @@ function UnifiedPhoneShowcase() {
                 {/* SCREEN 1: HERO STATE ("Borderless Payments" + Exact 3D Torus) */}
                 {/* ------------------------------------------------------------- */}
                 <motion.div
-                  style={{ opacity: screen1Opacity }}
+                  style={{
+                    opacity: screen1Opacity,
+                    visibility: screen1Visibility,
+                  }}
                   className="absolute inset-0 pt-9 px-5 pb-5 flex flex-col justify-between z-30 pointer-events-none"
                 >
                   {/* Glowing Torus / Donut Ring */}
@@ -594,7 +610,10 @@ function UnifiedPhoneShowcase() {
                 {/* SCREEN 2: QUICK ACTIONS STATE (Haley Dashboard UI) */}
                 {/* ------------------------------------------------------------- */}
                 <motion.div
-                  style={{ opacity: screen2Opacity }}
+                  style={{
+                    opacity: screen2Opacity,
+                    visibility: screen2Visibility,
+                  }}
                   className="absolute inset-0 pt-10 px-4 pb-3 flex flex-col justify-between z-30"
                 >
                   <div className="flex items-center justify-between pt-0.5">
@@ -706,7 +725,10 @@ function UnifiedPhoneShowcase() {
                 {/* SCREEN 3: SMART NAVIGATION STATE */}
                 {/* ------------------------------------------------------------- */}
                 <motion.div
-                  style={{ opacity: screen3Opacity }}
+                  style={{
+                    opacity: screen3Opacity,
+                    visibility: screen3Visibility,
+                  }}
                   className="absolute inset-0 pt-10 px-4 pb-4 flex flex-col justify-between z-30"
                 >
                   <div>
@@ -799,12 +821,11 @@ function CardsScene() {
     offset: ["start 90%", "end 30%"],
   });
 
-  const springProgress = useSpring(scrollYProgress, {
-    damping: 28,
-    stiffness: 130,
-    mass: 0.1,
+  const smoothProgress = useSpring(scrollYProgress, {
+    damping: 30,
+    stiffness: 220,
+    mass: 0.02,
   });
-  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // Headline scroll animation: Starts closer to cards (+165px down), floats smoothly upwards to +15px on scroll
   const titleY = useTransform(smoothProgress, [0.0, 0.75], [isMobile ? 100 : 165, 15]);
