@@ -1,36 +1,271 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 
 export function EcommerceRewardsFilmCard() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   // Film State: 'product' | 'bag' | 'rewards'
   const [stage, setStage] = useState<"product" | "bag" | "rewards">("product");
   const [isButtonClicked, setIsButtonClicked] = useState(false);
   const [cursorVisible, setCursorVisible] = useState(false);
-  const [cursorPos, setCursorPos] = useState({ x: "80%", y: "20%" });
+  const [cursorPos, setCursorPos] = useState({ x: "78%", y: "22%" });
   const [bagPriceVisible, setBagPriceVisible] = useState(false);
   const [typedText, setTypedText] = useState("");
   const [activeSpotlight, setActiveSpotlight] = useState<number | null>(null);
   const [cardsVisible, setCardsVisible] = useState({ center: false, left: false, right: false });
+  const [isModelLoaded, setIsModelLoaded] = useState(false);
+  const [isInView, setIsInView] = useState(false);
 
-  // Interactive 3D tilt on mouse move
+  // Trigger animation only when user scrolls to this section
+  useEffect(() => {
+    const el = containerRef.current;
+    if (!el) return;
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsInView(true);
+          }
+        });
+      },
+      { threshold: 0.25 }
+    );
+
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  // Interactive 3D tilt
   const [mouseTilt, setMouseTilt] = useState({ x: 0, y: 0 });
+  const mouseTiltRef = useRef({ x: 0, y: 0 });
 
+  // Three.js object references for in-place rotation & animation control
+  const threeRefs = useRef<{
+    scene: THREE.Scene | null;
+    camera: THREE.PerspectiveCamera | null;
+    renderer: THREE.WebGLRenderer | null;
+    shoePivot: THREE.Group | null;
+    baseScale: number;
+    baseRot: { x: number; y: number; z: number };
+    isDragging: boolean;
+    prevMousePos: { x: number; y: number };
+    extraRot: { x: number; y: number };
+  }>({
+    scene: null,
+    camera: null,
+    renderer: null,
+    shoePivot: null,
+    baseScale: 1.0,
+    baseRot: {
+      x: THREE.MathUtils.degToRad(8),
+      y: THREE.MathUtils.degToRad(-45),
+      z: THREE.MathUtils.degToRad(-24),
+    },
+    isDragging: false,
+    prevMousePos: { x: 0, y: 0 },
+    extraRot: { x: 0, y: 0 },
+  });
+
+  // Track stage in ref for animation frame loop
+  const stageRef = useRef<"product" | "bag" | "rewards">("product");
+  stageRef.current = stage;
+
+  // Initialize Three.js WebGL Scene & Load GLTF Shoe Model
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
+
+    const width = container.clientWidth || 400;
+    const height = container.clientHeight || 540;
+
+    const scene = new THREE.Scene();
+    scene.background = null;
+
+    const camera = new THREE.PerspectiveCamera(34, width / height, 0.1, 100);
+    camera.position.set(0, -0.05, 8.4);
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Studio Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
+    scene.add(ambientLight);
+
+    const mainLight = new THREE.DirectionalLight(0xffffff, 1.1);
+    mainLight.position.set(5, 8, 6);
+    scene.add(mainLight);
+
+    const fillLight = new THREE.DirectionalLight(0x818cf8, 0.5);
+    fillLight.position.set(-6, 3, -4);
+    scene.add(fillLight);
+
+    const shoePivot = new THREE.Group();
+    scene.add(shoePivot);
+
+    threeRefs.current.scene = scene;
+    threeRefs.current.camera = camera;
+    threeRefs.current.renderer = renderer;
+    threeRefs.current.shoePivot = shoePivot;
+
+    const initModel = (gltfScene: THREE.Group) => {
+      const box = new THREE.Box3().setFromObject(gltfScene);
+      const center = box.getCenter(new THREE.Vector3());
+      const size = box.getSize(new THREE.Vector3());
+
+      // Center raw model precisely inside pivot so rotation stays 100% in place
+      gltfScene.position.set(-center.x, -center.y, -center.z);
+
+      shoePivot.clear();
+      shoePivot.add(gltfScene);
+
+      const maxDim = Math.max(size.x, size.y, size.z);
+      const targetScale = 2.05 / maxDim;
+      shoePivot.scale.set(targetScale, targetScale, targetScale);
+      shoePivot.position.set(0, -0.12, 0);
+
+      // Angle matching Screenshot 2
+      shoePivot.rotation.set(
+        threeRefs.current.baseRot.x,
+        threeRefs.current.baseRot.y,
+        threeRefs.current.baseRot.z
+      );
+
+      gltfScene.traverse((child) => {
+        if ((child as THREE.Mesh).isMesh) {
+          const mesh = child as THREE.Mesh;
+          if (mesh.material) {
+            const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+            mats.forEach((mat) => {
+              if ("roughness" in mat) mat.roughness = 0.65;
+              if ("metalness" in mat) mat.metalness = 0.05;
+            });
+          }
+        }
+      });
+
+      threeRefs.current.baseScale = targetScale;
+      setIsModelLoaded(true);
+    };
+
+    // Load 3D Shoe Model
+    const gltfLoader = new GLTFLoader();
+    const modelUrl = "/MaterialsVariantsShoe.glb";
+
+    gltfLoader.load(
+      modelUrl,
+      (gltf) => {
+        initModel(gltf.scene);
+      },
+      undefined,
+      (err) => {
+        console.warn("Retrying with relative path MaterialsVariantsShoe.glb...", err);
+        gltfLoader.load("MaterialsVariantsShoe.glb", (gltf) => {
+          initModel(gltf.scene);
+        });
+      }
+    );
+
+    // Animation Render Loop
+    let animId: number;
+
+    const renderLoop = () => {
+      animId = requestAnimationFrame(renderLoop);
+      const pivot = threeRefs.current.shoePivot;
+
+      if (pivot) {
+        const curStage = stageRef.current;
+
+        if (curStage === "product") {
+          pivot.visible = true;
+          // In-place horizontal rotation from right to left on its place (no displacement)
+          pivot.position.set(0, -0.12, 0);
+          pivot.rotation.y -= 0.008;
+
+          // Parallax tilt from mouse
+          const targetRotX = threeRefs.current.baseRot.x + mouseTiltRef.current.y * 0.02 + threeRefs.current.extraRot.x;
+          pivot.rotation.x += (targetRotX - pivot.rotation.x) * 0.08;
+          pivot.rotation.z += (threeRefs.current.baseRot.z - pivot.rotation.z) * 0.08;
+        } else if (curStage === "rewards") {
+          pivot.visible = false;
+        }
+      }
+
+      renderer.render(scene, camera);
+    };
+
+    renderLoop();
+
+    // Resize Handler
+    const handleResize = () => {
+      if (!container || !renderer || !camera) return;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", handleResize);
+      renderer.dispose();
+      scene.clear();
+    };
+  }, []);
+
+  // Mouse tilt tracking & interactive drag rotation
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (!containerRef.current) return;
     const rect = containerRef.current.getBoundingClientRect();
     const x = (e.clientX - rect.left) / rect.width - 0.5;
     const y = (e.clientY - rect.top) / rect.height - 0.5;
-    setMouseTilt({ x: x * 14, y: -y * 14 });
+
+    const tilt = { x: x * 12, y: -y * 12 };
+    setMouseTilt(tilt);
+    mouseTiltRef.current = tilt;
+
+    if (threeRefs.current.isDragging && threeRefs.current.shoePivot) {
+      const deltaX = e.clientX - threeRefs.current.prevMousePos.x;
+      const deltaY = e.clientY - threeRefs.current.prevMousePos.y;
+      threeRefs.current.shoePivot.rotation.y += deltaX * 0.012;
+      threeRefs.current.extraRot.x += deltaY * 0.006;
+      threeRefs.current.prevMousePos = { x: e.clientX, y: e.clientY };
+    }
+  };
+
+  const handleMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
+    threeRefs.current.isDragging = true;
+    threeRefs.current.prevMousePos = { x: e.clientX, y: e.clientY };
+  };
+
+  const handleMouseUp = () => {
+    threeRefs.current.isDragging = false;
   };
 
   const handleMouseLeave = () => {
+    threeRefs.current.isDragging = false;
     setMouseTilt({ x: 0, y: 0 });
+    mouseTiltRef.current = { x: 0, y: 0 };
+    threeRefs.current.extraRot = { x: 0, y: 0 };
   };
 
-  // Main Film Timeline Loop (Exact timing & sequence from WebsiteCrafts.html)
+  // Main Film Timeline Loop: Starts from the very beginning only when user scrolls to this section
   useEffect(() => {
+    if (!isModelLoaded || !isInView) return;
+
     let t1: NodeJS.Timeout,
       t2: NodeJS.Timeout,
       t3: NodeJS.Timeout,
@@ -51,6 +286,21 @@ export function EcommerceRewardsFilmCard() {
       setActiveSpotlight(null);
       setCardsVisible({ center: false, left: false, right: false });
 
+      // Reset 3D Shoe Position & Scale in place
+      const pivot = threeRefs.current.shoePivot;
+      const bScale = threeRefs.current.baseScale;
+      if (pivot) {
+        pivot.visible = true;
+        pivot.scale.set(bScale, bScale, bScale);
+        pivot.position.set(0, -0.12, 0);
+        pivot.rotation.set(
+          threeRefs.current.baseRot.x,
+          threeRefs.current.baseRot.y,
+          threeRefs.current.baseRot.z
+        );
+        threeRefs.current.extraRot = { x: 0, y: 0 };
+      }
+
       // Step 1: Wait 1.4s, then move virtual cursor from top-right towards Buy Now
       t1 = setTimeout(() => {
         setCursorPos({ x: "62%", y: "83%" });
@@ -65,6 +315,37 @@ export function EcommerceRewardsFilmCard() {
           t3 = setTimeout(() => {
             setStage("bag");
 
+            // Smooth drop into cart bag
+            if (pivot) {
+              const startTime = Date.now();
+              const duration = 1800;
+              const initialScale = bScale;
+
+              const animateMerge = () => {
+                const elapsed = Date.now() - startTime;
+                const progress = Math.min(elapsed / duration, 1);
+
+                if (progress < 0.35) {
+                  // Float UPWARDS phase
+                  const pUp = progress / 0.35;
+                  pivot.position.y = -0.12 + pUp * 0.32;
+                  pivot.rotation.y -= 0.012;
+                } else {
+                  // Merge DOWNWARD into cart bag phase
+                  const pDown = (progress - 0.35) / 0.65;
+                  pivot.position.y = 0.20 - pDown * 0.52;
+                  const currentScale = initialScale * (1 - pDown * 0.78);
+                  pivot.scale.set(currentScale, currentScale, currentScale);
+                  pivot.rotation.y -= 0.012;
+                }
+
+                if (progress < 1) {
+                  requestAnimationFrame(animateMerge);
+                }
+              };
+              animateMerge();
+            }
+
             // Step 4: After shoe lands in bag (1.9s), the ₹4,299 price tag pops onto the bag
             t4 = setTimeout(() => {
               setBagPriceVisible(true);
@@ -73,6 +354,7 @@ export function EcommerceRewardsFilmCard() {
               t5 = setTimeout(() => {
                 setBagPriceVisible(false);
                 setStage("rewards");
+                if (pivot) pivot.visible = false;
 
                 // Typewriter Heading: "Get Rewards like"
                 const fullText = "Get Rewards like";
@@ -85,7 +367,7 @@ export function EcommerceRewardsFilmCard() {
                   } else {
                     clearInterval(typeInterval);
 
-                    // Staggered reveal of cards: Immediately fan out with boAt in center spotlight
+                    // Staggered reveal of cards: Fan out with boAt in center spotlight
                     t6 = setTimeout(() => {
                       setCardsVisible({ center: true, left: true, right: true });
                       setActiveSpotlight(0); // 0 = boAt (Center)
@@ -127,18 +409,33 @@ export function EcommerceRewardsFilmCard() {
       clearTimeout(t8);
       clearTimeout(tLoop);
     };
-  }, []);
+  }, [isModelLoaded, isInView]);
 
   return (
     <div className="w-full max-w-[450px] mx-auto p-2.5 xs:p-3 sm:p-3.5 rounded-[36px] bg-gradient-to-b from-[#521ae5] via-[#6835f5] via-[42%] via-[#8e5cff] via-[68%] via-[#d8c8ff] via-[88%] to-[#f3edff] shadow-[0_30px_60px_-10px_rgba(104,53,245,0.28),0_15px_35px_rgba(216,200,255,0.5)] select-none">
       <div
         ref={containerRef}
         onMouseMove={handleMouseMove}
+        onMouseDown={handleMouseDown}
+        onMouseUp={handleMouseUp}
         onMouseLeave={handleMouseLeave}
-        className="relative w-full h-[500px] xs:h-[540px] sm:h-[580px] rounded-[28px] bg-white overflow-hidden shadow-inner flex items-center justify-center"
+        className="relative w-full h-[500px] xs:h-[540px] sm:h-[580px] rounded-[28px] bg-white overflow-hidden shadow-inner flex items-center justify-center cursor-grab active:cursor-grabbing"
       >
+        {/* WebGL Canvas for 3D Shoe */}
+        <canvas
+          ref={canvasRef}
+          className="absolute inset-0 w-full h-full z-15 pointer-events-none"
+        />
+
+        {/* Loading Spinner */}
+        {!isModelLoaded && (
+          <div className="absolute inset-0 z-50 bg-white flex items-center justify-center">
+            <div className="w-9 h-9 border-[3.5px] border-slate-200 border-t-[#6366f1] rounded-full animate-spin" />
+          </div>
+        )}
+
         {/* ========================================================================= */}
-        {/* FRAME 1: EXACT 3D SNEAKER PRODUCT SHOWCASE */}
+        {/* FRAME 1: 3D SNEAKER PRODUCT SHOWCASE CARD */}
         {/* ========================================================================= */}
         <AnimatePresence>
           {stage === "product" && (
@@ -147,10 +444,10 @@ export function EcommerceRewardsFilmCard() {
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.88 }}
               transition={{ duration: 0.6, ease: [0.4, 0, 0.2, 1] }}
-              className="absolute w-[86%] h-[380px] xs:h-[400px] sm:h-[410px] rounded-[28px] bg-gradient-to-br from-[#cbd5e1]/60 to-[#94a3b8]/42 backdrop-blur-xl border-[1.5px] border-white/70 shadow-[inset_0_1.5px_2.5px_rgba(255,255,255,0.85),0_20px_40px_rgba(15,23,42,0.12)] p-4 sm:p-5 flex flex-col justify-between z-20 pointer-events-none"
+              className="absolute w-[86%] h-[380px] xs:h-[400px] sm:h-[410px] rounded-[28px] bg-gradient-to-br from-[#cbd5e1]/60 to-[#94a3b8]/42 backdrop-blur-xl border-[1.5px] border-white/70 shadow-[inset_0_1.5px_2.5px_rgba(255,255,255,0.85),0_20px_40px_rgba(15,23,42,0.12)] p-4 sm:p-5 flex flex-col justify-between z-10 pointer-events-none"
             >
               {/* Product Top Header Badge */}
-              <div className="flex items-center justify-between w-full relative z-30">
+              <div className="flex items-center justify-between w-full relative z-20">
                 <span className="text-[11px] font-extrabold uppercase tracking-widest text-slate-700 bg-white/70 px-3 py-1 rounded-full border border-white/60 shadow-sm">
                   Exclusive Edition
                 </span>
@@ -159,54 +456,11 @@ export function EcommerceRewardsFilmCard() {
                 </span>
               </div>
 
-              {/* Exact 3D Blue Sneaker Floating Model matching Screenshot 2 */}
-              <motion.div
-                style={{
-                  rotateX: mouseTilt.y,
-                  rotateY: mouseTilt.x,
-                  transformPerspective: 1000,
-                }}
-                className="relative my-auto flex items-center justify-center w-full h-[220px] pointer-events-auto cursor-grab active:cursor-grabbing"
-              >
-                {/* Dynamic Ambient Drop Shadow */}
-                <motion.div
-                  animate={{
-                    scale: [1, 1.08, 1],
-                    opacity: [0.28, 0.18, 0.28],
-                    x: [8, -8, 8],
-                  }}
-                  transition={{
-                    duration: 3.6,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="absolute bottom-2 w-[220px] h-[32px] rounded-full bg-slate-900/60 blur-xl pointer-events-none"
-                />
-
-                {/* The Exact Blue Suede Sneaker matching Screenshot 2 with right-to-left 3D rotation */}
-                <motion.img
-                  src="/sneaker.png"
-                  alt="Blue Suede Sneaker"
-                  style={{
-                    transformPerspective: 1200,
-                    transformStyle: "preserve-3d",
-                  }}
-                  animate={{
-                    y: [-6, 6, -6],
-                    rotateY: [16, -16, 16],
-                    rotateZ: [-1.5, 1.5, -1.5],
-                  }}
-                  transition={{
-                    duration: 3.6,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                  }}
-                  className="w-[260px] xs:w-[280px] sm:w-[310px] h-auto object-contain drop-shadow-[0_20px_30px_rgba(14,165,233,0.28)] filter contrast-[1.03] select-none pointer-events-none"
-                />
-              </motion.div>
+              {/* Center Space for 3D Shoe */}
+              <div className="relative my-auto w-full h-[200px]" />
 
               {/* Bottom Price Tag + Buy Now Button */}
-              <div className="flex items-center justify-center gap-3 w-full relative z-30 pointer-events-auto">
+              <div className="flex items-center justify-center gap-3 w-full relative z-20 pointer-events-auto">
                 <div className="bg-[#0f172a]/85 backdrop-blur-md text-white text-[13.5px] font-extrabold tracking-[0.2px] px-4.5 py-2.5 rounded-full border border-white/16 shadow-[0_6px_18px_rgba(15,23,42,0.18)]">
                   ₹4,299
                 </div>
@@ -258,18 +512,8 @@ export function EcommerceRewardsFilmCard() {
               animate={{ opacity: 1, scale: 1, y: 0 }}
               exit={{ opacity: 0, scale: 0.4, y: -40 }}
               transition={{ duration: 0.8, ease: [0.34, 1.56, 0.64, 1] }}
-              className="absolute z-30 flex flex-col items-center justify-center w-[165px] h-[205px] pointer-events-none"
+              className="absolute z-20 flex flex-col items-center justify-center w-[165px] h-[205px] pointer-events-none"
             >
-              {/* Sneaker dropping into bag animation */}
-              <motion.img
-                src="/sneaker.png"
-                alt="Blue Suede Sneaker"
-                initial={{ y: -75, scale: 0.85, opacity: 1, rotateY: 0, rotateZ: 0 }}
-                animate={{ y: 20, scale: 0.26, opacity: 0, rotateY: -15, rotateZ: 6 }}
-                transition={{ duration: 1.3, ease: "easeInOut" }}
-                className="absolute w-[180px] h-auto object-contain z-10 pointer-events-none"
-              />
-
               <svg
                 viewBox="0 0 200 240"
                 className="w-full h-full drop-shadow-[0_20px_30px_rgba(15,23,42,0.22)] relative z-20"
@@ -367,19 +611,12 @@ export function EcommerceRewardsFilmCard() {
                       </div>
 
                       {/* Brand Logo: boAt */}
-                      <div className="my-auto flex items-center justify-center z-10">
-                        <div className="flex items-center gap-1.5">
-                          <svg
-                            viewBox="0 0 32 32"
-                            className="w-8 h-8 text-[#e11d48]"
-                            fill="currentColor"
-                          >
-                            <path d="M16 4L6 22h20L16 4zm0 6l6 10H10l6-10z" />
-                          </svg>
-                          <span className="font-extrabold text-2xl tracking-tight text-white font-sans lowercase">
-                            bo<span className="text-[#e11d48]">At</span>
-                          </span>
-                        </div>
+                      <div className="my-auto flex items-center justify-center z-10 px-2 py-1">
+                        <img
+                          src="/logo/Boat.jfif"
+                          alt="boAt Logo"
+                          className="h-14 max-w-[135px] w-auto object-contain rounded-2xl drop-shadow-[0_4px_14px_rgba(0,0,0,0.6)] select-none"
+                        />
                       </div>
 
                       {/* Reward Tag */}
@@ -433,15 +670,12 @@ export function EcommerceRewardsFilmCard() {
                       </div>
 
                       {/* Brand Logo: Swiggy */}
-                      <div className="my-auto flex items-center justify-center z-10">
-                        <div className="flex items-center gap-2">
-                          <div className="w-9 h-9 rounded-full bg-[#fc8019] flex items-center justify-center text-white font-bold text-base shadow-md">
-                            S
-                          </div>
-                          <span className="font-extrabold text-xl tracking-tight text-white font-sans">
-                            SWIGGY
-                          </span>
-                        </div>
+                      <div className="my-auto flex items-center justify-center z-10 px-2 py-1">
+                        <img
+                          src="/logo/swiggy.png"
+                          alt="Swiggy Logo"
+                          className="h-14 max-w-[135px] w-auto object-contain rounded-2xl drop-shadow-[0_4px_14px_rgba(0,0,0,0.6)] select-none"
+                        />
                       </div>
 
                       {/* Reward Tag */}

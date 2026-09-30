@@ -65,14 +65,26 @@ export function Footer() {
       <div className="relative mx-auto max-w-6xl px-4 sm:px-6 z-10">
         <div className="grid grid-cols-2 gap-8 sm:grid-cols-4 md:grid-cols-[1.4fr_repeat(4,1fr)]">
           <div className="col-span-2 sm:col-span-1 md:col-span-1">
-            <img
-              src={cikkaLogo}
-              alt="Cikka"
-              width={128}
-              height={44}
-              loading="lazy"
-              className="h-8 sm:h-9 w-auto object-contain"
-            />
+            <a
+              href="/"
+              onClick={(e) => {
+                e.preventDefault();
+                window.scrollTo(0, 0);
+                window.location.href = "/";
+                window.location.reload();
+              }}
+              className="inline-block cursor-pointer transition-opacity hover:opacity-80 select-none"
+              aria-label="Cikka home"
+            >
+              <img
+                src={cikkaLogo}
+                alt="Cikka"
+                width={128}
+                height={44}
+                loading="lazy"
+                className="h-8 sm:h-9 w-auto object-contain"
+              />
+            </a>
             <p className="mt-4 max-w-[15rem] text-xs sm:text-sm leading-relaxed text-slate-400">
               A perfect place for all of your credit card activity.
             </p>

@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WebsiteCrafts - Cikka Luxe Split-Receipt</title>
+    <!-- Three.js CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        body {
+            background-color: #09090b;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 20px;
+            user-select: none;
+            overflow-x: hidden;
+        }
+
+        /* Ambient Purple Outer Frame */
+        .purple-gradient-frame {
+            background: linear-gradient(180deg, #521ae5 0%, #6835f5 40%, #8e5cff 70%, #d8c8ff 90%, #f3edff 100%);
+            padding: 12px;
+            border-radius: 36px;
+            box-shadow: 0 30px 70px -15px rgba(104, 53, 245, 0.35), 0 15px 35px rgba(216, 200, 255, 0.4);
+            max-width: 860px;
+            width: 100%;
+            display: flex;
+            position: relative;
+        }
+
+        /* Dual Grid Container */
+        .split-card-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            width: 100%;
+        }
+
+        @media (max-width: 768px) {
+            .split-card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* LEFT CARD: Pure White Luxe Product Showcase */
+        .product-card {
+            background: #ffffff;
+            border-radius: 28px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.06);
+            border: 1px solid rgba(226, 232, 240, 0.9);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tag-pill {
+            display: inline-flex;
+            align-items: center;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+            color: #6366f1;
+            background: #eff0fe;
+            padding: 4px 12px;
+            border-radius: 999px;
+            border: 1px solid rgba(99, 102, 241, 0.2);
+        }
+
+        .tag-mono {
+            font-size: 11px;
+            font-family: monospace;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+        .card-heading {
+            font-size: 26px;
+            font-weight: 800;
+            color: #0f172a;
+            line-height: 1.15;
+            margin-top: 10px;
+            letter-spacing: -0.5px;
+        }
+
+        .card-desc {
+            font-size: 12.5px;
+            color: #64748b;
+            line-height: 1.5;
+            margin-top: 6px;
+        }
+
+        /* 3D Canvas Viewport Box */
+        .canvas-box {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            border-radius: 20px;
+            background: linear-gradient(180deg, #f8fafc 0%, #f1f5f9 100%);
+            border: 1px solid #e2e8f0;
+            margin: 14px 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            cursor: grab;
+        }
+
+        .canvas-box:active {
+            cursor: grabbing;
+        }
+
+        #webgl-canvas {
+            width: 100%;
+            height: 100%;
+            display: block;
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+        }
+
+        .floating-badge {
+            position: absolute;
+            z-index: 10;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 6px 12px;
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .badge-left {
+            bottom: 12px;
+            left: 12px;
+            background: rgba(255, 255, 255, 0.92);
+            color: #1e293b;
+            border: 1px solid #e2e8f0;
+        }
+
+        .badge-right {
+            bottom: 12px;
+            right: 12px;
+            background: rgba(99, 102, 241, 0.12);
+            color: #4f46e5;
+            border: 1px solid rgba(99, 102, 241, 0.25);
+        }
+
+        .pulse-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #10b981;
+            box-shadow: 0 0 8px #10b981;
+        }
+
+        .size-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding-top: 4px;
+        }
+
+        .size-label {
+            font-size: 12px;
+            font-weight: 700;
+            color: #334155;
+        }
+
+        .size-chips {
+            display: flex;
+            gap: 6px;
+        }
+
+        .size-chip {
+            padding: 4px 10px;
+            font-size: 11.5px;
+            font-weight: 700;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            background: #f8fafc;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .size-chip.active {
+            background: #0f172a;
+            color: #ffffff;
+            border-color: #0f172a;
+        }
+
+        /* RIGHT CARD: Obsidian Digital Reward Summary & Receipt */
+        .receipt-card {
+            background: #0c0f17;
+            border-radius: 28px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.65), 0 0 35px rgba(99, 102, 241, 0.18);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .receipt-glow {
+            position: absolute;
+            top: -40px;
+            right: -40px;
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background: rgba(99, 102, 241, 0.22);
+            filter: blur(50px);
+            pointer-events: none;
+        }
+
+        .receipt-header-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .receipt-title {
+            font-size: 11px;
+            font-family: monospace;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #94a3b8;
+            font-weight: 700;
+        }
+
+        .return-badge {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: #34d399;
+            background: rgba(6, 78, 59, 0.7);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            padding: 3px 10px;
+            border-radius: 999px;
+        }
+
+        .line-items-box {
+            margin-top: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .line-item-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 13px;
+            padding: 7px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            color: #cbd5e1;
+        }
+
+        .line-item-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 9px 12px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.07);
+            font-size: 13px;
+            color: #e2e8f0;
+        }
+
+        .text-green {
+            color: #34d399;
+            font-weight: 700;
+        }
+
+        .text-purple {
+            color: #a5b4fc;
+            font-weight: 700;
+        }
+
+        /* Net Effective Cost Bento Box */
+        .net-cost-box {
+            margin-top: 16px;
+            padding: 16px 18px;
+            border-radius: 18px;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .net-cost-label {
+            font-size: 10px;
+            font-family: monospace;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #94a3b8;
+            display: block;
+        }
+
+        .net-cost-amount {
+            font-size: 28px;
+            font-weight: 800;
+            color: #ffffff;
+            letter-spacing: -0.5px;
+        }
+
+        .saved-pill {
+            font-size: 11px;
+            font-weight: 700;
+            color: #6ee7b7;
+            background: rgba(16, 185, 129, 0.2);
+            border: 1px solid rgba(52, 211, 153, 0.35);
+            padding: 4px 10px;
+            border-radius: 8px;
+        }
+
+        /* Bottom Action Footer */
+        .receipt-footer {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .partner-perks-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .partner-perks-label {
+            font-size: 11px;
+            color: #94a3b8;
+        }
+
+        .partner-logos {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .partner-logo-img {
+            height: 22px;
+            width: auto;
+            border-radius: 5px;
+            object-fit: contain;
+            opacity: 0.85;
+        }
+
+        .pay-btn {
+            width: 100%;
+            padding: 13px;
+            border-radius: 16px;
+            font-size: 14px;
+            font-weight: 700;
+            color: #ffffff;
+            background: linear-gradient(90deg, #6366f1 0%, #7c3aed 50%, #9333ea 100%);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 8px 25px rgba(99, 102, 241, 0.45);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+        }
+
+        .pay-btn:hover {
+            box-shadow: 0 12px 35px rgba(99, 102, 241, 0.6);
+            transform: translateY(-1px);
+        }
+
+        .pay-btn:active {
+            transform: scale(0.97);
+        }
+
+        .pay-btn.paid-state {
+            background: #10b981;
+            box-shadow: 0 0 30px rgba(16, 185, 129, 0.45);
+        }
+
+        /* Loader Overlay */
+        .loading-overlay {
+            position: absolute;
+            inset: 0;
+            background: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 50;
+            transition: opacity 0.4s ease;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .spinner {
+            width: 32px;
+            height: 32px;
+            border: 3px solid #e2e8f0;
+            border-top-color: #6366f1;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="purple-gradient-frame">
+        <div class="split-card-grid">
+
+            <!-- LEFT CARD: LUXE PRODUCT SHOWCASE -->
+            <div class="product-card">
+                <div>
+                    <div style="display: flex; justify-content: space-between; align-items: center;">
+                        <span class="tag-pill">Luxe Footwear</span>
+                        <span class="tag-mono">Direct Settlement</span>
+                    </div>
+
+                    <h2 class="card-heading">Blue Suede Edition<br />Sneakers</h2>
+                    <p class="card-desc">Handcrafted suede low-top sneakers with ergonomic footbed and custom rubber sole.</p>
+                </div>
+
+                <!-- 3D Canvas Box -->
+                <div class="canvas-box" id="canvasContainer">
+                    <div class="loading-overlay" id="loader">
+                        <div class="spinner"></div>
+                    </div>
+
+                    <canvas id="webgl-canvas"></canvas>
+
+                    <div class="floating-badge badge-left">
+                        <div class="pulse-dot"></div>
+                        ₹50 Cashback
+                    </div>
+
+                    <div class="floating-badge badge-right">
+                        <span>💎</span>
+                        +1,000 CI Points
+                    </div>
+                </div>
+
+                <!-- Size Selector -->
+                <div class="size-row">
+                    <span class="size-label">Select Size:</span>
+                    <div class="size-chips">
+                        <button class="size-chip" onclick="selectSize(this)">UK 7</button>
+                        <button class="size-chip" onclick="selectSize(this)">UK 8</button>
+                        <button class="size-chip active" onclick="selectSize(this)">UK 9</button>
+                        <button class="size-chip" onclick="selectSize(this)">UK 10</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- RIGHT CARD: OBSIDIAN REWARD SUMMARY & DIGITAL RECEIPT -->
+            <div class="receipt-card">
+                <div class="receipt-glow"></div>
+
+                <div>
+                    <div class="receipt-header-row">
+                        <span class="receipt-title">Reward Summary</span>
+                        <span class="return-badge">16% Return</span>
+                    </div>
+
+                    <div class="line-items-box">
+                        <div class="line-item-row">
+                            <span>Retail Price (1x)</span>
+                            <span style="font-weight: 700; color: #fff;">₹4,999</span>
+                        </div>
+
+                        <div class="line-item-card">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="width: 6px; height: 6px; border-radius: 50%; background: #34d399;"></div>
+                                Direct Cashback
+                            </div>
+                            <span class="text-green">− ₹50</span>
+                        </div>
+
+                        <div class="line-item-card">
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                                <div style="width: 6px; height: 6px; border-radius: 50%; background: #818cf8;"></div>
+                                CI Points Credited
+                            </div>
+                            <span class="text-purple">+1,000 CI</span>
+                        </div>
+                    </div>
+
+                    <div class="net-cost-box">
+                        <div>
+                            <span class="net-cost-label">Net Effective Cost</span>
+                            <span class="net-cost-amount">₹4,949</span>
+                        </div>
+                        <span class="saved-pill">₹50 Saved</span>
+                    </div>
+                </div>
+
+                <div class="receipt-footer">
+                    <div class="partner-perks-row">
+                        <span class="partner-perks-label">Instant partner perks included:</span>
+                        <div class="partner-logos">
+                            <img src="logo/Boat.jfif" alt="boAt" class="partner-logo-img" onerror="this.src='Boat.jfif'" />
+                            <img src="logo/swiggy.png" alt="Swiggy" class="partner-logo-img" onerror="this.src='Swiggy.png'" />
+                        </div>
+                    </div>
+
+                    <button class="pay-btn" id="payBtn" onclick="handlePay()">
+                        <span>⚡ Pay ₹4,949 with Cikka</span>
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const container = document.getElementById('canvasContainer');
+        const canvas = document.getElementById('webgl-canvas');
+        const loaderOverlay = document.getElementById('loader');
+        const payBtn = document.getElementById('payBtn');
+
+        function selectSize(btn) {
+            document.querySelectorAll('.size-chip').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function handlePay() {
+            payBtn.classList.add('paid-state');
+            payBtn.innerHTML = '<span>✓</span> Payment Successful & Rewards Earned!';
+            setTimeout(() => {
+                payBtn.classList.remove('paid-state');
+                payBtn.innerHTML = '<span>⚡ Pay ₹4,949 with Cikka</span>';
+            }, 3500);
+        }
+
+        // Scene, Camera, Renderer
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(34, container.clientWidth / container.clientHeight, 0.1, 100);
+        camera.position.set(0, -0.05, 8.4);
+
+        const renderer = new THREE.WebGLRenderer({ canvas: canvas, antialias: true, alpha: true });
+        renderer.setSize(container.clientWidth, container.clientHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+        // Studio Lights
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.4);
+        scene.add(ambientLight);
+
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1.2);
+        mainLight.position.set(5, 8, 6);
+        scene.add(mainLight);
+
+        const fillLight = new THREE.DirectionalLight(0x818cf8, 0.6);
+        fillLight.position.set(-6, 3, -4);
+        scene.add(fillLight);
+
+        const shoePivot = new THREE.Group();
+        scene.add(shoePivot);
+        let shoeModel = null;
+
+        // Load Model
+        const gltfLoader = new THREE.GLTFLoader();
+        function initShoeModel(gltf) {
+            const rawModel = gltf.scene;
+            const box = new THREE.Box3().setFromObject(rawModel);
+            const center = box.getCenter(new THREE.Vector3());
+            const size = box.getSize(new THREE.Vector3());
+
+            rawModel.position.set(-center.x, -center.y, -center.z);
+            shoePivot.clear();
+            shoePivot.add(rawModel);
+
+            const maxDim = Math.max(size.x, size.y, size.z);
+            const targetScale = 2.05 / maxDim;
+            shoePivot.scale.set(targetScale, targetScale, targetScale);
+            shoePivot.position.set(0, -0.12, 0);
+            shoePivot.rotation.set(THREE.MathUtils.degToRad(8), THREE.MathUtils.degToRad(-45), THREE.MathUtils.degToRad(-24));
+
+            rawModel.traverse((child) => {
+                if (child.isMesh && child.material) {
+                    const mats = Array.isArray(child.material) ? child.material : [child.material];
+                    mats.forEach((mat) => {
+                        mat.roughness = 0.65;
+                        mat.metalness = 0.05;
+                    });
+                }
+            });
+
+            shoeModel = shoePivot;
+            loaderOverlay.classList.add('hidden');
+        }
+
+        gltfLoader.load('MaterialsVariantsShoe.glb', initShoeModel, undefined, () => {
+            gltfLoader.load('/MaterialsVariantsShoe.glb', initShoeModel);
+        });
+
+        // Mouse Drag / Interactive Tilt
+        let isDragging = false;
+        let prevMousePos = { x: 0, y: 0 };
+        let extraRot = { x: 0, y: 0 };
+
+        container.addEventListener('mousedown', (e) => {
+            isDragging = true;
+            prevMousePos = { x: e.clientX, y: e.clientY };
+        });
+
+        window.addEventListener('mouseup', () => { isDragging = false; });
+
+        container.addEventListener('mousemove', (e) => {
+            if (isDragging && shoePivot) {
+                const deltaX = e.clientX - prevMousePos.x;
+                const deltaY = e.clientY - prevMousePos.y;
+                shoePivot.rotation.y += deltaX * 0.012;
+                extraRot.x += deltaY * 0.006;
+                prevMousePos = { x: e.clientX, y: e.clientY };
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (!container) return;
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+            camera.aspect = w / h;
+            camera.updateProjectionMatrix();
+            renderer.setSize(w, h);
+        });
+
+        function animate() {
+            requestAnimationFrame(animate);
+            if (shoePivot) {
+                shoePivot.rotation.y -= 0.008;
+            }
+            renderer.render(scene, camera);
+        }
+
+        animate();
+    </script>
+</body>
+
+</html>

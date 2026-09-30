@@ -1,497 +1,721 @@
-import { useState } from "react";
-import { Sparkles, ArrowRight, CheckCircle2, TrendingUp, ShoppingBag, Zap, ShieldCheck, X, Check } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import * as THREE from "three";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import headphones from "@/assets/mall-headphones.jpg";
 import kettle from "@/assets/mall-kettle.jpg";
 
 interface ProductItem {
   id: string;
   name: string;
+  tabLabel: string;
   category: string;
-  img: string;
+  img?: string;
+  is3D?: boolean;
+  modelUrl?: string;
   retailPrice: number;
   cashbackINR: number;
   ciPoints: number;
   tagline: string;
   highlights: string[];
-}
-
-interface RewardItem {
-  id: string;
-  brand: string;
-  category: "food" | "travel" | "luxe" | "tech";
-  logoUrl?: string;
-  title: string;
-  discount: string;
-  costPoints: number;
-  description: string;
-  tag: string;
-  code: string;
+  optionsLabel: string;
+  options: string[];
 }
 
 const PRODUCTS: ProductItem[] = [
   {
     id: "sneakers",
     name: "Blue Suede Edition Sneakers",
+    tabLabel: "Sneakers",
     category: "Luxe Footwear",
-    img: "/sneaker.png",
+    is3D: true,
+    modelUrl: "/MaterialsVariantsShoe.glb",
     retailPrice: 4999,
     cashbackINR: 50,
     ciPoints: 1000,
     tagline: "Handcrafted suede low-top sneakers with ergonomic footbed and custom rubber sole.",
     highlights: ["100% Genuine Italian Suede", "Instant Cashback Clearance"],
+    optionsLabel: "Select Size:",
+    options: ["UK 7", "UK 8", "UK 9", "UK 10"],
   },
   {
     id: "headphones",
     name: "Sony WH-1000XM5 Headphones",
+    tabLabel: "Headphones",
     category: "Audio Engineering",
     img: headphones,
+    is3D: true,
+    modelUrl: "/headphone.glb",
     retailPrice: 29990,
     cashbackINR: 350,
     ciPoints: 4500,
     tagline: "Industry-leading noise canceling with dual processors and 8 microphones.",
     highlights: ["30-Hour Battery Life", "4.5k Points Multiplier"],
+    optionsLabel: "Color:",
+    options: ["Midnight Black", "Silver", "Navy"],
   },
   {
-    id: "fragrance",
-    name: "Bella Vita Velvet Luxe Oud",
-    category: "Artisanal Fragrance",
-    img: kettle,
-    retailPrice: 1899,
-    cashbackINR: 30,
-    ciPoints: 650,
-    tagline: "Long-lasting luxury perfume crafted with rare notes of French amber and velvet oud.",
-    highlights: ["Premium Eau de Parfum", "Direct Brand Cash"],
+    id: "cosmetics",
+    name: "Baboski Blue Freesia Hand Cream",
+    tabLabel: "Cosmetics",
+    category: "Cosmetics",
+    is3D: true,
+    modelUrl: "/cosmetic.glb",
+    retailPrice: 499,
+    cashbackINR: 40,
+    ciPoints: 600,
+    tagline: "Enriched with Alpha Arbutin & Vitamin F for deeply hydrated, velvety soft hands.",
+    highlights: ["Alpha Arbutin & Vitamin F", "Blue Freesia Fragrance"],
+    optionsLabel: "Weight:",
+    options: ["30g", "30g (Pack of 2)", "30g (Pack of 3)"],
   },
 ];
 
-const REWARDS_CATALOG: RewardItem[] = [
+interface PartnerPerk {
+  id: string;
+  name: string;
+  logo: string;
+  perk: string;
+  desc: string;
+  code: string;
+}
+
+const PARTNER_OPTIONS: PartnerPerk[] = [
   {
-    id: "zomato-200",
-    brand: "Zomato",
-    category: "food",
-    logoUrl: "/brands/zomato.svg",
-    title: "₹200 Gourmet Dining Voucher",
-    discount: "₹200 OFF",
-    costPoints: 500,
-    description: "Valid on gourmet dining & food delivery orders above ₹499 across all major cities.",
-    tag: "Food & Dining",
-    code: "CIKKA-ZOMATO200",
-  },
-  {
-    id: "swiggy-150",
-    brand: "Swiggy",
-    category: "food",
-    logoUrl: "/brands/swiggy.svg",
-    title: "Swiggy One VIP Access + ₹150 Voucher",
-    discount: "₹150 OFF",
-    costPoints: 350,
-    description: "Free unlimited delivery + ₹150 cashback voucher credited directly to Swiggy Money.",
-    tag: "Food & Instamart",
+    id: "swiggy",
+    name: "Swiggy",
+    logo: "/logo/swiggy.png",
+    perk: "₹150 OFF",
+    desc: "Free Delivery + ₹150 Voucher",
     code: "CIKKA-SWIGGY150",
   },
   {
-    id: "mmt-flights",
-    brand: "MakeMyTrip",
-    category: "travel",
-    logoUrl: "/brands/makemytrip.svg",
-    title: "Flight & Holiday Voucher",
-    discount: "₹1,500 OFF",
-    costPoints: 1200,
-    description: "Flat ₹1,500 discount on domestic & international flight tickets with zero convenience fee.",
-    tag: "Flights & Travel",
-    code: "CIKKA-FLY1500",
+    id: "boat",
+    name: "boAt",
+    logo: "/logo/Boat.jfif",
+    perk: "₹500 OFF",
+    desc: "Flat ₹500 on Audio Gear",
+    code: "CIKKA-BOAT500",
   },
   {
-    id: "ixigo-trains",
-    brand: "Ixigo / IRCTC",
-    category: "travel",
-    logoUrl: "/brands/ixigo.svg",
-    title: "100% Zero Gateway Fee on Trains",
-    discount: "ZERO FEE",
-    costPoints: 250,
-    description: "Complete waiving of payment gateway and service charges on all train ticket bookings.",
-    tag: "Train Booking",
-    code: "CIKKA-TRAINPASS",
-  },
-  {
-    id: "cleartrip-hotels",
-    brand: "Cleartrip",
-    category: "travel",
-    logoUrl: "/brands/cleartrip.svg",
-    title: "Luxury Hotel & Staycation Discount",
-    discount: "₹2,000 OFF",
-    costPoints: 1500,
-    description: "Instant discount on 5-star hotel bookings, resorts & boutique staycations worldwide.",
-    tag: "Hotels & Stays",
-    code: "CIKKA-STAY2000",
-  },
-  {
-    id: "bellavita-oud",
-    brand: "Bella Vita Luxury",
-    category: "luxe",
-    logoUrl: "/brands/bellavita.svg",
-    title: "Free French Oud Perfume + ₹300 Credit",
-    discount: "FREE OUD + ₹300",
-    costPoints: 600,
-    description: "Complimentary 20ml French Velvet Oud EDP bottle + ₹300 store credit voucher.",
-    tag: "Fragrance & Luxe",
-    code: "CIKKA-BELLAVITA",
-  },
-  {
-    id: "ludic-sneakers",
-    brand: "Ludic Footwear",
-    category: "luxe",
-    logoUrl: "/brands/ludic.svg",
-    title: "Luxury Streetwear Voucher",
-    discount: "₹1,000 OFF",
-    costPoints: 800,
-    description: "Flat ₹1,000 discount on Ludic handcrafted suede & leather sneaker collection.",
-    tag: "Luxe Footwear",
-    code: "CIKKA-LUDIC1000",
-  },
-  {
-    id: "sony-tech",
-    brand: "Sony Audio",
-    category: "tech",
-    logoUrl: "/brands/sony.svg",
-    title: "Headphones & Speaker Privilege Voucher",
-    discount: "₹2,500 OFF",
-    costPoints: 2000,
-    description: "Voucher valid on WH-1000XM5 noise-canceling headphones & BRAVIA soundbars.",
-    tag: "Audio Tech",
-    code: "CIKKA-SONY2500",
-  },
-  {
-    id: "apple-acc",
-    brand: "Apple Premium",
-    category: "tech",
-    logoUrl: "/brands/apple.svg",
-    title: "Apple Ecosystem Voucher Card",
-    discount: "₹3,000 OFF",
-    costPoints: 2500,
-    description: "Redeemable on MagSafe chargers, AirPods Pro, AppleCare+ and official cases.",
-    tag: "Apple Tech",
-    code: "CIKKA-APPLE3000",
+    id: "spotify",
+    name: "Spotify",
+    logo: "/logo/spotify.svg",
+    perk: "3 Mo Free",
+    desc: "3 Months Spotify Premium Pass",
+    code: "CIKKA-SPOTIFY3M",
   },
 ];
 
-export function CikkaMall() {
-  const [selectedIndex, setSelectedIndex] = useState<number>(0);
-  const [quantity, setQuantity] = useState<number>(1);
-  const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
-  const [activeCategory, setActiveCategory] = useState<string>("all");
-  const [copiedCouponId, setCopiedCouponId] = useState<string | null>(null);
+// Helper to construct exact 3D Cosmetic Squeeze Tube Geometry & Materials
+function createCosmeticTubeGroup(): THREE.Group {
+  const group = new THREE.Group();
 
-  const activeProduct = (PRODUCTS[selectedIndex] || PRODUCTS[0]) as (typeof PRODUCTS)[0];
+  const texLoader = new THREE.TextureLoader();
+  const wrapTex = texLoader.load("/baboski_tube_3d_wrap.png");
+  wrapTex.colorSpace = THREE.SRGBColorSpace;
+  wrapTex.flipY = true;
 
-  // Calculated Yield Values
-  const totalRetail = activeProduct.retailPrice * quantity;
-  const totalCashback = activeProduct.cashbackINR * quantity;
-  const totalPoints = activeProduct.ciPoints * quantity;
-  const netEffectivePrice = totalRetail - totalCashback;
-  const estimatedYieldPct = Math.round(((totalCashback + (totalPoints * 0.75)) / totalRetail) * 100);
+  // 1. Lofted Squeeze Tube Body
+  const segsY = 36;
+  const segsRadial = 64;
+  const height = 2.45;
+  const minY = -0.95;
+  const maxY = minY + height; // 1.5
 
-  const handleClaimCoupon = (id: string, code: string) => {
-    navigator.clipboard.writeText(code);
-    setCopiedCouponId(id);
-    setTimeout(() => setCopiedCouponId(null), 2500);
-  };
+  const positions: number[] = [];
+  const uvs: number[] = [];
+  const indices: number[] = [];
 
-  const filteredRewards = activeCategory === "all"
-    ? REWARDS_CATALOG
-    : REWARDS_CATALOG.filter((item) => item.category === activeCategory);
+  for (let iy = 0; iy <= segsY; iy++) {
+    const v = iy / segsY;
+    const y = minY + v * height;
+
+    // Smooth parametric transition from round cylinder base (v=0) to flat crimp top (v=1)
+    const rx = THREE.MathUtils.lerp(0.52, 0.82, Math.pow(v, 0.7));
+    const rz = THREE.MathUtils.lerp(0.52, 0.05, Math.pow(v, 0.85));
+
+    for (let ix = 0; ix <= segsRadial; ix++) {
+      const u = ix / segsRadial;
+      const theta = (u - 0.5) * Math.PI * 2;
+
+      const cosT = Math.cos(theta);
+      const sinT = Math.sin(theta);
+
+      const x = rx * sinT;
+      const z = rz * cosT;
+
+      positions.push(x, y, z);
+      uvs.push(u, v);
+    }
+  }
+
+  for (let iy = 0; iy < segsY; iy++) {
+    for (let ix = 0; ix < segsRadial; ix++) {
+      const a = iy * (segsRadial + 1) + ix;
+      const b = (iy + 1) * (segsRadial + 1) + ix;
+      const c = (iy + 1) * (segsRadial + 1) + (ix + 1);
+      const d = iy * (segsRadial + 1) + (ix + 1);
+      indices.push(a, b, d);
+      indices.push(b, c, d);
+    }
+  }
+
+  const tubeGeom = new THREE.BufferGeometry();
+  tubeGeom.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
+  tubeGeom.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
+  tubeGeom.setIndex(indices);
+  tubeGeom.computeVertexNormals();
+
+  const tubeMat = new THREE.MeshStandardMaterial({
+    map: wrapTex,
+    color: new THREE.Color("#ffffff"),
+    roughness: 0.38,
+    metalness: 0.04,
+    side: THREE.DoubleSide,
+  });
+
+  const tubeMesh = new THREE.Mesh(tubeGeom, tubeMat);
+  group.add(tubeMesh);
+
+  // 2. Top Crimp Seal with ribs
+  const crimpGeom = new THREE.BoxGeometry(1.66, 0.16, 0.08);
+  const crimpMat = new THREE.MeshStandardMaterial({
+    color: new THREE.Color("#ba9df6"),
+    roughness: 0.45,
+    metalness: 0.02,
+  });
+  const crimpMesh = new THREE.Mesh(crimpGeom, crimpMat);
+  crimpMesh.position.set(0, maxY + 0.07, 0);
+  group.add(crimpMesh);
+
+  // 3. Neck transition
+  const neckGeom = new THREE.CylinderGeometry(0.24, 0.26, 0.16, 32);
+  const neckMat = new THREE.MeshStandardMaterial({
+    color: new THREE.Color("#ffffff"),
+    roughness: 0.3,
+    metalness: 0.02,
+  });
+  const neckMesh = new THREE.Mesh(neckGeom, neckMat);
+  neckMesh.position.set(0, minY - 0.08, 0);
+  group.add(neckMesh);
+
+  // 4. White Faceted / Octagonal Cap
+  const capGeom = new THREE.CylinderGeometry(0.36, 0.39, 0.32, 8);
+  const capMat = new THREE.MeshStandardMaterial({
+    color: new THREE.Color("#ffffff"),
+    roughness: 0.25,
+    metalness: 0.02,
+  });
+  const capMesh = new THREE.Mesh(capGeom, capMat);
+  capMesh.position.set(0, minY - 0.31, 0);
+  group.add(capMesh);
+
+  // 5. Cap Base Ring Flange
+  const ringGeom = new THREE.CylinderGeometry(0.42, 0.42, 0.06, 8);
+  const ringMesh = new THREE.Mesh(ringGeom, capMat);
+  ringMesh.position.set(0, minY - 0.46, 0);
+  group.add(ringMesh);
+
+  return group;
+}
+
+// Interactive 3D Product Viewport Component (Supports Shoes, Headphones, Cosmetics)
+function Product3DCanvas({ modelUrl, id }: { modelUrl: string; id: string }) {
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  useEffect(() => {
+    const canvas = canvasRef.current;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
+
+    const width = container.clientWidth || 360;
+    const height = container.clientHeight || 220;
+
+    const scene = new THREE.Scene();
+    scene.background = null;
+
+    const camera = new THREE.PerspectiveCamera(32, width / height, 0.1, 100);
+    camera.position.set(0, 0.02, 5.8);
+
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: "high-performance",
+    });
+    renderer.setSize(width, height);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    // Studio Lighting
+    const ambientLight = new THREE.AmbientLight(0xffffff, 1.6);
+    scene.add(ambientLight);
+
+    const mainLight = new THREE.DirectionalLight(0xffffff, 1.4);
+    mainLight.position.set(5, 8, 6);
+    scene.add(mainLight);
+
+    const fillLight = new THREE.DirectionalLight(0x818cf8, 0.7);
+    fillLight.position.set(-6, 3, -4);
+    scene.add(fillLight);
+
+    const productPivot = new THREE.Group();
+    scene.add(productPivot);
+
+    if (id === "cosmetics") {
+      // Build authentic 3D Squeeze Tube matching Baboski screenshot
+      const tubeGroup = createCosmeticTubeGroup();
+      productPivot.clear();
+      productPivot.add(tubeGroup);
+      productPivot.scale.set(0.92, 0.92, 0.92);
+      productPivot.position.set(0, 0.02, 0);
+      productPivot.rotation.set(
+        THREE.MathUtils.degToRad(6),
+        THREE.MathUtils.degToRad(-15),
+        THREE.MathUtils.degToRad(0)
+      );
+      setIsLoaded(true);
+    } else {
+      const gltfLoader = new GLTFLoader();
+      const initModel = (gltfScene: THREE.Group) => {
+        // Remove any watermarks, badges, or promotional meshes embedded in models
+        const toRemove: THREE.Object3D[] = [];
+        gltfScene.traverse((child) => {
+          const name = (child.name || "").toLowerCase();
+          if (
+            name.includes("supavoxel") ||
+            name.includes("badge") ||
+            name.includes("watermark") ||
+            name === "object_11"
+          ) {
+            toRemove.push(child);
+          }
+        });
+        toRemove.forEach((obj) => {
+          if (obj.parent) {
+            obj.parent.remove(obj);
+          }
+        });
+
+        const box = new THREE.Box3().setFromObject(gltfScene);
+        const center = box.getCenter(new THREE.Vector3());
+        const size = box.getSize(new THREE.Vector3());
+
+        gltfScene.position.set(-center.x, -center.y, -center.z);
+        productPivot.clear();
+        productPivot.add(gltfScene);
+
+        const maxDim = Math.max(size.x, size.y, size.z);
+        const targetScale = (id === "headphones" ? 2.85 : 2.75) / maxDim;
+        productPivot.scale.set(targetScale, targetScale, targetScale);
+        productPivot.position.set(0, 0.02, 0);
+
+        if (id === "sneakers") {
+          productPivot.rotation.set(
+            THREE.MathUtils.degToRad(8),
+            THREE.MathUtils.degToRad(-45),
+            THREE.MathUtils.degToRad(-24)
+          );
+        } else if (id === "headphones") {
+          productPivot.rotation.set(
+            THREE.MathUtils.degToRad(6),
+            THREE.MathUtils.degToRad(-30),
+            THREE.MathUtils.degToRad(0)
+          );
+        }
+
+        gltfScene.traverse((child) => {
+          if ((child as THREE.Mesh).isMesh) {
+            const mesh = child as THREE.Mesh;
+            if (mesh.material) {
+              const mats = Array.isArray(mesh.material) ? mesh.material : [mesh.material];
+              mats.forEach((mat) => {
+                if ("roughness" in mat) mat.roughness = 0.55;
+                if ("metalness" in mat) mat.metalness = 0.15;
+              });
+            }
+          }
+        });
+
+        setIsLoaded(true);
+      };
+
+      const cleanUrl = modelUrl.startsWith("/") ? modelUrl.slice(1) : modelUrl;
+      gltfLoader.load(
+        modelUrl,
+        (gltf) => initModel(gltf.scene),
+        undefined,
+        () => {
+          gltfLoader.load(cleanUrl, (gltf) => initModel(gltf.scene));
+        }
+      );
+    }
+
+    // Render loop with in-place horizontal rotation
+    let animId: number;
+    const renderLoop = () => {
+      animId = requestAnimationFrame(renderLoop);
+      if (productPivot) {
+        productPivot.rotation.y -= 0.008;
+      }
+      renderer.render(scene, camera);
+    };
+    renderLoop();
+
+    // Resize handler
+    const handleResize = () => {
+      if (!container || !renderer || !camera) return;
+      const w = container.clientWidth;
+      const h = container.clientHeight;
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+      renderer.setSize(w, h);
+    };
+    window.addEventListener("resize", handleResize);
+
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", handleResize);
+      renderer.dispose();
+      scene.clear();
+    };
+  }, [modelUrl, id]);
 
   return (
-    <section id="mall" className="relative py-16 sm:py-32 md:py-44 overflow-hidden w-full max-w-full bg-[#f4f5f8] text-black">
-      <div className="relative mx-auto max-w-7xl px-4 sm:px-8">
+    <div ref={containerRef} className="relative w-full h-full flex items-center justify-center">
+      <canvas ref={canvasRef} className="w-full h-full block cursor-grab active:cursor-grabbing" />
+      {!isLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center bg-[#f8fafc]">
+          <div className="w-7 h-7 border-2 border-slate-200 border-t-[#6366f1] rounded-full animate-spin" />
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function CikkaMall() {
+  const [selectedIndex, setSelectedIndex] = useState<number>(0);
+  const [selectedOption, setSelectedOption] = useState<string>("UK 9");
+  const [isPaid, setIsPaid] = useState<boolean>(false);
+  const [selectedPartner, setSelectedPartner] = useState<string>("swiggy");
+  const [copiedCode, setCopiedCode] = useState<boolean>(false);
+
+  const activeProduct: ProductItem = PRODUCTS[selectedIndex] || (PRODUCTS[0] as ProductItem);
+  const activePartner = PARTNER_OPTIONS.find((p) => p.id === selectedPartner) || PARTNER_OPTIONS[0];
+
+  // Set default option when product changes
+  useEffect(() => {
+    if (activeProduct?.options && activeProduct.options.length > 0) {
+      setSelectedOption(activeProduct.options[0] || "UK 9");
+    }
+  }, [selectedIndex, activeProduct]);
+
+  // Yield calculations
+  const totalRetail = activeProduct.retailPrice;
+  const totalCashback = activeProduct.cashbackINR;
+  const totalPoints = activeProduct.ciPoints;
+  const netEffectivePrice = totalRetail - totalCashback;
+  const returnPercentage = Math.round(((totalCashback + totalPoints * 0.75) / totalRetail) * 100);
+
+  const handleCategoryChange = (idx: number) => {
+    setSelectedIndex(idx);
+    setIsPaid(false);
+    setCopiedCode(false);
+  };
+
+  const handlePay = () => {
+    setIsPaid(true);
+    setSelectedPartner("swiggy");
+    setCopiedCode(false);
+  };
+
+  const handleCopyCode = (code: string) => {
+    navigator.clipboard.writeText(code);
+    setCopiedCode(true);
+    setTimeout(() => {
+      setCopiedCode(false);
+      setIsPaid(false);
+    }, 800);
+  };
+
+  return (
+    <section
+      id="mall"
+      className="relative py-16 sm:py-28 md:py-36 overflow-hidden w-full max-w-full bg-[#f8fafc] text-black"
+    >
+      <div className="relative mx-auto max-w-6xl px-4 sm:px-6 md:px-8">
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-16">
-          <h2 className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl font-bold tracking-tight text-black leading-[1.05]">
-            Buy what you love.<br />
-            <span className="text-slate-500 font-normal mt-2 block">Get paid every time.</span>
+        <div className="text-center max-w-3xl mx-auto mb-10 sm:mb-14">
+          <h2 className="text-3xl xs:text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight text-slate-900 leading-[1.08]">
+            Buy what you love.
+            <br />
+            <span className="text-slate-500 font-normal mt-1.5 block">Get paid every time.</span>
           </h2>
-          <p className="mt-4 sm:mt-6 text-sm xs:text-base sm:text-xl text-slate-500 font-light leading-relaxed max-w-2xl mx-auto">
-            Every purchase on Cikka Mall returns direct cashback and high-value CI Points straight to your wallet.
+          <p className="mt-3.5 sm:mt-5 text-sm xs:text-base sm:text-lg text-slate-600 font-light leading-relaxed max-w-2xl mx-auto">
+            Every purchase on Cikka Mall returns direct cashback and high-value CI Points straight
+            to your wallet.
           </p>
         </div>
 
-        {/* Product Selector Pill Tabs */}
-        <div className="flex flex-wrap items-center justify-center gap-2 xs:gap-3 mb-10 sm:mb-14">
+        {/* Minimal Product Selector Tabs */}
+        <div className="flex items-center justify-center gap-2 xs:gap-3 mb-8 sm:mb-12">
           {PRODUCTS.map((prod, idx) => {
             const isActive = idx === selectedIndex;
             return (
               <button
                 key={prod.id}
-                onClick={() => setSelectedIndex(idx)}
-                className={`flex items-center gap-2 xs:gap-3.5 rounded-full px-4 xs:px-6 sm:px-7 py-2 xs:py-2.5 sm:py-3 text-xs xs:text-sm font-medium transition-all duration-300 backdrop-blur-xl ${isActive
-                    ? "border-transparent bg-[#7c3aed] text-white shadow-md shadow-purple-500/20"
-                    : "border border-slate-200 bg-white text-slate-500 hover:border-purple-300 hover:text-purple-900"
-                  }`}
+                onClick={() => handleCategoryChange(idx)}
+                className={`rounded-full px-5 xs:px-6 py-2 xs:py-2.5 text-xs xs:text-sm font-semibold tracking-tight transition-all duration-300 cursor-pointer shadow-sm ${
+                  isActive
+                    ? "bg-[#0f172a] text-white border border-[#0f172a] shadow-md scale-105"
+                    : "bg-white text-slate-600 border border-slate-200 hover:border-slate-300 hover:text-slate-900"
+                }`}
               >
-                <span>{prod.name}</span>
-                <span className="font-mono text-[10px] xs:text-xs text-zinc-400">₹{prod.retailPrice.toLocaleString("en-IN")}</span>
+                {prod.tabLabel}
               </button>
             );
           })}
         </div>
 
-        {/* Main 2-Column Authentic Glassmorphism Grid */}
-        <div className="grid gap-8 sm:gap-10 lg:grid-cols-12 items-stretch">
-          {/* Left Column: Product Spotlight (7 Cols) */}
-          <div className="lg:col-span-7 relative flex flex-col justify-between overflow-hidden rounded-[24px] xs:rounded-[30px] sm:rounded-[36px] bg-white bg-gradient-to-br from-white via-purple-50/50 to-purple-100/50 p-4 xs:p-6 sm:p-12 shadow-2xl shadow-black/5 border border-purple-100/50">
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/35 to-transparent" />
-            <div>
-              <div className="flex items-center justify-between gap-4 mb-4 sm:mb-6">
-                <span className="rounded-full border border-purple-200/60 bg-purple-50 px-3 xs:px-4 py-1 xs:py-1.5 text-[10px] xs:text-xs font-bold tracking-widest text-purple-900 uppercase shadow-sm">
-                  {activeProduct.category}
-                </span>
-                <span className="text-[11px] xs:text-xs sm:text-sm font-mono text-purple-900/60">
-                  Direct Settlement
-                </span>
+        {/* ========================================================================= */}
+        {/* HOLOGRAPHIC DUAL-CARD CONTAINER WITH CIKKA PURPLE GRADIENT FRAME */}
+        {/* ========================================================================= */}
+        <div className="w-full max-w-[880px] mx-auto p-2.5 xs:p-3 sm:p-3.5 rounded-[36px] bg-gradient-to-b from-[#521ae5] via-[#6835f5] via-[42%] via-[#8e5cff] via-[68%] via-[#d8c8ff] via-[88%] to-[#f3edff] shadow-[0_30px_70px_-15px_rgba(104,53,245,0.35),0_15px_35px_rgba(216,200,255,0.4)] select-none">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3.5 sm:gap-4.5 w-full items-stretch">
+            {/* ------------------------------------------------------------- */}
+            {/* LEFT CARD: LUXE PRODUCT SHOWCASE */}
+            {/* ------------------------------------------------------------- */}
+            <div className="bg-white rounded-[28px] p-5 xs:p-6 sm:p-7 flex flex-col justify-between shadow-sm border border-slate-200/90 relative overflow-hidden h-full">
+              <div className="h-[105px] xs:h-[112px] flex flex-col justify-start">
+                {/* Header Pills */}
+                <div className="flex items-center justify-between gap-3">
+                  <span className="inline-flex items-center text-[10.5px] xs:text-[11px] font-extrabold uppercase tracking-wider text-[#6366f1] bg-[#eff0fe] px-3 py-1 rounded-full border border-[#6366f1]/20">
+                    {activeProduct.category}
+                  </span>
+                  <span className="text-[11px] xs:text-xs text-slate-400 font-semibold tracking-tight">
+                    Direct Settlement
+                  </span>
+                </div>
+
+                {/* Product Title & Tagline */}
+                <h3 className="text-xl xs:text-[22px] sm:text-[24px] font-extrabold text-[#0f172a] leading-tight mt-2.5 tracking-tight line-clamp-1">
+                  {activeProduct.name}
+                </h3>
+                <p className="text-xs xs:text-[13px] text-slate-500 leading-relaxed mt-1.5 font-normal line-clamp-2">
+                  {activeProduct.tagline}
+                </p>
               </div>
 
-              <h3 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight text-slate-900 mb-2 sm:mb-3">
-                {activeProduct.name}
-              </h3>
-              <p className="text-xs xs:text-sm sm:text-base text-slate-600 font-light leading-relaxed mb-6 sm:mb-8">
-                {activeProduct.tagline}
-              </p>
+              {/* 3D Product Stage Box */}
+              <div className="relative w-full h-[250px] xs:h-[265px] sm:h-[275px] rounded-2xl bg-gradient-to-b from-[#f8fafc] to-[#f1f5f9] border border-slate-200 my-4 flex items-center justify-center overflow-hidden shrink-0">
+                {activeProduct.is3D ? (
+                  <Product3DCanvas
+                    key={activeProduct.id}
+                    modelUrl={activeProduct.modelUrl || "/MaterialsVariantsShoe.glb"}
+                    id={activeProduct.id}
+                  />
+                ) : (
+                  <img
+                    src={activeProduct.img}
+                    alt={activeProduct.name}
+                    className="w-full h-full object-contain p-4 hover:scale-105 transition-transform duration-500"
+                  />
+                )}
 
-              {/* Product Image Frame */}
-              <div className="relative aspect-[16/10] w-full overflow-hidden rounded-2xl sm:rounded-3xl border border-white/10 bg-zinc-950/80">
-                <img
-                  src={activeProduct.img}
-                  alt={activeProduct.name}
-                  className="h-full w-full object-cover object-center transition-transform duration-700 hover:scale-102"
-                />
-                {/* Floating Glass Badges */}
-                <div className="absolute bottom-2.5 xs:bottom-4 sm:bottom-5 left-2.5 xs:left-4 sm:left-5 right-2.5 xs:right-4 sm:right-5 flex flex-wrap items-center justify-between gap-2 z-10">
-                  <div className="flex items-center gap-1.5 xs:gap-2.5 rounded-xl xs:rounded-2xl border border-white/60 bg-white/75 backdrop-blur-2xl px-3 xs:px-4 sm:px-5 py-1.5 xs:py-2.5 sm:py-3 text-[11px] xs:text-xs sm:text-base font-mono font-medium text-slate-900 shadow-sm">
-                    <span>₹{totalCashback} Cashback</span>
-                  </div>
-                  <div className="flex items-center gap-1.5 xs:gap-2.5 rounded-xl xs:rounded-2xl border border-white/60 bg-white/75 backdrop-blur-2xl px-3 xs:px-4 sm:px-5 py-1.5 xs:py-2.5 sm:py-3 text-[11px] xs:text-xs sm:text-base font-mono font-medium text-slate-900 shadow-sm">
-                    <span>+{totalPoints.toLocaleString("en-IN")} CI Points</span>
-                  </div>
+                {/* Floating Text Info */}
+                <div className="absolute bottom-3 left-3 z-10 text-[11.5px] xs:text-xs font-bold text-slate-700">
+                  ₹{totalCashback} Cashback
+                </div>
+
+                <div className="absolute bottom-3 right-3 z-10 text-[11.5px] xs:text-xs font-bold text-[#4f46e5]">
+                  +{totalPoints.toLocaleString("en-IN")} CI Points
                 </div>
               </div>
-            </div>
 
-            {/* Quantity Controller & Highlights */}
-            <div className="mt-8 pt-4 flex flex-col sm:flex-row items-center justify-between gap-6">
-              <div className="flex items-center gap-3">
-                <span className="text-xs sm:text-sm font-mono text-slate-500 uppercase tracking-widest mr-2">Quantity:</span>
-                {[1, 2, 3].map((qty) => (
-                  <button
-                    key={qty}
-                    onClick={() => setQuantity(qty)}
-                    className={`h-11 w-11 rounded-xl text-sm font-mono font-semibold transition-all backdrop-blur-md ${quantity === qty
-                        ? "border-transparent bg-[#7c3aed] text-white shadow-md shadow-purple-500/20"
-                        : "border border-slate-200 bg-white text-slate-500 hover:border-purple-300 hover:text-purple-900"
+              {/* Option Selector (Size / Color) */}
+              <div className="flex items-center justify-between pt-1 h-9">
+                <span className="text-xs font-bold text-slate-700">{activeProduct.optionsLabel}</span>
+                <div className="flex gap-1.5">
+                  {activeProduct.options.map((opt) => (
+                    <button
+                      key={opt}
+                      onClick={() => {
+                        setSelectedOption(opt);
+                        setIsPaid(false);
+                      }}
+                      className={`px-2.5 py-1 text-[11.5px] font-bold rounded-lg border transition-all cursor-pointer ${
+                        selectedOption === opt
+                          ? "bg-[#0f172a] text-white border-[#0f172a] shadow-sm"
+                          : "bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100"
                       }`}
+                    >
+                      {opt}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* ------------------------------------------------------------- */}
+            {/* RIGHT CARD: SATIN SLATE-GRAY REWARD & DIGITAL RECEIPT */}
+            {/* ------------------------------------------------------------- */}
+            <div className="bg-gradient-to-b from-[#1c2230] via-[#151923] to-[#0e1118] rounded-[28px] p-5 xs:p-6 sm:p-7 flex flex-col justify-between shadow-2xl border border-slate-700/50 relative overflow-hidden text-white h-full">
+              {/* Purple Ambient Background Flare */}
+              <div className="absolute -top-10 -right-10 w-44 h-44 rounded-full bg-[#6366f1]/20 blur-3xl pointer-events-none" />
+
+              {!isPaid ? (
+                /* ----------------- PRE-PAYMENT STATE ----------------- */
+                <div>
+                  {/* Line Items */}
+                  <div className="space-y-3 text-[14px] font-medium">
+                    <div className="flex justify-between items-center py-1.5 border-b border-slate-700/50 text-slate-300">
+                      <span className="text-slate-400">Retail Price (1x)</span>
+                      <span className="font-bold text-slate-100">
+                        ₹{totalRetail.toLocaleString("en-IN")}
+                      </span>
+                    </div>
+
+                    <div className="flex justify-between items-center py-1 text-slate-200">
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400" />
+                        Direct Cashback
+                      </div>
+                      <span className="text-emerald-400 font-bold">- ₹{totalCashback}</span>
+                    </div>
+
+                    <div className="flex justify-between items-center py-1 text-slate-200">
+                      <div className="flex items-center gap-2">
+                        <span className="w-1.5 h-1.5 rounded-full bg-[#818cf8]" />
+                        CI Points Credited
+                      </div>
+                      <span className="text-[#a5b4fc] font-bold">
+                        +{totalPoints.toLocaleString("en-IN")} CI
+                      </span>
+                    </div>
+                  </div>
+
+                  {/* Net Effective Cost (Frameless & Boxless, without Saved badge) */}
+                  <div className="mt-5 pt-3.5 border-t border-slate-700/50">
+                    <span className="text-[10.5px] font-bold uppercase tracking-[1.2px] text-slate-400 block">
+                      NET EFFECTIVE COST
+                    </span>
+                    <span className="text-3xl xs:text-[34px] font-extrabold text-white tracking-tight mt-0.5 block">
+                      ₹{netEffectivePrice.toLocaleString("en-IN")}
+                    </span>
+                  </div>
+                </div>
+              ) : (
+                /* ----------------- POST-PAYMENT STATE (IN PLACE OF UPPER TEXT) ----------------- */
+                <div className="animate-in fade-in duration-300 space-y-3.5">
+                  {/* 3 Horizontal Clickable Options in Place of Text */}
+                  <div className="grid grid-cols-3 gap-2">
+                    {PARTNER_OPTIONS.map((partner) => {
+                      const isSelected = selectedPartner === partner.id;
+                      return (
+                        <button
+                          key={partner.id}
+                          onClick={() => {
+                            setSelectedPartner(partner.id);
+                            setCopiedCode(false);
+                          }}
+                          className={`flex flex-col items-center justify-between p-3 rounded-2xl text-center transition-all duration-200 cursor-pointer ${
+                            isSelected
+                              ? "bg-gradient-to-b from-[#6366f1]/40 to-[#8b5cf6]/25"
+                              : "bg-slate-800/60 hover:bg-slate-800"
+                          }`}
+                        >
+                          <img
+                            src={partner.logo}
+                            alt={partner.name}
+                            className="h-6 w-auto object-contain rounded-md mb-1.5"
+                            onError={(e) => {
+                              (e.target as HTMLImageElement).src =
+                                partner.id === "boat"
+                                  ? "Boat.jfif"
+                                  : partner.id === "swiggy"
+                                  ? "Swiggy.png"
+                                  : "spotify.svg";
+                            }}
+                          />
+                          <span className="text-xs font-bold text-white leading-tight">
+                            {partner.name}
+                          </span>
+                          <span className="text-[10.5px] font-extrabold text-emerald-400 mt-1">
+                            {partner.perk}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+
+                  {/* Unlocked Digital Voucher Card */}
+                  <div className="p-3.5 rounded-2xl bg-gradient-to-br from-slate-800/80 to-slate-900/80 flex items-center justify-between gap-2">
+                    <div>
+                      <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
+                        {activePartner.name} Voucher Unlocked
+                      </span>
+                      <span className="text-xs xs:text-sm font-bold text-white tracking-wider">
+                        {activePartner.code}
+                      </span>
+                    </div>
+                    <button
+                      onClick={() => handleCopyCode(activePartner.code)}
+                      className="px-3.5 py-1.5 rounded-xl bg-emerald-500 hover:bg-emerald-400 text-black text-xs font-bold transition-all cursor-pointer shadow-md active:scale-95 shrink-0"
+                    >
+                      {copiedCode ? "Copied!" : "Claim & Copy"}
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Footer */}
+              {!isPaid && (
+                <div className="mt-5 pt-3.5 border-t border-slate-700/50 flex flex-col gap-3">
+                  {/* Instant Partner Perks */}
+                  <div className="flex items-center justify-between">
+                    <span className="text-[11px] text-slate-400">Instant partner perks included:</span>
+                    <div className="flex items-center gap-2">
+                      <img
+                        src="/logo/Boat.jfif"
+                        alt="boAt"
+                        className="h-5.5 w-auto rounded-md object-contain opacity-90"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "Boat.jfif";
+                        }}
+                      />
+                      <img
+                        src="/logo/swiggy.png"
+                        alt="Swiggy"
+                        className="h-5.5 w-auto rounded-md object-contain opacity-90"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "Swiggy.png";
+                        }}
+                      />
+                      <img
+                        src="/logo/spotify.svg"
+                        alt="Spotify"
+                        className="h-5.5 w-auto rounded-md object-contain opacity-90"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = "spotify.svg";
+                        }}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Pay Button */}
+                  <button
+                    onClick={handlePay}
+                    className="w-full py-3.5 px-4 rounded-2xl font-bold text-sm text-white flex items-center justify-center transition-all duration-200 cursor-pointer shadow-lg active:scale-98 bg-gradient-to-r from-[#6366f1] via-[#7c3aed] to-[#9333ea] hover:shadow-[#6366f1]/50 border border-white/20"
                   >
-                    {qty}x
+                    <span>Pay ₹{netEffectivePrice.toLocaleString("en-IN")} with Cikka</span>
                   </button>
-                ))}
-              </div>
-
-              <div className="flex flex-wrap items-center gap-4 text-xs sm:text-sm text-slate-500 font-mono">
-                {activeProduct.highlights.map((h, i) => (
-                  <span key={i} className="flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-purple-300" />
-                    {h}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Right Column: Reward Summary Breakdown (5 Cols) */}
-          <div className="lg:col-span-5 relative flex flex-col justify-between overflow-hidden rounded-[24px] xs:rounded-[30px] sm:rounded-[36px] bg-gradient-to-br from-[#100720] to-[#0a0510] p-4 xs:p-6 sm:p-12 shadow-2xl border border-white/5">
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/35 to-transparent" />
-            <div>
-              <div className="flex items-center justify-between pb-3 sm:pb-4 mb-4 sm:mb-6">
-                <span className="text-[11px] xs:text-xs sm:text-sm font-mono font-medium tracking-widest text-slate-400 uppercase">REWARD SUMMARY</span>
-                <span className="rounded-full border border-white/10 bg-white/5 px-2.5 xs:px-3.5 py-0.5 xs:py-1 text-[11px] xs:text-xs font-mono text-zinc-300 backdrop-blur-md">
-                  {estimatedYieldPct}% Return
-                </span>
-              </div>
-
-              <div className="space-y-3 xs:space-y-4 font-mono text-sm xs:text-base">
-                <div className="flex items-center justify-between text-slate-400 py-1">
-                  <span>Retail Price ({quantity}x)</span>
-                  <span className="text-white font-semibold">₹{totalRetail.toLocaleString("en-IN")}</span>
                 </div>
-
-                <div className="flex items-center justify-between rounded-xl xs:rounded-2xl border border-white/10 bg-white/[0.03] p-3 xs:p-4 text-zinc-300 backdrop-blur-md">
-                  <span className="text-xs xs:text-sm">Direct Cashback</span>
-                  <span className="font-bold text-sm xs:text-base text-white">- ₹{totalCashback.toLocaleString("en-IN")}</span>
-                </div>
-
-                <div className="flex items-center justify-between rounded-xl xs:rounded-2xl border border-white/10 bg-white/[0.03] p-3 xs:p-4 text-zinc-300 backdrop-blur-md">
-                  <span className="text-xs xs:text-sm">CI Points Credited</span>
-                  <span className="font-bold text-sm xs:text-base text-white">+{totalPoints.toLocaleString("en-IN")} CI</span>
-                </div>
-              </div>
-
-              <div className="mt-4 xs:mt-6 rounded-2xl xs:rounded-3xl border border-white/10 bg-gradient-to-b from-white/[0.05] to-transparent p-4 xs:p-6 sm:p-7 backdrop-blur-2xl">
-                <div className="text-[10px] xs:text-xs font-mono tracking-widest text-slate-400 uppercase mb-1.5 xs:mb-2">
-                  NET EFFECTIVE COST
-                </div>
-                <div className="flex items-baseline justify-between gap-2">
-                  <span className="text-3xl xs:text-4xl sm:text-5xl font-bold text-white">
-                    ₹{netEffectivePrice.toLocaleString("en-IN")}
-                  </span>
-                  <span className="text-[11px] xs:text-xs sm:text-sm font-mono text-slate-500">
-                    ₹{totalCashback} Saved
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            <div className="mt-6 sm:mt-8 space-y-3 xs:space-y-4 text-center">
-              <button
-                onClick={() => setIsModalOpen(true)}
-                className="group relative flex items-center justify-between gap-3 w-full rounded-xl xs:rounded-2xl bg-white px-4 xs:px-6 py-3 xs:py-4 text-xs xs:text-sm font-mono font-semibold text-black transition-all duration-200 hover:bg-slate-200 shadow-xl cursor-pointer"
-              >
-                <span>Explore what you can buy with CI points</span>
-                <ArrowRight className="h-4 w-4 shrink-0 transition-transform duration-200 group-hover:translate-x-1" />
-              </button>
-
-              <p className="text-center text-[11px] xs:text-xs sm:text-sm font-mono text-slate-400">
-                Redeem accumulated CI Points for brand coupons, vouchers & exclusive rewards.
-              </p>
+              )}
             </div>
           </div>
         </div>
       </div>
-
-      {/* Glassmorphism CI Points Reward Catalog Dialog Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-3 xs:p-4 sm:p-6 bg-black/80 backdrop-blur-2xl transition-all duration-300 animate-in fade-in">
-          {/* Backdrop Click Dismiss */}
-          <div className="absolute inset-0" onClick={() => setIsModalOpen(false)} />
-
-          {/* Modal Container */}
-          <div className="relative z-10 w-full max-w-5xl max-h-[88vh] xs:max-h-[84vh] overflow-hidden rounded-[24px] xs:rounded-[30px] sm:rounded-[36px] border border-white/20 bg-gradient-to-b from-white/15 via-[#13141f]/95 to-[#0a0b10]/98 backdrop-blur-3xl shadow-[0_30px_100px_rgba(0,0,0,0.8),inset_0_1px_1px_rgba(255,255,255,0.35)] text-white flex flex-col transition-all duration-300 animate-in zoom-in-95">
-
-            {/* Subtle Minimal Off-White & Soft Purple Sheen */}
-            <div className="pointer-events-none absolute top-0 inset-x-0 h-40 bg-gradient-to-b from-white/[0.16] via-purple-300/[0.03] to-transparent" />
-
-            {/* Top Glass Specular Line */}
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-[1px] bg-gradient-to-r from-transparent via-white/50 to-transparent" />
-
-            {/* Modal Header */}
-            <div className="p-4 xs:p-6 sm:p-8 pb-3 xs:pb-4 flex items-start justify-between border-b border-white/10 shrink-0">
-              <div>
-                <h3 className="text-xl xs:text-2xl sm:text-4xl font-bold tracking-tight text-white leading-tight">
-                  Unlock Rewards with CI Points
-                </h3>
-                <p className="mt-1.5 xs:mt-2 text-xs sm:text-sm text-zinc-400 font-light max-w-2xl leading-relaxed">
-                  Convert your CI Points into ₹200 Zomato vouchers, Swiggy privileges, ₹1,500 flight discounts, zero-fee train passes, and luxury perfumes.
-                </p>
-              </div>
-
-              {/* Close Glass Button */}
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="h-8 w-8 xs:h-10 xs:w-10 rounded-full border border-white/15 bg-white/10 hover:bg-white/20 text-zinc-400 hover:text-white flex items-center justify-center transition-all shrink-0 backdrop-blur-md cursor-pointer shadow-lg ml-2"
-              >
-                <X className="h-4 w-4 xs:h-5 xs:w-5" />
-              </button>
-            </div>
-
-            {/* Filter Tabs */}
-            <div className="px-4 xs:px-6 sm:px-8 py-2.5 xs:py-3 flex items-center gap-2 xs:gap-2.5 overflow-x-auto border-b border-white/10 shrink-0">
-              {[
-                { id: "all", label: "All Rewards" },
-                { id: "food", label: "Food & Dining" },
-                { id: "travel", label: "Travel & Flights" },
-                { id: "luxe", label: "Luxe & Fashion" },
-                { id: "tech", label: "Tech & Audio" },
-              ].map((cat) => (
-                <button
-                  key={cat.id}
-                  onClick={() => setActiveCategory(cat.id)}
-                  className={`px-3 xs:px-4 py-1.5 xs:py-2 rounded-full text-[11px] xs:text-xs font-mono font-medium transition-all whitespace-nowrap cursor-pointer ${activeCategory === cat.id
-                      ? "bg-[#f4f5f8] text-black font-bold shadow-md"
-                      : "bg-white/[0.04] text-zinc-400 border border-white/10 hover:bg-white/10 hover:text-white"
-                    }`}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
-
-            {/* Modal Body: Scrollable Rewards Grid */}
-            <div className="flex-1 overflow-y-auto p-4 xs:p-6 sm:p-8 grid gap-4 xs:gap-5 grid-cols-1 md:grid-cols-2 lg:grid-cols-3">
-              {filteredRewards.map((reward) => (
-                <div
-                  key={reward.id}
-                  className="group relative flex flex-col justify-between overflow-hidden rounded-3xl border border-white/15 bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-transparent p-5 sm:p-6 backdrop-blur-2xl transition-all duration-300 hover:border-white/30 hover:bg-white/[0.09] shadow-lg min-w-0"
-                >
-                  <div className="min-w-0">
-                    {/* Header: Clean Large Brand Logo (No Box) + Tag */}
-                    <div className="flex items-center justify-between gap-3 mb-4 min-w-0">
-                      {reward.logoUrl ? (
-                        <img
-                          src={reward.logoUrl}
-                          alt={reward.brand}
-                          className="h-12 w-12 sm:h-14 sm:w-14 shrink-0 object-contain drop-shadow-md"
-                        />
-                      ) : (
-                        <span className="text-sm font-mono font-bold text-white text-center leading-none shrink-0">{reward.brand.slice(0, 3)}</span>
-                      )}
-
-                      <div className="text-right min-w-0 flex-1 pl-2">
-                        <span className="block text-xs font-mono font-bold text-white tracking-wide truncate">{reward.brand}</span>
-                        <span className="block text-[10px] font-mono text-zinc-400 uppercase tracking-wider truncate">{reward.tag}</span>
-                      </div>
-                    </div>
-
-                    {/* Discount Value */}
-                    <div className="text-xl sm:text-2xl font-extrabold tracking-tight text-white mb-1.5 truncate">
-                      {reward.discount}
-                    </div>
-
-                    <h4 className="text-xs sm:text-sm font-semibold text-zinc-200 mb-1.5 leading-snug line-clamp-1">
-                      {reward.title}
-                    </h4>
-
-                    <p className="text-xs text-zinc-400 leading-relaxed font-light mb-4 line-clamp-2">
-                      {reward.description}
-                    </p>
-                  </div>
-
-                  {/* Pricing & Claim Button */}
-                  <div className="pt-3 border-t border-white/10 flex items-center justify-between gap-2 shrink-0 min-w-0">
-                    <div className="flex items-center gap-1.5 text-xs font-mono font-bold text-white shrink-0">
-                      <Sparkles className="h-3.5 w-3.5 text-zinc-300 shrink-0" />
-                      <span>{reward.costPoints} CI</span>
-                    </div>
-
-                    <button
-                      onClick={() => handleClaimCoupon(reward.id, reward.code)}
-                      className="px-3.5 py-1.5 rounded-xl border border-white/20 bg-white/10 hover:bg-white text-white hover:text-black text-xs font-mono font-semibold transition-all duration-200 cursor-pointer shadow-sm shrink-0 whitespace-nowrap"
-                    >
-                      {copiedCouponId === reward.id ? "Copied!" : "Claim"}
-                    </button>
-                  </div>
-                </div>
-              ))}
-            </div>
-
-            {/* Modal Footer */}
-            <div className="p-4 px-6 sm:px-8 border-t border-white/10 bg-black/50 text-center shrink-0 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs font-mono text-zinc-400">
-              <span className="flex items-center gap-2">
-                <Check className="h-4 w-4 text-emerald-400" />
-                CI Points credited instantly upon BBPS bill or Mall purchase.
-              </span>
-              <span className="text-zinc-500">Zero Expiration · Direct Redemption</span>
-            </div>
-
-          </div>
-        </div>
-      )}
     </section>
   );
 }

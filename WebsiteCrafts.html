@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,8 +9,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
-    <!-- Embedded 3D Shoe Model Data -->
-    <script src="shoe_data.js"></script>
     <style>
         * {
             box-sizing: border-box;
@@ -59,7 +58,11 @@
             position: absolute;
             inset: 0;
             z-index: 12;
-            pointer-events: none;
+            cursor: grab;
+        }
+
+        #webgl-canvas:active {
+            cursor: grabbing;
         }
 
         /* Loading Overlay */
@@ -89,7 +92,9 @@
         }
 
         @keyframes spin {
-            to { transform: rotate(360deg); }
+            to {
+                transform: rotate(360deg);
+            }
         }
 
         /* Frame 1: Greyish Glassmorphism Frosted Box Card */
@@ -305,14 +310,22 @@
         }
 
         @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
         }
 
         .square-box-item {
             position: absolute;
             width: 195px;
-            height: 195px; /* Square proportions */
+            height: 195px;
+            /* Square proportions */
             background: linear-gradient(150deg, #1c2130 0%, #10131c 100%);
             border: 1.5px solid rgba(255, 255, 255, 0.16);
             border-radius: 24px;
@@ -383,12 +396,13 @@
         }
 
         .card-brand-logo {
-            max-width: 148px;
-            max-height: 98px;
+            max-width: 135px;
+            max-height: 56px;
+            height: 56px;
             width: auto;
-            height: auto;
             object-fit: contain;
-            filter: drop-shadow(0 8px 18px rgba(0, 0, 0, 0.55));
+            border-radius: 16px;
+            filter: drop-shadow(0 6px 16px rgba(0, 0, 0, 0.55));
             transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
@@ -439,15 +453,14 @@
         .accent-dot.active-dot {
             background: #6366f1;
         }
-
-
     </style>
 </head>
+
 <body>
 
     <div class="purple-gradient-frame">
         <div class="inner-white-card" id="cardContainer">
-            
+
             <!-- Loading Overlay -->
             <div class="loading-overlay" id="loader">
                 <div class="spinner"></div>
@@ -471,7 +484,7 @@
             <!-- Virtual Cursor for Auto Click -->
             <div class="virtual-cursor" id="virtualCursor">
                 <svg viewBox="0 0 24 24" fill="#0f172a">
-                    <path d="M3 3l7 18 3-7 7-3L3 3z"/>
+                    <path d="M3 3l7 18 3-7 7-3L3 3z" />
                 </svg>
             </div>
 
@@ -479,10 +492,10 @@
             <div class="shopping-bag-container" id="bagContainer">
                 <svg class="shopping-bag-svg" viewBox="0 0 200 240" fill="none">
                     <!-- Handles -->
-                    <path d="M65 80 C65 25, 135 25, 135 80" stroke="#1e293b" stroke-width="10" stroke-linecap="round"/>
+                    <path d="M65 80 C65 25, 135 25, 135 80" stroke="#1e293b" stroke-width="10" stroke-linecap="round" />
                     <!-- Bag Body -->
-                    <path d="M25 85 L175 85 L190 230 L10 230 Z" fill="#1e293b"/>
-                    <path d="M175 85 L190 230 L160 230 L150 85 Z" fill="#0f172a"/>
+                    <path d="M25 85 L175 85 L190 230 L10 230 Z" fill="#1e293b" />
+                    <path d="M175 85 L190 230 L160 230 L150 85 Z" fill="#0f172a" />
                 </svg>
 
                 <!-- Attached Price Tag on Bag -->
@@ -491,7 +504,7 @@
 
             <!-- Frame 3: Fanned-Out Dark Obsidian Square Boxes Spread -->
             <div class="cards-spread-container" id="cardsSpreadContainer">
-                
+
                 <!-- Typewriter Heading -->
                 <div class="typing-heading-wrap">
                     <span class="typing-text" id="typingText"></span><span class="typing-cursor">|</span>
@@ -499,9 +512,9 @@
                 <!-- Square Box 1 (Left Fanned Box - Swiggy) -->
                 <div class="square-box-item box-left">
                     <svg class="box-wave-bg" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-                        <path d="M-20 60 Q 60 20, 140 60 T 260 60" stroke="white" stroke-width="1.2"/>
-                        <path d="M-20 100 Q 60 60, 140 100 T 260 100" stroke="white" stroke-width="1.2"/>
-                        <path d="M-20 140 Q 60 100, 140 140 T 260 140" stroke="white" stroke-width="1.2"/>
+                        <path d="M-20 60 Q 60 20, 140 60 T 260 60" stroke="white" stroke-width="1.2" />
+                        <path d="M-20 100 Q 60 60, 140 100 T 260 100" stroke="white" stroke-width="1.2" />
+                        <path d="M-20 140 Q 60 100, 140 140 T 260 140" stroke="white" stroke-width="1.2" />
                     </svg>
                     <div class="card-top-header">
                         <div class="accent-dot-group">
@@ -511,7 +524,7 @@
                         </div>
                     </div>
                     <div class="card-logo-wrap">
-                        <img src="Swiggy.png" alt="Swiggy Logo" class="card-brand-logo" />
+                        <img src="logo/swiggy.png" alt="Swiggy Logo" class="card-brand-logo" onerror="this.onerror=null; this.src='Swiggy.png';" />
                     </div>
                     <div class="card-reward-label">Swiggy's 500 coupon</div>
                 </div>
@@ -519,10 +532,10 @@
                 <!-- Square Box 2 (Center Main Box - BoAt) -->
                 <div class="square-box-item box-center">
                     <svg class="box-wave-bg" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-                        <path d="M-20 50 Q 60 10, 140 50 T 260 50" stroke="white" stroke-width="1.5"/>
-                        <path d="M-20 90 Q 60 50, 140 90 T 260 90" stroke="white" stroke-width="1.5"/>
-                        <path d="M-20 130 Q 60 90, 140 130 T 260 130" stroke="white" stroke-width="1.5"/>
-                        <path d="M-20 170 Q 60 130, 140 170 T 260 170" stroke="white" stroke-width="1.5"/>
+                        <path d="M-20 50 Q 60 10, 140 50 T 260 50" stroke="white" stroke-width="1.5" />
+                        <path d="M-20 90 Q 60 50, 140 90 T 260 90" stroke="white" stroke-width="1.5" />
+                        <path d="M-20 130 Q 60 90, 140 130 T 260 130" stroke="white" stroke-width="1.5" />
+                        <path d="M-20 170 Q 60 130, 140 170 T 260 170" stroke="white" stroke-width="1.5" />
                     </svg>
                     <div class="card-top-header">
                         <div class="accent-dot-group">
@@ -532,7 +545,7 @@
                         </div>
                     </div>
                     <div class="card-logo-wrap">
-                        <img src="Boat.png" alt="BoAt Logo" class="card-brand-logo" />
+                        <img src="logo/Boat.jfif" alt="BoAt Logo" class="card-brand-logo" onerror="this.onerror=null; this.src='Boat.jfif';" />
                     </div>
                     <div class="card-reward-label">BoAt Rockerz 430</div>
                 </div>
@@ -540,9 +553,9 @@
                 <!-- Square Box 3 (Right Fanned Box - Spotify) -->
                 <div class="square-box-item box-right">
                     <svg class="box-wave-bg" viewBox="0 0 200 200" fill="none" stroke="currentColor">
-                        <path d="M-20 60 Q 60 20, 140 60 T 260 60" stroke="white" stroke-width="1.2"/>
-                        <path d="M-20 100 Q 60 60, 140 100 T 260 100" stroke="white" stroke-width="1.2"/>
-                        <path d="M-20 140 Q 60 100, 140 140 T 260 140" stroke="white" stroke-width="1.2"/>
+                        <path d="M-20 60 Q 60 20, 140 60 T 260 60" stroke="white" stroke-width="1.2" />
+                        <path d="M-20 100 Q 60 60, 140 100 T 260 100" stroke="white" stroke-width="1.2" />
+                        <path d="M-20 140 Q 60 100, 140 140 T 260 140" stroke="white" stroke-width="1.2" />
                     </svg>
                     <div class="card-top-header">
                         <div class="accent-dot-group">
@@ -578,77 +591,94 @@
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         renderer.outputEncoding = THREE.sRGBEncoding;
 
-        // Orbit Drag Controls
+        // Orbit Drag Controls (Rotates cleanly around the shoe's centered position)
         const controls = new THREE.OrbitControls(camera, renderer.domElement);
         controls.enableDamping = true;
         controls.dampingFactor = 0.06;
         controls.enableZoom = false;
+        controls.enablePan = false;
+        controls.target.set(0, -0.12, 0);
 
         // Studio Lights
-        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.3);
         scene.add(ambientLight);
 
-        const mainLight = new THREE.DirectionalLight(0xffffff, 0.9);
+        const mainLight = new THREE.DirectionalLight(0xffffff, 1.1);
         mainLight.position.set(5, 8, 6);
         scene.add(mainLight);
 
-        const fillLight = new THREE.DirectionalLight(0x818cf8, 0.4);
+        const fillLight = new THREE.DirectionalLight(0x818cf8, 0.5);
         fillLight.position.set(-6, 3, -4);
         scene.add(fillLight);
 
-        // Base64 to ArrayBuffer for local loading
-        function base64ToArrayBuffer(base64) {
-            const binaryString = window.atob(base64);
-            const len = binaryString.length;
-            const bytes = new Uint8Array(len);
-            for (let i = 0; i < len; i++) {
-                bytes[i] = binaryString.charCodeAt(i);
-            }
-            return bytes.buffer;
-        }
-
+        let shoePivot = new THREE.Group();
+        scene.add(shoePivot);
         let shoeModel = null;
         let isFilmAnimating = false;
         let shoeTargetScale = 1.0;
 
-        // Load 3D Shoe Model
-        const gltfLoader = new THREE.GLTFLoader();
-        const modelBuffer = base64ToArrayBuffer(window.SHOE_MODEL_BASE64);
-
-        gltfLoader.parse(modelBuffer, '', function (gltf) {
-            shoeModel = gltf.scene;
-
-            const box = new THREE.Box3().setFromObject(shoeModel);
+        function setupShoeScene(gltf) {
+            const rawModel = gltf.scene;
+            const box = new THREE.Box3().setFromObject(rawModel);
             const center = box.getCenter(new THREE.Vector3());
             const size = box.getSize(new THREE.Vector3());
 
-            shoeModel.position.x += (shoeModel.position.x - center.x);
-            shoeModel.position.y += (shoeModel.position.y - center.y) - 0.12;
-            shoeModel.position.z += (shoeModel.position.z - center.z);
+            // Center raw model precisely inside pivot so rotation is 100% in place without wobble
+            rawModel.position.set(-center.x, -center.y, -center.z);
+
+            shoePivot.clear();
+            shoePivot.add(rawModel);
 
             const maxDim = Math.max(size.x, size.y, size.z);
-            shoeTargetScale = 1.95 / maxDim;
-            shoeModel.scale.set(shoeTargetScale, shoeTargetScale, shoeTargetScale);
+            shoeTargetScale = 2.05 / maxDim;
+            shoePivot.scale.set(shoeTargetScale, shoeTargetScale, shoeTargetScale);
+            shoePivot.position.set(0, -0.12, 0);
 
-            // Initial -28 degree tilt
-            shoeModel.rotation.set(0, 0, THREE.MathUtils.degToRad(-28));
+            // Angle matching Screenshot 2
+            shoePivot.rotation.set(THREE.MathUtils.degToRad(8), THREE.MathUtils.degToRad(-45), THREE.MathUtils.degToRad(-24));
 
-            // Matte finish
-            shoeModel.traverse((child) => {
+            rawModel.traverse((child) => {
                 if (child.isMesh && child.material) {
                     const mats = Array.isArray(child.material) ? child.material : [child.material];
                     mats.forEach((mat) => {
-                        mat.roughness = 0.9;
-                        mat.metalness = 0.0;
+                        mat.roughness = 0.65;
+                        mat.metalness = 0.05;
                     });
                 }
             });
 
-            scene.add(shoeModel);
+            shoeModel = shoePivot;
             loaderOverlay.classList.add('hidden');
+            
+            // Check if already in view or start when user scrolls into this section
+            checkTriggerWhenInView();
+        }
 
-            // Start Film Animation Timeline
-            startFilmTimeline();
+        let hasTriggeredInView = false;
+        const viewObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && !hasTriggeredInView && shoeModel) {
+                    hasTriggeredInView = true;
+                    startFilmTimeline();
+                }
+            });
+        }, { threshold: 0.25 });
+
+        function checkTriggerWhenInView() {
+            viewObserver.observe(container);
+        }
+
+        // Load 3D Shoe Model
+        const gltfLoader = new THREE.GLTFLoader();
+        const modelUrl = 'MaterialsVariantsShoe.glb';
+
+        gltfLoader.load(modelUrl, function (gltf) {
+            setupShoeScene(gltf);
+        }, undefined, function (error) {
+            console.warn('Failed relative load, trying root path...', error);
+            gltfLoader.load('/MaterialsVariantsShoe.glb', function (gltf) {
+                setupShoeScene(gltf);
+            });
         });
 
         // Film Timeline UI Handles
@@ -712,7 +742,7 @@
                 shoeModel.visible = true;
                 shoeModel.scale.set(shoeTargetScale, shoeTargetScale, shoeTargetScale);
                 shoeModel.position.set(0, -0.12, 0);
-                shoeModel.rotation.set(0, 0, THREE.MathUtils.degToRad(-28));
+                shoeModel.rotation.set(THREE.MathUtils.degToRad(8), THREE.MathUtils.degToRad(-45), THREE.MathUtils.degToRad(-24));
             }
         }
 
@@ -764,12 +794,12 @@
             resetFilm();
             isFilmAnimating = true;
 
-            // Ensure 3D shoe model is 100% visible at full target scale in Frame 1 with -28deg tilt
+            // Ensure 3D shoe model is 100% visible at full target scale in Frame 1
             if (shoeModel) {
                 shoeModel.visible = true;
                 shoeModel.scale.set(shoeTargetScale, shoeTargetScale, shoeTargetScale);
                 shoeModel.position.set(0, -0.12, 0);
-                shoeModel.rotation.set(0, 0, THREE.MathUtils.degToRad(-28));
+                shoeModel.rotation.set(THREE.MathUtils.degToRad(8), THREE.MathUtils.degToRad(-45), THREE.MathUtils.degToRad(-24));
             }
 
             // Step 1: Hold in box for 1.4s, then move virtual cursor to button
@@ -904,16 +934,17 @@
         function animate() {
             requestAnimationFrame(animate);
 
-            if (isFilmAnimating && shoeModel && bagContainer.classList.contains('active') === false) {
-                shoeModel.rotation.y -= 0.006;
-            } else {
-                controls.update();
+            if (shoeModel && shoeModel.visible && bagContainer.classList.contains('active') === false) {
+                // Rotate horizontally from right to left in its place
+                shoeModel.rotation.y -= 0.008;
             }
 
+            controls.update();
             renderer.render(scene, camera);
         }
 
         animate();
     </script>
 </body>
+
 </html>

@@ -112,7 +112,13 @@ function Header() {
       {/* 3D Brand Logo */}
       <a
         className="inline-flex items-center group transition-transform duration-200 hover:scale-105 cursor-pointer select-none"
-        href="#top"
+        href="/"
+        onClick={(e) => {
+          e.preventDefault();
+          window.scrollTo(0, 0);
+          window.location.href = "/";
+          window.location.reload();
+        }}
         aria-label="Cikka home"
       >
         <Cikka3DLogo
@@ -983,145 +989,75 @@ function LightContinuation() {
               <p className="text-sm font-semibold text-slate-700 tracking-wide mb-8 select-none">
                 Built with Industry lead to serve Best
               </p>
-              <div className="overflow-hidden relative">
-                <div className="flex items-center justify-center flex-wrap gap-x-4 sm:gap-x-7 gap-y-4 sm:gap-y-5 select-none max-w-5xl mx-auto">
-                  {/* Axis Bank */}
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    transition={{ duration: 0.18 }}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
-                  >
-                    <svg viewBox="0 0 100 100" className="w-5 h-5 shrink-0" fill="none">
-                      <path d="M50 8L4 88H26.8L50 48L73.2 88H96L50 8Z" fill="#97144D" />
-                      <path d="M50 51.5L38 72H62L50 51.5Z" fill="#FFFFFF" />
-                    </svg>
-                    <span className="font-extrabold text-xs sm:text-sm tracking-tight text-[#97144D] font-sans">
+              {/* Infinite Single-Line Marquee with Edge Fade Masks */}
+              <div
+                className="overflow-hidden relative w-full flex select-none py-3"
+                style={{
+                  maskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
+                  WebkitMaskImage: "linear-gradient(to right, transparent, black 12%, black 88%, transparent)",
+                }}
+              >
+                <div className="flex whitespace-nowrap will-change-transform animate-marquee">
+                  <div className="flex items-center gap-14 sm:gap-20 md:gap-24 shrink-0 pr-14 sm:pr-20 md:pr-24">
+                    <span className="font-extrabold text-base sm:text-lg md:text-xl tracking-wider uppercase font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
                       AXIS BANK
                     </span>
-                  </motion.div>
-
-                  {/* Setu */}
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    transition={{ duration: 0.18 }}
-                    className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
-                  >
-                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
-                      <rect width="32" height="32" rx="7" fill="#13B58C" />
-                      <path d="M8 20C8 14.4772 12.4772 10 18 10H24M24 10L19.5 5.5M24 10L19.5 14.5" stroke="#FFFFFF" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-                    </svg>
-                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#1A202C] font-sans">
-                      setu<span className="text-[#13B58C]">.</span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      setu.
                     </span>
-                  </motion.div>
-
-                  {/* Shipway */}
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    transition={{ duration: 0.18 }}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
-                  >
-                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
-                      <circle cx="16" cy="16" r="15" fill="#0284C7" />
-                      <path d="M9 16L23 9L18 23L15 17L9 16Z" fill="#FFFFFF" />
-                    </svg>
-                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#0F172A] font-sans">
-                      ship<span className="text-[#0284C7]">way</span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      shipway
                     </span>
-                  </motion.div>
-
-                  {/* InstantPay */}
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    transition={{ duration: 0.18 }}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
-                  >
-                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
-                      <circle cx="16" cy="16" r="15" fill="#F97316" />
-                      <path d="M17.5 5L9 17.5H15.5L14.5 27L23 14.5H16.5L17.5 5Z" fill="#FFFFFF" />
-                    </svg>
-                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#0F172A] font-sans">
-                      Instant<span className="text-[#F97316]">Pay</span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      InstantPay
                     </span>
-                  </motion.div>
-
-                  {/* Razorpay */}
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    transition={{ duration: 0.18 }}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
-                  >
-                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
-                      <path d="M20 4H10.5L7 19H14.5L12.5 28L26 12.5H18L20 4Z" fill="#0C2340" />
-                      <path d="M15 10H10.5L7 19H14.5L12.5 28L22 16.5H16L18 10Z" fill="#3395FF" />
-                    </svg>
-                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#0C2340] font-sans">
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
                       Razorpay
                     </span>
-                  </motion.div>
-
-                  {/* Route Mobile */}
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    transition={{ duration: 0.18 }}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
-                  >
-                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
-                      <circle cx="8" cy="24" r="4" fill="#6366F1" />
-                      <circle cx="24" cy="8" r="4" fill="#4F46E5" />
-                      <path d="M11 21L21 11M8 20V12C8 9.79086 9.79086 8 12 8H20" stroke="#4F46E5" strokeWidth="2.5" strokeLinecap="round" />
-                    </svg>
-                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#1E1B4B] font-sans">
-                      route<span className="text-[#6366F1] font-medium text-[10px] sm:text-xs ml-0.5">mobile</span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      route mobile
                     </span>
-                  </motion.div>
-
-                  {/* Airtel */}
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    transition={{ duration: 0.18 }}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
-                  >
-                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
-                      <path d="M16 4C9.37258 4 4 9.37258 4 16C4 22.6274 9.37258 28 16 28C20.4183 28 24.237 25.6176 26.2625 22.0963C24.4754 22.0963 22.4286 21.3787 21.0504 19.9863C19.6723 18.5939 18.9669 16.5471 18.9669 14.3382C18.9669 8.62939 14.5097 4 8.80088 4C11.134 4 13.6765 4 16 4Z" fill="#ED1C24" />
-                    </svg>
-                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#ED1C24] font-sans">
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer lowercase">
                       airtel
                     </span>
-                  </motion.div>
-
-                  {/* Google */}
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    transition={{ duration: 0.18 }}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
-                  >
-                    <svg viewBox="0 0 24 24" className="w-5 h-5 shrink-0">
-                      <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
-                      <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
-                      <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z" fill="#FBBC05" />
-                      <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z" fill="#EA4335" />
-                    </svg>
-                    <span className="font-semibold text-xs sm:text-sm tracking-tight text-[#475569] font-sans">
+                    <span className="font-semibold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
                       Google
                     </span>
-                  </motion.div>
-
-                  {/* Hubble Money */}
-                  <motion.div
-                    whileHover={{ scale: 1.05, y: -2 }}
-                    transition={{ duration: 0.18 }}
-                    className="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-white border border-slate-200/80 shadow-[0_1px_3px_rgba(0,0,0,0.05)] hover:shadow-md hover:border-slate-300 transition-all cursor-pointer"
-                  >
-                    <svg viewBox="0 0 32 32" className="w-5 h-5 shrink-0" fill="none">
-                      <circle cx="16" cy="16" r="14" fill="#7C3AED" />
-                      <circle cx="16" cy="16" r="8" stroke="#FDE047" strokeWidth="2.5" />
-                      <circle cx="19" cy="13" r="2" fill="#FDE047" />
-                    </svg>
-                    <span className="font-bold text-xs sm:text-sm tracking-tight text-[#4C1D95] font-sans">
-                      Hubble<span className="text-[#7C3AED] font-medium text-[10px] sm:text-xs ml-1">Money</span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      Hubble Money
                     </span>
-                  </motion.div>
+                  </div>
+
+                  {/* Duplicated track for seamless infinite looping */}
+                  <div className="flex items-center gap-14 sm:gap-20 md:gap-24 shrink-0 pr-14 sm:pr-20 md:pr-24" aria-hidden="true">
+                    <span className="font-extrabold text-base sm:text-lg md:text-xl tracking-wider uppercase font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      AXIS BANK
+                    </span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      setu.
+                    </span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      shipway
+                    </span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      InstantPay
+                    </span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      Razorpay
+                    </span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      route mobile
+                    </span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer lowercase">
+                      airtel
+                    </span>
+                    <span className="font-semibold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      Google
+                    </span>
+                    <span className="font-bold text-base sm:text-lg md:text-xl tracking-tight font-sans bg-gradient-to-r from-slate-500 via-slate-700 to-slate-500 bg-clip-text text-transparent hover:from-slate-700 hover:via-slate-900 hover:to-slate-700 transition-all cursor-pointer">
+                      Hubble Money
+                    </span>
+                  </div>
                 </div>
               </div>
             </motion.div>
