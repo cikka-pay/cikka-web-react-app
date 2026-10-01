@@ -177,7 +177,7 @@ function UnifiedPhoneShowcase() {
   const phoneShiftX = isStacked ? 0 : isLargeDesktop ? 275 : 210;
 
   // Hero start Y: phone enters from below, slides up as user scrolls
-  const heroStartY = isMobile ? 180 : isTablet ? 210 : 250;
+  const heroStartY = isMobile ? 160 : isTablet ? 200 : 250;
 
   // Track scroll throughout the sequence
   const { scrollYProgress } = useScroll({
@@ -217,7 +217,7 @@ function UnifiedPhoneShowcase() {
   const quickActionsY = useTransform(
     smoothProgress,
     [0.14, 0.24, 0.56, 0.64],
-    isStacked ? [15, 0, 0, -15] : [35, 0, 0, -35]
+    isStacked ? [10, 0, 0, -10] : [35, 0, 0, -35]
   );
 
   // --- 3. LARGE PAYMENTS STAGE (Right Column on desktop / Bottom on mobile) ---
@@ -238,7 +238,7 @@ function UnifiedPhoneShowcase() {
   const largePaymentsY = useTransform(
     smoothProgress,
     [0.64, 0.74],
-    isStacked ? [15, 0] : [35, 0]
+    isStacked ? [10, 0] : [35, 0]
   );
 
   // --- 4. THE SINGLE CONTINUOUS PHONE MOCKUP ---
@@ -249,11 +249,11 @@ function UnifiedPhoneShowcase() {
     [0, isStacked ? 0 : 70, phoneShiftX, phoneShiftX, -phoneShiftX, -phoneShiftX]
   );
 
-  // KEY SCROLL PARALLAX: When stacked (<1024px), phone docks in upper half (-125px) giving clear space for text & cards below
+  // KEY SCROLL PARALLAX: When stacked (<1024px), phone docks in upper half giving clear space for text & cards below
   const phoneY = useTransform(
     smoothProgress,
     [0.0, 0.18, 0.30, 1.0],
-    [heroStartY, 20, isStacked ? -125 : 0, isStacked ? -125 : 0]
+    [heroStartY, 10, isMobile ? -145 : isTablet ? -130 : 0, isMobile ? -145 : isTablet ? -130 : 0]
   );
 
   // 3D Perspective Tilt (zero tilt on mobile for maximum 120fps GPU performance)
@@ -271,12 +271,12 @@ function UnifiedPhoneShowcase() {
     smoothProgress,
     [0.0, 0.18, 0.30, 0.56, 0.72, 1.0],
     [
-      isMobile ? 0.64 : isTablet ? 0.72 : 0.86,
-      isMobile ? 0.67 : isTablet ? 0.74 : 0.88,
-      isMobile ? 0.68 : isTablet ? 0.75 : 0.88,
-      isMobile ? 0.68 : isTablet ? 0.75 : 0.88,
-      isMobile ? 0.68 : isTablet ? 0.75 : 0.88,
-      isMobile ? 0.68 : isTablet ? 0.75 : 0.88,
+      isMobile ? 0.60 : isTablet ? 0.70 : 0.86,
+      isMobile ? 0.62 : isTablet ? 0.72 : 0.88,
+      isMobile ? 0.63 : isTablet ? 0.74 : 0.88,
+      isMobile ? 0.63 : isTablet ? 0.74 : 0.88,
+      isMobile ? 0.63 : isTablet ? 0.74 : 0.88,
+      isMobile ? 0.63 : isTablet ? 0.74 : 0.88,
     ]
   );
 
@@ -309,7 +309,7 @@ function UnifiedPhoneShowcase() {
       style={{ height: isStacked ? "230vh" : "480vh" }}
     >
       {/* Sticky Fullscreen Viewport */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-16 sm:pt-24 pb-4 sm:pb-8 px-4 sm:px-12 lg:px-20">
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-14 sm:pt-24 pb-3 sm:pb-8 px-4 sm:px-12 lg:px-20">
         {/* Ambient Radial Background Glows matching Reference */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
           {/* Main Following Purple Halo behind Phone */}
@@ -359,51 +359,51 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-14 xl:left-24 2xl:left-36 lg:right-auto
-            bottom-10 xs:bottom-14 sm:bottom-16 md:bottom-20 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
-            z-30 w-full max-w-[92%] xs:max-w-[380px] sm:max-w-[460px] lg:max-w-md xl:max-w-lg
+            bottom-4 xs:bottom-6 sm:bottom-10 md:bottom-16 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            z-30 w-full max-w-[94%] xs:max-w-[390px] sm:max-w-[460px] lg:max-w-md xl:max-w-lg
             flex flex-col justify-center items-center lg:items-start
             text-center lg:text-left px-2 lg:px-0 will-change-transform"
         >
-          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.15] sm:leading-[1.1] text-xl xs:text-2xl sm:text-3xl lg:text-[2.85rem] xl:text-[3.35rem] pb-1 overflow-visible">
-            <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-2 sm:mr-0 pb-1">
+          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.15] sm:leading-[1.1] text-lg xs:text-2xl sm:text-3xl lg:text-[2.85rem] xl:text-[3.35rem] pb-0.5 overflow-visible">
+            <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-1.5 sm:mr-0 pb-0.5">
               Most Rewarding
             </span>
-            <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent pb-1 sm:pb-2">
+            <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent pb-0.5 sm:pb-2">
               Credit Card Platform
             </span>
           </h2>
-          <p className="mt-1 sm:mt-3 text-xs sm:text-sm lg:text-base text-slate-400 font-normal leading-relaxed max-w-sm sm:max-w-md">
+          <p className="mt-0.5 sm:mt-3 text-[11px] xs:text-xs sm:text-sm lg:text-base text-slate-400 font-normal leading-relaxed max-w-xs xs:max-w-sm sm:max-w-md">
             Turn your Cikka Points into rewards you actually want.
           </p>
-          <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mt-2.5 sm:mt-5 w-full max-w-[210px] xs:max-w-[240px] sm:max-w-[270px] lg:max-w-[295px]">
+          <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mt-2 sm:mt-5 w-full max-w-[210px] xs:max-w-[240px] sm:max-w-[270px] lg:max-w-[295px]">
             {/* Box 1: Redeem Points */}
             <div className="rounded-xl sm:rounded-2xl bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3 flex flex-col items-center text-center shadow-md backdrop-blur-xl group transition-all cursor-pointer">
-              <Gift className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
-              <p className="font-semibold text-white text-[9.5px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1.5 leading-tight">
+              <Gift className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
+              <p className="font-semibold text-white text-[9px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1 sm:mt-1.5 leading-tight">
                 Redeem Points
               </p>
             </div>
 
             {/* Box 2: Real Products */}
             <div className="rounded-xl sm:rounded-2xl bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3 flex flex-col items-center text-center shadow-md backdrop-blur-xl group transition-all cursor-pointer">
-              <Sparkles className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
-              <p className="font-semibold text-white text-[9.5px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1.5 leading-tight">
+              <Sparkles className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
+              <p className="font-semibold text-white text-[9px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1 sm:mt-1.5 leading-tight">
                 Real Products
               </p>
             </div>
 
             {/* Box 3: Selective Rewards */}
             <div className="rounded-xl sm:rounded-2xl bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3 flex flex-col items-center text-center shadow-md backdrop-blur-xl group transition-all cursor-pointer">
-              <Trophy className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
-              <p className="font-semibold text-white text-[9.5px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1.5 leading-tight">
+              <Trophy className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
+              <p className="font-semibold text-white text-[9px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1 sm:mt-1.5 leading-tight">
                 Selective Rewards
               </p>
             </div>
 
             {/* Box 4: Never Expired */}
             <div className="rounded-xl sm:rounded-2xl bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3 flex flex-col items-center text-center shadow-md backdrop-blur-xl group transition-all cursor-pointer">
-              <History className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
-              <p className="font-semibold text-white text-[9.5px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1.5 leading-tight">
+              <History className="w-3.5 h-3.5 xs:w-4 xs:h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
+              <p className="font-semibold text-white text-[9px] xs:text-[10px] sm:text-[11px] md:text-[11.5px] mt-1 sm:mt-1.5 leading-tight">
                 Never Expired
               </p>
             </div>
@@ -422,7 +422,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-auto lg:right-14 xl:right-24 2xl:right-36
-            bottom-10 xs:bottom-14 sm:bottom-16 md:bottom-20 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            bottom-4 xs:bottom-6 sm:bottom-10 md:bottom-16 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
             z-30 w-full max-w-[95%] xs:max-w-[400px] sm:max-w-[500px] lg:max-w-xl xl:max-w-2xl
             flex flex-col justify-center items-center lg:items-end
             text-center lg:text-right px-2 lg:px-0 will-change-transform"
