@@ -31,15 +31,11 @@ export function RevenueInsightsBentoSection() {
     offset: ["start end", "end start"],
   });
 
-  const springProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 28,
-    mass: 0.16,
-  });
-  const smoothProgress = isMobile ? scrollYProgress : springProgress;
+  // Direct sync with Lenis smooth scroll — zero spring lag or stutter
+  const smoothProgress = scrollYProgress;
 
-  const ribbonY = useTransform(smoothProgress, [0, 1], isMobile ? [5, -5] : [15, -15]);
-  const ribbonRotate = useTransform(smoothProgress, [0, 1], isMobile ? [0, 0] : [-2, 4]);
+  const ribbonY = useTransform(smoothProgress, [0, 1], isMobile ? [0, 0] : [12, -12]);
+  const ribbonRotate = useTransform(smoothProgress, [0, 1], isMobile ? [0, 0] : [-2, 3]);
 
   // ---------------------------------------------------------------------------
   // LOGICAL DATASETS BASED ON TIMEFRAME

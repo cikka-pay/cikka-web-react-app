@@ -83,15 +83,14 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
           70% { transform: scale(2.2); opacity: 0; }
           100% { transform: scale(1); opacity: 0; }
         }
-        @keyframes shlS {
-          0% { background-position: -200% center; }
-          100% { background-position: 200% center; }
+        .ping-dot { 
+          animation: sPing 2s ease-out infinite; 
+          will-change: transform, opacity;
         }
-        .ping-dot { animation: sPing 2s ease-out infinite; }
         .card-shimmer {
-          background: linear-gradient(90deg, rgba(255,255,255,0.04) 25%, rgba(255,255,255,0.09) 50%, rgba(255,255,255,0.04) 75%);
-          background-size: 200% auto;
-          animation: shlS 2.4s linear infinite;
+          background: linear-gradient(90deg, rgba(255,255,255,0.02) 0%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.02) 100%);
+          opacity: 0.7;
+          pointer-events: none;
         }
       `}</style>
 
