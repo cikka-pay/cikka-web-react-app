@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
 import { LiquidButton } from "@/components/ui/LiquidButton";
+import { PhoneScreen4Cards } from "./PhoneScreen4Cards";
 
 export function SimplifyPaySection() {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -213,171 +214,19 @@ export function SoftCushionsBackground() {
   );
 }
 
-// Expenses iPhone Screen Mockup with animated progress and hover physics
+// Cards iPhone Screen Mockup with auto-loop carousel and live Smart Alerts
 export function ExpensesPhoneMockup() {
   return (
-    <div className="relative z-10 w-[240px] xs:w-[265px] sm:w-[290px] h-[480px] xs:h-[520px] sm:h-[560px] rounded-[38px] xs:rounded-[42px] sm:rounded-[46px] p-2 xs:p-2.5 sm:p-3 bg-black border-[4px] xs:border-[5px] sm:border-[6px] border-[#222228] shadow-[0_25px_60px_rgba(0,0,0,0.9),_0_0_40px_rgba(0,0,0,0.6)] flex flex-col mb-14 xs:mb-12 select-none">
+    <div className="relative z-10 w-[260px] xs:w-[285px] sm:w-[315px] h-[520px] xs:h-[570px] sm:h-[620px] rounded-[38px] xs:rounded-[44px] sm:rounded-[48px] p-2 xs:p-2.5 sm:p-3 bg-black border-[4px] xs:border-[5px] sm:border-[6px] border-[#222228] shadow-[0_25px_60px_rgba(0,0,0,0.9),_0_0_40px_rgba(0,0,0,0.6)] flex flex-col mb-14 xs:mb-12 select-none overflow-hidden">
       {/* Screen container */}
-      <div className="relative w-full h-full bg-[#f8fafc] rounded-[30px] xs:rounded-[34px] sm:rounded-[38px] overflow-hidden flex flex-col p-3 xs:p-3.5 sm:p-4 text-black">
-        {/* Dynamic Island */}
-        <div className="w-16 xs:w-18 h-4 xs:h-4.5 bg-black rounded-full mx-auto mb-1.5 xs:mb-2 flex items-center justify-end px-2">
-          <div className="w-1.5 h-1.5 rounded-full bg-[#111] border border-[#222]" />
+      <div className="relative w-full h-full rounded-[30px] xs:rounded-[36px] sm:rounded-[40px] overflow-hidden flex flex-col shadow-inner">
+        {/* Dynamic Island Notch */}
+        <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-30 w-20 h-5 bg-black rounded-full pointer-events-none flex items-center justify-end pr-2">
+          <div className="w-2 h-2 rounded-full bg-[#15151b] border border-[#262630]/60" />
         </div>
-
-        {/* Top navigation */}
-        <div className="flex items-center justify-between text-slate-700 mb-1">
-          <span className="w-5.5 h-5.5 xs:w-6 xs:h-6 rounded-full bg-slate-200/70 flex items-center justify-center text-xs text-slate-800 cursor-pointer hover:bg-slate-300 transition-colors">
-            ‹
-          </span>
-          <div className="flex items-center gap-1 font-bold text-xs sm:text-sm text-slate-900">
-            Expenses <span className="text-[9px] text-slate-500">▾</span>
-          </div>
-          <span className="w-5.5 h-5.5 xs:w-6 xs:h-6 rounded-full bg-slate-200/70 flex items-center justify-center text-xs text-slate-800 cursor-pointer hover:bg-slate-300 transition-colors">
-            +
-          </span>
-        </div>
-
-        {/* Month Selector */}
-        <div className="text-center text-[11px] font-semibold text-slate-400 mt-0.5 flex items-center justify-center gap-1">
-          September 2020 <span className="text-[8px]">▾</span>
-        </div>
-
-        {/* Big Amount */}
-        <motion.div
-          initial={{ scale: 0.9, opacity: 0 }}
-          whileInView={{ scale: 1, opacity: 1 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-          className="text-center font-extrabold text-3xl sm:text-4xl text-slate-950 tracking-tight my-1.5"
-        >
-          $1,812
-        </motion.div>
-
-        {/* Multi-segment Progress Card */}
-        <div className="bg-white rounded-2xl p-3 shadow-sm border border-slate-100 my-1 space-y-2">
-          <div className="flex items-center justify-between text-[10px]">
-            <div>
-              <p className="text-slate-400 text-[9px]">Left to spend</p>
-              <p className="font-bold text-slate-900">$738</p>
-            </div>
-            <div className="text-right">
-              <p className="text-slate-400 text-[9px]">Monthly budget</p>
-              <p className="font-bold text-slate-900">$2,550</p>
-            </div>
-          </div>
-
-          {/* Segmented Bar with animated entry */}
-          <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden flex gap-0.5">
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "28%" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-              className="h-full bg-[#f97316] rounded-full"
-            />
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "18%" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.4, ease: "easeOut" }}
-              className="h-full bg-[#06b6d4] rounded-full"
-            />
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "32%" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.5, ease: "easeOut" }}
-              className="h-full bg-[#8b5cf6] rounded-full"
-            />
-            <motion.div
-              initial={{ width: 0 }}
-              whileInView={{ width: "22%" }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.8, delay: 0.6, ease: "easeOut" }}
-              className="h-full bg-slate-200 rounded-full"
-            />
-          </div>
-        </div>
-
-        {/* Categories */}
-        <div className="space-y-2 mt-1.5">
-          {/* Category 1 */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.3 }}
-            className="bg-white rounded-2xl p-2.5 shadow-sm border border-slate-100"
-          >
-            <div className="flex items-center justify-between mb-1.5">
-              <div className="flex items-center gap-2">
-                <div className="w-7 h-7 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600 text-xs">
-                  🚙
-                </div>
-                <p className="font-bold text-[11px] text-slate-900">
-                  Auto &amp; transport
-                </p>
-              </div>
-              <p className="font-bold text-[11px] text-slate-900">$700</p>
-            </div>
-
-            <div className="space-y-1 pt-1 border-t border-slate-50">
-              <div className="flex justify-between text-[9px]">
-                <span className="text-slate-500 font-medium">Auto &amp; transport</span>
-                <span className="font-bold text-slate-800">
-                  $350 <span className="text-[8px] text-slate-400 font-normal">Left $186</span>
-                </span>
-              </div>
-              <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  whileInView={{ width: "66%" }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.9, delay: 0.4, ease: "easeOut" }}
-                  className="h-full bg-[#7c3aed] rounded-full"
-                />
-              </div>
-            </div>
-
-            <div className="space-y-1 pt-1">
-              <div className="flex justify-between text-[9px]">
-                <span className="text-slate-500 font-medium">Auto insurance</span>
-                <span className="font-bold text-slate-800">
-                  $250 <span className="text-[8px] text-slate-400 font-normal">Left $120</span>
-                </span>
-              </div>
-              <div className="h-1 w-full bg-slate-100 rounded-full overflow-hidden">
-                <motion.div
-                  initial={{ width: 0 }}
-                  whileInView={{ width: "50%" }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.9, delay: 0.5, ease: "easeOut" }}
-                  className="h-full bg-[#7c3aed] rounded-full"
-                />
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Category 2 */}
-          <motion.div
-            initial={{ opacity: 0, y: 15 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5, delay: 0.45 }}
-            className="bg-white rounded-2xl p-2.5 shadow-sm border border-slate-100 flex items-center justify-between"
-          >
-            <div className="flex items-center gap-2">
-              <div className="w-7 h-7 rounded-lg bg-orange-100 flex items-center justify-center text-orange-600 text-xs">
-                🧾
-              </div>
-              <p className="font-bold text-[11px] text-slate-900">
-                Bill &amp; Utilities
-              </p>
-            </div>
-            <p className="font-bold text-[11px] text-slate-900">$320</p>
-          </motion.div>
-        </div>
+        <PhoneScreen4Cards />
       </div>
     </div>
   );
 }
+

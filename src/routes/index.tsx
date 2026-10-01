@@ -37,6 +37,9 @@ import { GetTheAppSection } from "../components/GetTheAppSection";
 import { Footer } from "../components/Footer";
 import { SmoothScroll } from "../components/SmoothScroll";
 import { Cikka3DLogo } from "../components/Cikka3DLogo";
+import { PhoneScreen1Canvas } from "../components/PhoneScreen1Canvas";
+import { PhoneScreen2Portfolio } from "../components/PhoneScreen2Portfolio";
+import { PhoneScreen3Features } from "../components/PhoneScreen3Features";
 
 // Responsive window size hook with SSR-safe initial detection
 function useWindowSize() {
@@ -505,14 +508,14 @@ function UnifiedPhoneShowcase() {
               {/* Top Specular Edge Highlight */}
               <div className="absolute top-0 inset-x-12 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 to-transparent pointer-events-none" />
 
-              {/* Inner OLED Phone Screen */}
-              <div className="relative w-full h-full rounded-[36px] sm:rounded-[42px] bg-[#09090b] border border-white/10 overflow-hidden flex flex-col justify-between shadow-inner">
-                {/* Dynamic Island & Status Bar */}
-                <div className="relative z-40 w-full flex items-center justify-between text-white text-[10px] sm:text-[11px] font-medium tracking-tight px-4 pt-3 pb-1 shrink-0">
+              {/* Inner Phone Screen Container */}
+              <div className="relative w-full h-full rounded-[36px] sm:rounded-[42px] border border-white/10 overflow-hidden shadow-inner">
+                {/* Dynamic Island & Status Bar - floating seamlessly on top */}
+                <div className="absolute top-0 inset-x-0 z-40 w-full flex items-center justify-between text-white text-[10px] sm:text-[11px] font-medium tracking-tight px-4 pt-3 pb-1 pointer-events-none select-none">
                   <span className="font-semibold text-white/95">9:41</span>
-                  <div className="w-20 sm:w-22 h-4.5 sm:h-5 bg-black rounded-full flex items-center justify-between px-2 shadow-inner border border-white/5">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#111118] border border-white/10" />
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#0a0a16] border border-white/10" />
+                  <div className="w-20 sm:w-22 h-4.5 sm:h-5 bg-black/95 rounded-full flex items-center justify-between px-2 shadow-md border border-white/10">
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#151520] border border-white/10" />
+                    <div className="w-1.5 h-1.5 rounded-full bg-[#0d0d1a] border border-white/10" />
                   </div>
                   <div className="flex items-center gap-1 text-white/90">
                     <svg className="w-3 h-3 fill-current" viewBox="0 0 24 24">
@@ -531,263 +534,54 @@ function UnifiedPhoneShowcase() {
                 </div>
 
                 {/* ------------------------------------------------------------- */}
-                {/* SCREEN 1: HERO STATE ("Borderless Payments" + Exact 3D Torus) */}
+                {/* SCREEN 1: 3D CIKKA LOGO + "India's Most Rewarding Platform"   */}
                 {/* ------------------------------------------------------------- */}
                 <motion.div
                   style={{
                     opacity: screen1Opacity,
                     visibility: screen1Visibility,
                   }}
-                  className="absolute inset-0 pt-9 px-5 pb-5 flex flex-col justify-between z-30 pointer-events-none"
+                  className="absolute inset-0 bg-[#050508] flex flex-col justify-between z-30 pointer-events-none overflow-hidden"
                 >
-                  {/* Glowing Torus / Donut Ring */}
-                  <div className="relative my-auto flex items-center justify-center py-1">
-                    <div className="absolute w-48 sm:w-56 h-32 sm:h-38 rounded-full bg-gradient-to-r from-pink-500/30 via-purple-500/25 to-indigo-500/20 blur-2xl pointer-events-none" />
-                    <div className="relative w-[190px] sm:w-[220px] h-[110px] sm:h-[125px] flex items-center justify-center">
-                      <svg
-                        viewBox="0 0 320 180"
-                        className="w-full h-full drop-shadow-[0_15px_35px_rgba(217,70,239,0.35)]"
-                      >
-                        <defs>
-                          <linearGradient id="exactTorusGrad" x1="0%" y1="20%" x2="100%" y2="80%">
-                            <stop offset="0%" stopColor="#fef08a" />
-                            <stop offset="25%" stopColor="#fed7aa" />
-                            <stop offset="50%" stopColor="#f472b6" />
-                            <stop offset="75%" stopColor="#c084fc" />
-                            <stop offset="100%" stopColor="#a855f7" />
-                          </linearGradient>
-                          <radialGradient id="exactTorusShine" cx="30%" cy="25%" r="70%">
-                            <stop offset="0%" stopColor="#ffffff" stopOpacity="0.55" />
-                            <stop offset="45%" stopColor="#ffffff" stopOpacity="0" />
-                            <stop offset="100%" stopColor="#000000" stopOpacity="0.35" />
-                          </radialGradient>
-                        </defs>
-                        {/* Outer Torus Body */}
-                        <ellipse cx="160" cy="90" rx="140" ry="80" fill="url(#exactTorusGrad)" />
-                        {/* 3D Specular Highlight */}
-                        <ellipse
-                          cx="160"
-                          cy="90"
-                          rx="140"
-                          ry="80"
-                          fill="url(#exactTorusShine)"
-                          style={{ mixBlendMode: "overlay" }}
-                        />
-                        {/* Center Cutout Hole */}
-                        <ellipse cx="160" cy="90" rx="64" ry="38" fill="#09090b" />
-                      </svg>
-                    </div>
-                  </div>
+                  {/* 3D Cikka Logo Canvas */}
+                  <PhoneScreen1Canvas />
 
-                  {/* App Brand & Headline */}
-                  <div className="relative z-20 pb-2">
-                    <div className="flex items-center gap-2 mb-1.5">
-                      <div className="w-4.5 h-4.5 rounded-[5px] bg-gradient-to-tr from-purple-500 via-pink-500 to-amber-300 p-[1px] shadow-sm">
-                        <div className="w-full h-full bg-[#09090b] rounded-[4px] flex items-center justify-center">
-                          <div className="w-2 h-2 rounded-full bg-gradient-to-tr from-pink-400 to-purple-400" />
-                        </div>
-                      </div>
-                      <span className="text-[13px] font-semibold text-white/95">Payer</span>
-                    </div>
-                    <h3 className="text-2xl sm:text-[1.85rem] font-bold tracking-tight text-white leading-[1.08]">
-                      Borderless <br /> Payments
-                    </h3>
+                  {/* Safe area placeholder */}
+                  <div className="w-full h-7 shrink-0 pointer-events-none" />
+
+                  {/* Bottom Tagline Overlay (India's Most Rewarding Platform) */}
+                  <div className="relative z-10 px-4 xs:px-5 sm:px-6 pb-6 sm:pb-8 flex flex-col items-start mt-auto pointer-events-none">
+                    <h2 className="text-[17px] xs:text-[19px] sm:text-[21px] md:text-[23px] font-extrabold font-['Poppins','Inter',sans-serif] leading-[1.15] tracking-[-0.03em] bg-gradient-to-br from-white via-[#e9d5ff] to-[#c084fc] bg-clip-text text-transparent m-0 select-none">
+                      <span className="block whitespace-nowrap">India's Most</span>
+                      <span className="block whitespace-nowrap">Rewarding Platform</span>
+                    </h2>
                   </div>
                 </motion.div>
 
                 {/* ------------------------------------------------------------- */}
-                {/* SCREEN 2: QUICK ACTIONS STATE (Haley Dashboard UI) */}
+                {/* SCREEN 2: FINANCIAL PORTFOLIO SHOWCASE (Kunal Shah Dashboard) */}
                 {/* ------------------------------------------------------------- */}
                 <motion.div
                   style={{
                     opacity: screen2Opacity,
                     visibility: screen2Visibility,
                   }}
-                  className="absolute inset-0 pt-10 px-4 pb-3 flex flex-col justify-between z-30"
+                  className="absolute inset-0 z-30 overflow-hidden"
                 >
-                  <div className="flex items-center justify-between pt-0.5">
-                    <div className="flex items-center gap-2">
-                      <img
-                        src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
-                        alt="Haley avatar"
-                        className="w-8 h-8 sm:w-9 sm:h-9 rounded-full object-cover ring-1 ring-white/20"
-                      />
-                      <div>
-                        <p className="text-[10px] text-slate-400 font-medium">How's it going</p>
-                        <p className="text-xs sm:text-sm font-bold text-white leading-tight">Haley</p>
-                      </div>
-                    </div>
-                    <div className="w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-slate-300">
-                      <Bell className="w-3.5 h-3.5" />
-                    </div>
-                  </div>
-
-                  <div className="mt-2 bg-white/5 border border-white/10 rounded-xl px-3 py-1.5 flex items-center justify-between text-xs text-slate-300">
-                    <span className="text-[11px] font-medium text-slate-300">Add Your New Card</span>
-                    <div className="w-4.5 h-4.5 rounded-full bg-white/10 flex items-center justify-center">
-                      <Plus className="w-3 h-3 text-white" />
-                    </div>
-                  </div>
-
-                  <div className="mt-2 rounded-2xl bg-gradient-to-r from-[#ffd3b6] via-[#f472b6] to-[#a5b4fc] p-3 sm:p-3.5 text-black shadow-md relative overflow-hidden">
-                    <div className="flex items-center justify-between text-[11px] font-bold">
-                      <span className="italic font-black text-sm tracking-tight">VISA</span>
-                      <div className="flex items-center gap-1 font-mono text-[9px] sm:text-[10px] font-semibold tracking-wider">
-                        <span>**** **** **** 3241</span>
-                        <Eye className="w-3 h-3 text-black/70 ml-0.5" />
-                      </div>
-                    </div>
-                    <div className="mt-3.5">
-                      <p className="text-[9px] uppercase tracking-wider text-black/60 font-semibold">
-                        Total Balance
-                      </p>
-                      <p className="text-lg sm:text-xl font-extrabold tracking-tight text-black leading-tight">
-                        $214,453.00
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="grid grid-cols-4 gap-1.5 mt-2 text-center">
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="w-7.5 h-7.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <Gift className="w-3.5 h-3.5" />
-                      </div>
-                      <span className="text-[8.5px] text-slate-300 font-medium">Redeem</span>
-                    </div>
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="w-7.5 h-7.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <Sparkles className="w-3.5 h-3.5" />
-                      </div>
-                      <span className="text-[8.5px] text-slate-300 font-medium">Rewards</span>
-                    </div>
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="w-7.5 h-7.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <Trophy className="w-3.5 h-3.5" />
-                      </div>
-                      <span className="text-[8.5px] text-slate-300 font-medium">Trophy</span>
-                    </div>
-                    <div className="flex flex-col items-center gap-1">
-                      <div className="w-7.5 h-7.5 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <History className="w-3.5 h-3.5" />
-                      </div>
-                      <span className="text-[8.5px] text-slate-300 font-medium">History</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-2">
-                    <div className="flex items-center justify-between text-[11px] font-semibold text-white/90 mb-1">
-                      <span>History Transaction</span>
-                      <span className="text-[9px] text-slate-400 font-normal">See All</span>
-                    </div>
-                    <div className="flex items-center justify-between bg-white/[0.03] border border-white/5 rounded-xl p-2">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6.5 h-6.5 rounded-lg bg-[#001e36] text-[#38bdf8] flex items-center justify-center text-[10px] font-bold">
-                          Ps
-                        </div>
-                        <div>
-                          <p className="text-[10px] font-semibold text-white leading-tight">
-                            Abode Photoshop
-                          </p>
-                          <p className="text-[8px] text-slate-400">Jan 21 2025 , 04:44 PM</p>
-                        </div>
-                      </div>
-                      <span className="text-[11px] font-bold text-white">$19</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-auto bg-[#13131a]/95 border border-white/10 rounded-full px-3.5 py-1.5 flex items-center justify-between shadow-xl">
-                    <Home className="w-3.5 h-3.5 text-white" />
-                    <CreditCard className="w-3.5 h-3.5 text-slate-400" />
-                    <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-pink-400 to-purple-400 flex items-center justify-center text-black shadow-sm">
-                      <QrCode className="w-3.5 h-3.5 text-black" />
-                    </div>
-                    <Activity className="w-3.5 h-3.5 text-slate-400" />
-                    <img
-                      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
-                      alt="Haley"
-                      className="w-4.5 h-4.5 rounded-full object-cover"
-                    />
-                  </div>
+                  <PhoneScreen2Portfolio />
                 </motion.div>
 
                 {/* ------------------------------------------------------------- */}
-                {/* SCREEN 3: SMART NAVIGATION STATE */}
+                {/* SCREEN 3: BUILT FOR SPEED (One-Click Orders, Payments, Reminders) */}
                 {/* ------------------------------------------------------------- */}
                 <motion.div
                   style={{
                     opacity: screen3Opacity,
                     visibility: screen3Visibility,
                   }}
-                  className="absolute inset-0 pt-10 px-4 pb-4 flex flex-col justify-between z-30"
+                  className="absolute inset-0 z-30 overflow-hidden"
                 >
-                  <div>
-                    <div className="flex items-center justify-between pt-0.5">
-                      <div className="w-7 h-7 rounded-full bg-white/5 border border-white/10 flex items-center justify-center text-white">
-                        <ChevronLeft className="w-3.5 h-3.5" />
-                      </div>
-                      <p className="text-xs font-semibold text-white">Smart Hub</p>
-                      <div className="w-7" />
-                    </div>
-
-                    <div className="mt-3 bg-white/5 border border-white/10 rounded-2xl p-2.5 flex items-center justify-between">
-                      <div>
-                        <p className="text-[9px] text-slate-400">Total Saved This Month</p>
-                        <p className="text-base font-extrabold text-white mt-0.5">₹14,850</p>
-                      </div>
-                      <span className="text-[9px] font-bold text-[#22c55e] bg-[#22c55e]/15 px-2 py-0.5 rounded-md">
-                        ↑ 34%
-                      </span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-1.5 my-auto">
-                    <div className="bg-[#141420] border border-white/10 rounded-xl p-2 flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg bg-[#f472b6]/10 border border-[#f472b6]/20 flex items-center justify-center shrink-0">
-                        <ShoppingBagNavIcon className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[10px] font-bold text-white leading-tight">One-Click Orders</p>
-                        <p className="text-[7.5px] text-slate-400 truncate">2 repeat orders ready</p>
-                      </div>
-                      <span className="text-[9px] font-semibold text-purple-300">Reorder</span>
-                    </div>
-
-                    <div className="bg-[#141420] border border-white/10 rounded-xl p-2 flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg bg-[#818cf8]/10 border border-[#818cf8]/20 flex items-center justify-center shrink-0">
-                        <CardLightningNavIcon className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[10px] font-bold text-white leading-tight">One-Click Payments</p>
-                        <p className="text-[7.5px] text-slate-400 truncate">Electricity bill due</p>
-                      </div>
-                      <span className="text-[9px] font-semibold text-indigo-300">Pay</span>
-                    </div>
-
-                    <div className="bg-[#141420] border border-white/10 rounded-xl p-2 flex items-center gap-2">
-                      <div className="w-7 h-7 rounded-lg bg-[#c084fc]/10 border border-[#c084fc]/20 flex items-center justify-center shrink-0">
-                        <BellClockNavIcon className="w-3.5 h-3.5" />
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="text-[10px] font-bold text-white leading-tight">Smart Reminders</p>
-                        <p className="text-[7.5px] text-slate-400 truncate">Credit card bill 5th Oct</p>
-                      </div>
-                      <span className="text-[9px] font-semibold text-pink-300">Active</span>
-                    </div>
-                  </div>
-
-                  <div className="mt-auto bg-[#13131a]/95 border border-white/10 rounded-full px-3.5 py-1.5 flex items-center justify-between shadow-xl">
-                    <Home className="w-3.5 h-3.5 text-slate-400" />
-                    <CreditCard className="w-3.5 h-3.5 text-slate-400" />
-                    <div className="w-6.5 h-6.5 rounded-lg bg-gradient-to-tr from-pink-400 to-purple-400 flex items-center justify-center text-black shadow-sm">
-                      <QrCode className="w-3.5 h-3.5 text-black" />
-                    </div>
-                    <Activity className="w-3.5 h-3.5 text-white" />
-                    <img
-                      src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&q=80&w=120"
-                      alt="Haley"
-                      className="w-4.5 h-4.5 rounded-full object-cover"
-                    />
-                  </div>
+                  <PhoneScreen3Features />
                 </motion.div>
               </div>
             </div>

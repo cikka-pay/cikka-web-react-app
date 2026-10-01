@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { gsap, prefersReducedMotion } from "@/lib/gsap";
 
-const words = ["PAY.", "EARN.", "REDEEM.", "REPEAT."];
+const words = ["PAY.", "SHOP.", "EARN.", "REDEEM."];
 
 export function SizzleSection() {
   const root = useRef<HTMLElement>(null);
