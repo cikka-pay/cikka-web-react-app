@@ -247,7 +247,7 @@ function UnifiedPhoneShowcase() {
   const phoneY = useTransform(
     smoothProgress,
     [0.0, 0.18, 0.30, 1.0],
-    [heroStartY, 0, isMobile ? -165 : isTablet ? -140 : 0, isMobile ? -165 : isTablet ? -140 : 0]
+    [heroStartY, 0, isMobile ? -205 : isTablet ? -165 : 0, isMobile ? -205 : isTablet ? -165 : 0]
   );
 
   // 3D Perspective Tilt (zero tilt on mobile for maximum 120fps GPU performance)
@@ -265,12 +265,12 @@ function UnifiedPhoneShowcase() {
     smoothProgress,
     [0.0, 0.18, 0.30, 0.56, 0.72, 1.0],
     [
-      isMobile ? 0.58 : isTablet ? 0.68 : 0.86,
-      isMobile ? 0.60 : isTablet ? 0.70 : 0.88,
-      isMobile ? 0.60 : isTablet ? 0.72 : 0.88,
-      isMobile ? 0.60 : isTablet ? 0.72 : 0.88,
-      isMobile ? 0.60 : isTablet ? 0.72 : 0.88,
-      isMobile ? 0.60 : isTablet ? 0.72 : 0.88,
+      isMobile ? 0.52 : isTablet ? 0.62 : 0.86,
+      isMobile ? 0.54 : isTablet ? 0.65 : 0.88,
+      isMobile ? 0.55 : isTablet ? 0.68 : 0.88,
+      isMobile ? 0.55 : isTablet ? 0.68 : 0.88,
+      isMobile ? 0.55 : isTablet ? 0.68 : 0.88,
+      isMobile ? 0.55 : isTablet ? 0.68 : 0.88,
     ]
   );
 
@@ -353,7 +353,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-14 xl:left-24 2xl:left-36 lg:right-auto
-            bottom-14 xs:bottom-16 sm:bottom-20 md:bottom-24 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            bottom-28 xs:bottom-32 sm:bottom-36 md:bottom-40 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
             z-30 w-full max-w-[94%] xs:max-w-[390px] sm:max-w-[460px] lg:max-w-md xl:max-w-lg
             flex flex-col justify-center items-center lg:items-start
             text-center lg:text-left px-2 lg:px-0 will-change-transform"
@@ -416,7 +416,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-auto lg:right-14 xl:right-24 2xl:right-36
-            bottom-14 xs:bottom-16 sm:bottom-20 md:bottom-24 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            bottom-28 xs:bottom-32 sm:bottom-36 md:bottom-40 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
             z-30 w-full max-w-[95%] xs:max-w-[400px] sm:max-w-[500px] lg:max-w-xl xl:max-w-2xl
             flex flex-col justify-center items-center lg:items-end
             text-center lg:text-right px-2 lg:px-0 will-change-transform"
