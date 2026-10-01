@@ -456,7 +456,7 @@ export function WaitlistSection() {
       style={{ height: isMobile ? "180vh" : "360vh" }}
     >
       {/* Sticky Viewport Pinned Viewport with Navbar Clearance */}
-      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pt-[72px] sm:pt-[84px] pb-10 sm:pb-16 px-4 sm:px-8 md:px-12 overflow-hidden">
+      <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pt-[72px] sm:pt-[84px] pb-6 sm:pb-10 px-4 sm:px-8 md:px-12 overflow-hidden">
 
         {/* Outer Showcase Card positioned cleanly with slightly vertically bigger height */}
         <motion.section
@@ -464,7 +464,7 @@ export function WaitlistSection() {
             scale: cardScale,
             perspective: isMobile ? undefined : 1200,
           }}
-          className="relative w-full max-w-[1400px] rounded-[32px] sm:rounded-[40px] md:rounded-[48px] bg-[#0c0d12] border border-white/10 overflow-hidden h-[calc(100vh-120px)] max-h-[720px] sm:max-h-[760px] min-h-[540px] sm:min-h-[600px] flex flex-col items-center justify-center shadow-[0_30px_90px_rgba(0,0,0,0.95)] will-change-transform"
+          className="relative w-full max-w-[1400px] rounded-[32px] sm:rounded-[40px] md:rounded-[48px] bg-[#0c0d12] border border-white/10 overflow-hidden h-[calc(100vh-120px)] max-h-[720px] sm:max-h-[760px] min-h-[540px] sm:min-h-[600px] flex flex-col items-center justify-center shadow-[0_15px_40px_rgba(0,0,0,0.08),_0_4px_16px_rgba(0,0,0,0.04)] will-change-transform"
         >
           {/* Subtle Ambient Radial Glows expanding with scroll zoom */}
           <motion.div

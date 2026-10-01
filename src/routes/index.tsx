@@ -807,7 +807,7 @@ function UnifiedPhoneShowcase() {
 }
 
 function CardsScene() {
-  const containerRef = useRef<HTMLElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
   const { width } = useWindowSize();
   const isMobile = width < 640;
   const isNarrow = width < 480;
@@ -815,7 +815,7 @@ function CardsScene() {
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
-    offset: ["start 90%", "end 30%"],
+    offset: ["start start", "end end"],
   });
 
   const springProgress = useSpring(scrollYProgress, {
@@ -825,154 +825,158 @@ function CardsScene() {
   });
   const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
-  // Headline scroll animation: Starts closer to cards (+165px down), floats smoothly upwards to +15px on scroll
-  const titleY = useTransform(smoothProgress, [0.0, 0.75], [isMobile ? 90 : 165, 15]);
-  const titleOpacity = useTransform(smoothProgress, [0.0, 0.18], [0.7, 1]);
+  // Headline scroll animation: Starts slightly lower (+65px), ascends & settles by 0.32, then holds paused
+  const titleY = useTransform(smoothProgress, [0.0, 0.32, 1.0], [isMobile ? 45 : 65, 0, 0]);
+  const titleOpacity = useTransform(smoothProgress, [0.0, 0.20, 1.0], [0.35, 1, 1]);
 
-  // Left Card Scroll Transforms
+  // Left Card Scroll Transforms: Fans out smoothly (0.0 -> 0.35), then STICKS / PAUSES (0.35 -> 1.0)
   const leftCardX = useTransform(
     smoothProgress,
-    [0.05, 0.85],
-    [0, isNarrow ? -48 : isMobile ? -60 : isTablet ? -85 : -105]
+    [0.0, 0.35, 1.0],
+    [0, isNarrow ? -48 : isMobile ? -60 : isTablet ? -85 : -105, isNarrow ? -48 : isMobile ? -60 : isTablet ? -85 : -105]
   );
-  const leftCardY = useTransform(smoothProgress, [0.05, 0.85], [115, 12]);
-  const leftCardRotate = useTransform(smoothProgress, [0.05, 0.85], [0, isMobile ? -15 : -22]);
-  const leftCardScale = useTransform(smoothProgress, [0.05, 0.85], [0.92, 0.98]);
+  const leftCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [100, 12, 12]);
+  const leftCardRotate = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0, isMobile ? -15 : -22, isMobile ? -15 : -22]);
+  const leftCardScale = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0.92, 0.98, 0.98]);
 
-  // Center Card Scroll Transforms
-  const centerCardY = useTransform(smoothProgress, [0.05, 0.85], [125, -10]);
-  const centerCardRotate = useTransform(smoothProgress, [0.05, 0.85], [0, -3]);
-  const centerCardScale = useTransform(smoothProgress, [0.05, 0.85], [0.94, 1.02]);
+  // Center Card Scroll Transforms: Rises into focus (0.0 -> 0.35), then STICKS / PAUSES (0.35 -> 1.0)
+  const centerCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [110, -10, -10]);
+  const centerCardRotate = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0, -3, -3]);
+  const centerCardScale = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0.94, 1.02, 1.02]);
 
-  // Right Card Scroll Transforms
+  // Right Card Scroll Transforms: Fans out smoothly (0.0 -> 0.35), then STICKS / PAUSES (0.35 -> 1.0)
   const rightCardX = useTransform(
     smoothProgress,
-    [0.05, 0.85],
-    [0, isNarrow ? 48 : isMobile ? 60 : isTablet ? 85 : 105]
+    [0.0, 0.35, 1.0],
+    [0, isNarrow ? 48 : isMobile ? 60 : isTablet ? 85 : 105, isNarrow ? 48 : isMobile ? 60 : isTablet ? 85 : 105]
   );
-  const rightCardY = useTransform(smoothProgress, [0.05, 0.85], [115, 12]);
-  const rightCardRotate = useTransform(smoothProgress, [0.05, 0.85], [0, isMobile ? 13 : 18]);
-  const rightCardScale = useTransform(smoothProgress, [0.05, 0.85], [0.92, 0.98]);
+  const rightCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [100, 12, 12]);
+  const rightCardRotate = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0, isMobile ? 13 : 18, isMobile ? 13 : 18]);
+  const rightCardScale = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0.92, 0.98, 0.98]);
 
   return (
-    <section
+    <div
       id="download"
       ref={containerRef}
-      className="relative pt-12 sm:pt-24 md:pt-28 pb-4 bg-[#000000] flex flex-col items-center justify-start overflow-visible min-h-0"
+      className="relative w-full bg-[#000000] text-white selection:bg-purple-500/30 overflow-visible"
+      style={{ height: isMobile ? "190vh" : "240vh" }}
     >
-      {/* Ambient background glow */}
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] xs:w-[450px] sm:w-[700px] h-[300px] sm:h-[350px] bg-[radial-gradient(circle,rgba(168,85,247,0.13)_0%,transparent_70%)] blur-[70px] sm:blur-[90px] pointer-events-none" />
+      {/* Pinned Sticky Fullscreen Viewport with Pause on Scroll */}
+      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6">
+        {/* Ambient background glow */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] xs:w-[450px] sm:w-[700px] h-[300px] sm:h-[450px] bg-[radial-gradient(circle,rgba(168,85,247,0.16)_0%,transparent_70%)] blur-[70px] sm:blur-[95px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center w-full flex flex-col items-center mt-2 sm:mt-8">
-        {/* Compact Headline that starts close to cards and ascends smoothly on scroll */}
-        <motion.h2
-          style={{ y: titleY, opacity: titleOpacity }}
-          className="font-sans font-bold tracking-[-0.035em] text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white text-center mb-2 select-none"
-        >
-          Manage <span className="bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">all</span> cards in one place
-        </motion.h2>
-
-        {/* Fanned Cards Showcase (Scroll Scrubbed) */}
-        <div className="relative w-full max-w-2xl h-[260px] xs:h-[280px] sm:h-[320px] md:h-[350px] flex items-center justify-center select-none mt-6 sm:mt-12 md:mt-14">
-          {/* Left Card - Axis Bank */}
-          <motion.div
-            style={{
-              x: leftCardX,
-              y: leftCardY,
-              rotate: leftCardRotate,
-              scale: leftCardScale,
-            }}
-            className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
+        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center w-full flex flex-col items-center">
+          {/* Headline */}
+          <motion.h2
+            style={{ y: titleY, opacity: titleOpacity }}
+            className="font-sans font-bold tracking-[-0.035em] text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white text-center mb-6 sm:mb-10 select-none"
           >
-            <div className="flex items-center justify-between">
-              <AxisBankLogo />
-              <EmvChip />
-            </div>
-            <div className="my-auto flex items-center justify-between pl-0.5">
-              <div className="font-mono text-white/90 text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
-                3455 4562 7710 3507
-              </div>
-              <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
-                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
-                <p className="font-semibold text-white">Kunal Shah</p>
-                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
-                <p className="font-semibold text-white">02/30</p>
-              </div>
-            </div>
-            <div className="flex items-center gap-1.5 opacity-60">
-              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20" />
-              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/15 -ml-2 sm:-ml-2.5" />
-            </div>
-          </motion.div>
+            Manage <span className="bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">all</span> cards in one place
+          </motion.h2>
 
-          {/* Center Card (Front Card with Topo Pattern) - HDFC Bank */}
-          <motion.div
-            style={{
-              y: centerCardY,
-              rotate: centerCardRotate,
-              scale: centerCardScale,
-            }}
-            className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#252532] via-[#14141c] to-[#0c0c12] border border-white/25 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_25px_80px_rgba(0,0,0,0.95),_0_0_35px_rgba(168,85,247,0.12)] z-20 overflow-hidden origin-bottom"
-          >
-            {/* Topographic Lines Overlay */}
-            <TopoPattern />
-
-            <div className="relative z-10 flex items-center justify-between">
-              <HdfcBankLogo />
-              <EmvChip />
-            </div>
-
-            <div className="relative z-10 my-auto flex items-center justify-between pl-0.5">
-              <div className="font-mono text-white text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180 drop-shadow">
-                3455 4562 7710 3507
+          {/* Fanned Cards Showcase (Scroll Scrubbed & Paused) */}
+          <div className="relative w-full max-w-2xl h-[260px] xs:h-[280px] sm:h-[320px] md:h-[350px] flex items-center justify-center select-none">
+            {/* Left Card - Axis Bank */}
+            <motion.div
+              style={{
+                x: leftCardX,
+                y: leftCardY,
+                rotate: leftCardRotate,
+                scale: leftCardScale,
+              }}
+              className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
+            >
+              <div className="flex items-center justify-between">
+                <AxisBankLogo />
+                <EmvChip />
               </div>
-              <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-300 space-y-0.5">
-                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400">Card holder name</p>
-                <p className="font-semibold text-white">Kunal Shah</p>
-                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400 pt-1 sm:pt-1.5">Expiry date</p>
-                <p className="font-semibold text-white">02/30</p>
+              <div className="my-auto flex items-center justify-between pl-0.5">
+                <div className="font-mono text-white/90 text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
+                  3455 4562 7710 3507
+                </div>
+                <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
+                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
+                  <p className="font-semibold text-white">Kunal Shah</p>
+                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
+                  <p className="font-semibold text-white">02/30</p>
+                </div>
               </div>
-            </div>
+              <div className="flex items-center gap-1.5 opacity-60">
+                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20" />
+                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/15 -ml-2 sm:-ml-2.5" />
+              </div>
+            </motion.div>
 
-            <div className="relative z-10 flex items-center gap-1.5 opacity-75">
-              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/30" />
-              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 -ml-2 sm:-ml-2.5" />
-            </div>
-          </motion.div>
+            {/* Center Card (Front Card with Topo Pattern) - HDFC Bank */}
+            <motion.div
+              style={{
+                y: centerCardY,
+                rotate: centerCardRotate,
+                scale: centerCardScale,
+              }}
+              className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#252532] via-[#14141c] to-[#0c0c12] border border-white/25 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_25px_80px_rgba(0,0,0,0.95),_0_0_35px_rgba(168,85,247,0.12)] z-20 overflow-hidden origin-bottom"
+            >
+              {/* Topographic Lines Overlay */}
+              <TopoPattern />
 
-          {/* Right Card - SBI */}
-          <motion.div
-            style={{
-              x: rightCardX,
-              y: rightCardY,
-              rotate: rightCardRotate,
-              scale: rightCardScale,
-            }}
-            className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
-          >
-            <div className="flex items-center justify-between">
-              <SbiBankLogo />
-              <EmvChip />
-            </div>
-            <div className="my-auto flex items-center justify-between pl-0.5">
-              <div className="font-mono text-white/90 text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
-                3455 4562 7710 3507
+              <div className="relative z-10 flex items-center justify-between">
+                <HdfcBankLogo />
+                <EmvChip />
               </div>
-              <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
-                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
-                <p className="font-semibold text-white">Kunal Shah</p>
-                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
-                <p className="font-semibold text-white">02/30</p>
+
+              <div className="relative z-10 my-auto flex items-center justify-between pl-0.5">
+                <div className="font-mono text-white text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180 drop-shadow">
+                  3455 4562 7710 3507
+                </div>
+                <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-300 space-y-0.5">
+                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400">Card holder name</p>
+                  <p className="font-semibold text-white">Kunal Shah</p>
+                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400 pt-1 sm:pt-1.5">Expiry date</p>
+                  <p className="font-semibold text-white">02/30</p>
+                </div>
               </div>
-            </div>
-            <div className="flex items-center gap-1.5 opacity-60">
-              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20" />
-              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/15 -ml-2 sm:-ml-2.5" />
-            </div>
-          </motion.div>
+
+              <div className="relative z-10 flex items-center gap-1.5 opacity-75">
+                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/30" />
+                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 -ml-2 sm:-ml-2.5" />
+              </div>
+            </motion.div>
+
+            {/* Right Card - SBI */}
+            <motion.div
+              style={{
+                x: rightCardX,
+                y: rightCardY,
+                rotate: rightCardRotate,
+                scale: rightCardScale,
+              }}
+              className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
+            >
+              <div className="flex items-center justify-between">
+                <SbiBankLogo />
+                <EmvChip />
+              </div>
+              <div className="my-auto flex items-center justify-between pl-0.5">
+                <div className="font-mono text-white/90 text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
+                  3455 4562 7710 3507
+                </div>
+                <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
+                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
+                  <p className="font-semibold text-white">Kunal Shah</p>
+                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
+                  <p className="font-semibold text-white">02/30</p>
+                </div>
+              </div>
+              <div className="flex items-center gap-1.5 opacity-60">
+                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20" />
+                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/15 -ml-2 sm:-ml-2.5" />
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
@@ -1313,13 +1317,15 @@ function LightContinuation() {
 
         {/* SECTION 7: WAITLIST SECTION */}
         <WaitlistSection />
+
+        {/* SECTION 8: GET THE APP SHOWCASE */}
+        <GetTheAppSection />
       </div>
 
-      {/* SECTION 8: GET THE APP SHOWCASE */}
-      <GetTheAppSection />
-
-      {/* FOOTER */}
-      <Footer />
+      {/* FOOTER WITH CURVED CORNERS */}
+      <div className="bg-[#f4f5f8] w-full">
+        <Footer />
+      </div>
     </>
   );
 }

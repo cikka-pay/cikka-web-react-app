@@ -58,21 +58,17 @@ export function GetTheAppSection() {
     <section
       id="get-app-section"
       ref={containerRef}
-      className="relative w-full bg-[#000000] text-white pt-14 sm:pt-20 md:pt-24 pb-6 sm:pb-8 md:pb-10 px-4 sm:px-6 overflow-hidden flex flex-col items-center justify-center select-none"
+      className="relative w-full bg-[#f4f5f8] text-slate-900 pt-10 sm:pt-16 md:pt-20 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 overflow-hidden flex flex-col items-center justify-center select-none"
     >
-      {/* Balanced Purple Ambient Radial Glow */}
-      <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 w-[700px] sm:w-[950px] md:w-[1150px] h-[340px] sm:h-[420px] bg-[radial-gradient(ellipse_at_bottom,rgba(168,85,247,0.18)_0%,rgba(147,51,234,0.09)_38%,rgba(109,40,217,0.03)_65%,transparent_80%)] blur-[95px] z-0" />
-      <div className="pointer-events-none absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 w-[380px] sm:w-[540px] h-[180px] bg-[radial-gradient(ellipse_at_center,rgba(192,132,252,0.12)_0%,rgba(168,85,247,0.05)_45%,transparent_70%)] blur-[70px] z-0" />
+      {/* Balanced Soft Purple Ambient Radial Glow on White */}
+      <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 w-[700px] sm:w-[950px] md:w-[1150px] h-[340px] sm:h-[420px] bg-[radial-gradient(ellipse_at_bottom,rgba(168,85,247,0.10)_0%,rgba(147,51,234,0.04)_38%,transparent_75%)] blur-[95px] z-0" />
+      <div className="pointer-events-none absolute bottom-4 sm:bottom-8 left-1/2 -translate-x-1/2 w-[380px] sm:w-[540px] h-[180px] bg-[radial-gradient(ellipse_at_center,rgba(192,132,252,0.08)_0%,transparent_65%)] blur-[70px] z-0" />
 
       {/* ------------------------------------------------------------- */}
-      {/* 3-PHONE TRIPTYCH SHOWCASE (Solid, Opaque & Widely Spread with Bottom Fade) */}
+      {/* 3-PHONE TRIPTYCH SHOWCASE (Solid, Opaque & Widely Spread with Black Shadow Fade) */}
       {/* ------------------------------------------------------------- */}
       <div
         className="relative w-full max-w-4xl h-[320px] xs:h-[370px] sm:h-[460px] md:h-[510px] mt-2 sm:mt-4 mb-4 sm:mb-6 flex items-center justify-center pointer-events-none"
-        style={{
-          maskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.5) 80%, transparent 98%)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 58%, rgba(0,0,0,0.5) 80%, transparent 98%)",
-        }}
       >
         {/* LEFT PHONE: Quick Actions Dashboard */}
         <motion.div
@@ -120,16 +116,19 @@ export function GetTheAppSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative z-20 w-[135px] xs:w-[170px] sm:w-[210px] md:w-[238px] h-[275px] xs:h-[345px] sm:h-[425px] md:h-[475px] pointer-events-auto shadow-[0_20px_55px_rgba(0,0,0,0.95)] rounded-[26px] xs:rounded-[34px] sm:rounded-[42px] will-change-transform"
+          className="relative z-20 w-[135px] xs:w-[170px] sm:w-[210px] md:w-[238px] h-[275px] xs:h-[345px] sm:h-[425px] md:h-[475px] pointer-events-auto shadow-[0_25px_60px_rgba(0,0,0,0.85)] rounded-[26px] xs:rounded-[34px] sm:rounded-[42px] will-change-transform"
         >
           <PhoneFrame isCenter>
             <CenterPhoneHeroScreen />
           </PhoneFrame>
         </motion.div>
+
+        {/* Soft, Natural Diffused Shadow Grounding the Base (Zero Sharp Edges) */}
+        <div className="pointer-events-none absolute -bottom-6 left-1/2 -translate-x-1/2 w-[92%] sm:w-[85%] h-24 bg-[radial-gradient(ellipse_at_center,rgba(0,0,0,0.45)_0%,rgba(0,0,0,0.15)_45%,transparent_75%)] blur-2xl z-10" />
       </div>
 
       {/* ------------------------------------------------------------- */}
-      {/* BOTTOM HEADLINE, SUBTITLE & CTA BUTTON (Overlapping bottom fade) */}
+      {/* BOTTOM HEADLINE, SUBTITLE & CTA BUTTON */}
       {/* ------------------------------------------------------------- */}
       <motion.div
         initial={{ opacity: 0, y: 25 }}
@@ -138,11 +137,11 @@ export function GetTheAppSection() {
         transition={{ duration: 0.65, delay: 0.15, ease: [0.16, 1, 0.3, 1] }}
         className="relative z-30 text-center flex flex-col items-center max-w-2xl px-4 pointer-events-auto"
       >
-        <h2 className="font-sans font-bold tracking-tight text-3xl xs:text-4xl sm:text-6xl md:text-[4.4rem] text-white leading-none drop-shadow-md">
+        <h2 className="font-sans font-bold tracking-tight text-3xl xs:text-4xl sm:text-6xl md:text-[4.4rem] text-slate-950 leading-none">
           Get the App.
         </h2>
 
-        <p className="mt-3 sm:mt-4 text-xs sm:text-sm md:text-base text-slate-400 font-normal leading-relaxed max-w-md text-center">
+        <p className="mt-3 sm:mt-4 text-xs sm:text-sm md:text-base text-slate-600 font-normal leading-relaxed max-w-md text-center">
           Fast, secure, and borderless payments—
           <br className="hidden sm:inline" />
           powered by Payer.
@@ -155,10 +154,10 @@ export function GetTheAppSection() {
         >
           <a
             href="#download"
-            style={{ color: "#000000" }}
-            className="inline-flex items-center justify-center bg-white text-black !text-black font-semibold text-xs sm:text-sm px-7 sm:px-9 py-2.5 sm:py-3 rounded-full hover:bg-neutral-200 transition-all shadow-[0_4px_16px_rgba(0,0,0,0.3)] active:scale-95 cursor-pointer"
+            style={{ color: "#ffffff", backgroundColor: "#000000" }}
+            className="inline-flex items-center justify-center bg-black hover:bg-neutral-800 text-white !text-white font-semibold text-xs sm:text-sm px-8 sm:px-10 py-3 rounded-full transition-all shadow-[0_6px_20px_rgba(0,0,0,0.22)] active:scale-95 cursor-pointer"
           >
-            <span style={{ color: "#000000" }} className="text-black !text-black font-semibold">
+            <span style={{ color: "#ffffff" }} className="text-white !text-white font-semibold">
               Get the app
             </span>
           </a>
