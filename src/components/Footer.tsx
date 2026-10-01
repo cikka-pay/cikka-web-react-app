@@ -7,21 +7,20 @@ export function Footer() {
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
-    const isMobile = window.innerWidth < 768;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         "[data-footer-word]",
-        { yPercent: 12, opacity: 0, scale: 0.97 },
+        { yPercent: 12, opacity: 0.25, scale: 0.96 },
         {
           yPercent: 0,
           opacity: 1,
           scale: 1,
+          duration: 0.8,
           ease: "power2.out",
           scrollTrigger: {
             trigger: root.current as HTMLElement,
-            start: "top 85%",
-            end: "bottom bottom",
-            scrub: isMobile ? true : 0.5,
+            start: "top 90%",
+            toggleActions: "play none none none",
           },
         },
       );
@@ -136,14 +135,14 @@ export function Footer() {
       </div>
 
       {/* Footer CIKKA Display Text (Big Iconic Animated Wordmark) */}
-      <div className="relative mt-2 sm:mt-6 flex flex-col items-center justify-center min-h-[140px] sm:min-h-[190px] md:min-h-[230px] w-full overflow-hidden">
+      <div className="relative mt-4 sm:mt-8 flex flex-col items-center justify-center min-h-[120px] xs:min-h-[150px] sm:min-h-[190px] md:min-h-[230px] w-full overflow-hidden pointer-events-none">
         <span
           data-footer-word
           aria-hidden
-          className="block w-full select-none text-center font-black text-[29vw] sm:text-[26vw] leading-[0.78] tracking-tight text-transparent opacity-90 max-w-full overflow-hidden"
+          className="block w-full select-none text-center font-black text-[27vw] sm:text-[26vw] leading-[0.82] sm:leading-[0.78] tracking-tight text-transparent opacity-95 max-w-full overflow-hidden"
           style={{
             backgroundImage:
-              "linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(192,132,252,0.55) 50%, rgba(255,255,255,0.02) 100%)",
+              "linear-gradient(180deg, rgba(255,255,255,0.95) 0%, rgba(192,132,252,0.65) 45%, rgba(168,85,247,0.35) 75%, rgba(255,255,255,0.03) 100%)",
             WebkitBackgroundClip: "text",
             backgroundClip: "text",
           }}
