@@ -34,7 +34,7 @@ export function EcommerceRewardsFilmCard() {
           }
         });
       },
-      { threshold: 0.1, rootMargin: "80px" }
+      { threshold: 0.01, rootMargin: "50px" }
     );
 
     observer.observe(el);

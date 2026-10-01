@@ -4,25 +4,32 @@ import { LiquidButton } from "@/components/ui/LiquidButton";
 
 export function SimplifyPaySection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 220,
-    damping: 30,
-    mass: 0.02,
+  const springProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 28,
+    mass: 0.16,
   });
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
-  // Parallax and 3D tilts for the visual showcase
+  // Parallax and 3D tilts for the visual showcase (disabled on mobile for 120fps hardware lock)
   const cardRotateY = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [0, 0, 0] : [-3, 0, 3]);
   const cardRotateX = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [0, 0, 0] : [3, 0, -3]);
-  const phoneParallaxY = useTransform(smoothProgress, [0, 1], isMobile ? [12, -12] : [25, -25]);
-  const cushionsParallaxY = useTransform(smoothProgress, [0, 1], isMobile ? [-8, 8] : [-15, 15]);
+  const phoneParallaxY = useTransform(smoothProgress, [0, 1], isMobile ? [0, 0] : [25, -25]);
+  const cushionsParallaxY = useTransform(smoothProgress, [0, 1], isMobile ? [0, 0] : [-15, 15]);
 
   return (
     <div

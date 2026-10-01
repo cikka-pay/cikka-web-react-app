@@ -83,29 +83,22 @@ function useHeaderTheme() {
   const [isLight, setIsLight] = React.useState(false);
 
   React.useEffect(() => {
-    const handleCheck = () => {
-      const lightSections = document.querySelectorAll('[data-theme-light="true"]');
-      const headerTriggerY = 60;
-      let lightActive = false;
+    const lightSection = document.getElementById("company");
+    if (!lightSection) return;
 
-      lightSections.forEach((sec) => {
-        const r = sec.getBoundingClientRect();
-        if (r.top <= headerTriggerY && r.bottom >= headerTriggerY) {
-          lightActive = true;
-        }
-      });
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsLight(entry?.isIntersecting ?? false);
+      },
+      {
+        rootMargin: "-60px 0px -75% 0px",
+        threshold: 0,
+      }
+    );
 
-      setIsLight(lightActive);
-    };
+    observer.observe(lightSection);
 
-    window.addEventListener("scroll", handleCheck, { passive: true });
-    window.addEventListener("resize", handleCheck);
-    handleCheck();
-
-    return () => {
-      window.removeEventListener("scroll", handleCheck);
-      window.removeEventListener("resize", handleCheck);
-    };
+    return () => observer.disconnect();
   }, []);
 
   return isLight;
@@ -185,12 +178,13 @@ function UnifiedPhoneShowcase() {
     offset: ["start start", "end end"],
   });
 
-  // Ultra-responsive zero-lag spring with stable reference across all devices
-  const smoothProgress = useSpring(scrollYProgress, {
-    damping: 30,
-    stiffness: 220,
-    mass: 0.02,
+  // On mobile: 1:1 instantaneous hardware response; On desktop: buttery smooth momentum
+  const springProgress = useSpring(scrollYProgress, {
+    damping: 28,
+    stiffness: 100,
+    mass: 0.16,
   });
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // --- 1. HERO STAGE ("We've Got You") ---
   const heroOpacity = useTransform(smoothProgress, [0.0, 0.04, 0.09], [1, 0.1, 0]);
@@ -306,7 +300,7 @@ function UnifiedPhoneShowcase() {
     <div
       ref={containerRef}
       className="relative w-full bg-[#000000] text-white selection:bg-purple-500/30 overflow-visible"
-      style={{ height: isMobile ? "340vh" : "480vh" }}
+      style={{ height: isMobile ? "210vh" : "480vh" }}
     >
       {/* Sticky Fullscreen Viewport */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-16 sm:pt-24 pb-4 sm:pb-8 px-4 sm:px-12 lg:px-20">
@@ -821,11 +815,12 @@ function CardsScene() {
     offset: ["start 90%", "end 30%"],
   });
 
-  const smoothProgress = useSpring(scrollYProgress, {
-    damping: 30,
-    stiffness: 220,
-    mass: 0.02,
+  const springProgress = useSpring(scrollYProgress, {
+    damping: 28,
+    stiffness: 100,
+    mass: 0.16,
   });
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // Headline scroll animation: Starts closer to cards (+165px down), floats smoothly upwards to +15px on scroll
   const titleY = useTransform(smoothProgress, [0.0, 0.75], [isMobile ? 100 : 165, 15]);
@@ -984,12 +979,12 @@ function AxisBankLogo({ className = "" }: { className?: string }) {
       <img
         src="/logo/axis_logo_clean.png"
         alt="Axis Bank"
-        className="h-5 xs:h-6 sm:h-7 w-auto max-w-[85px] xs:max-w-[105px] sm:max-w-[120px] object-contain shrink-0 filter drop-shadow-sm"
+        className="h-5 xs:h-6 sm:h-7 w-auto max-w-[85px] xs:max-w-[105px] sm:max-w-[120px] object-contain shrink-0 filter grayscale brightness-[2.6] contrast-[0.9] opacity-95 drop-shadow-sm"
         onError={(e) => {
           (e.target as HTMLImageElement).src = "/logo/axis_bank_clean.png";
         }}
       />
-      <span className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] font-bold text-white tracking-wider uppercase font-sans whitespace-nowrap">
+      <span className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] font-bold text-white/90 tracking-wider uppercase font-sans whitespace-nowrap">
         Axis Bank
       </span>
     </div>
@@ -1002,12 +997,12 @@ function HdfcBankLogo({ className = "" }: { className?: string }) {
       <img
         src="/logo/hdfc.png"
         alt="HDFC Bank"
-        className="h-5 xs:h-6 sm:h-7 w-auto max-w-[85px] xs:max-w-[105px] sm:max-w-[120px] object-contain shrink-0 filter drop-shadow-sm"
+        className="h-5 xs:h-6 sm:h-7 w-auto max-w-[85px] xs:max-w-[105px] sm:max-w-[120px] object-contain shrink-0 filter grayscale brightness-[2.6] contrast-[0.9] opacity-95 drop-shadow-sm"
         onError={(e) => {
           (e.target as HTMLImageElement).src = "/logo/hdfc.jpg";
         }}
       />
-      <span className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] font-bold text-white tracking-wider uppercase font-sans whitespace-nowrap">
+      <span className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] font-bold text-white/90 tracking-wider uppercase font-sans whitespace-nowrap">
         HDFC Bank
       </span>
     </div>
@@ -1020,12 +1015,12 @@ function SbiBankLogo({ className = "" }: { className?: string }) {
       <img
         src="/logo/sbi.png"
         alt="State Bank of India"
-        className="h-5 xs:h-6 sm:h-7 w-auto max-w-[85px] xs:max-w-[105px] sm:max-w-[120px] object-contain shrink-0 filter drop-shadow-sm"
+        className="h-5 xs:h-6 sm:h-7 w-auto max-w-[85px] xs:max-w-[105px] sm:max-w-[120px] object-contain shrink-0 filter grayscale brightness-[2.6] contrast-[0.9] opacity-95 drop-shadow-sm"
         onError={(e) => {
           (e.target as HTMLImageElement).src = "/logo/SBI-logo.jfif";
         }}
       />
-      <span className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] font-bold text-white tracking-wider uppercase font-sans whitespace-nowrap">
+      <span className="text-[7.5px] xs:text-[8.5px] sm:text-[9.5px] font-bold text-white/90 tracking-wider uppercase font-sans whitespace-nowrap">
         State Bank of India
       </span>
     </div>
@@ -1178,7 +1173,7 @@ function LightContinuation() {
   return (
     <>
       <div id="light-continuation-wrap" className="w-full">
-        <section id="company" data-theme-light="true" className="relative z-20 mt-64 sm:mt-60 md:mt-56 bg-[#f4f5f8] text-black pt-16 pb-28 px-6 sm:px-12 md:px-16 shadow-[0_-30px_70px_rgba(0,0,0,0.7)] w-full">
+        <section id="company" data-theme-light="true" className="relative z-20 mt-10 sm:mt-16 md:mt-24 bg-[#f4f5f8] text-black pt-12 sm:pt-16 pb-28 px-6 sm:px-12 md:px-16 shadow-[0_-30px_70px_rgba(0,0,0,0.7)] w-full">
           {/* Inverted / Concave Upward Curving Corners */}
           <InvertedCornerLeft />
           <InvertedCornerRight />

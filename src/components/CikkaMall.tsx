@@ -355,12 +355,12 @@ function Product3DCanvas({ modelUrl, id }: { modelUrl: string; id: string }) {
     }
 
     // Intersection Observer to only render when in viewport
-    let isVisible = true;
+    let isVisible = false;
     const observer = new IntersectionObserver(
       ([entry]) => {
-        isVisible = entry?.isIntersecting ?? true;
+        isVisible = entry?.isIntersecting ?? false;
       },
-      { rootMargin: "80px" }
+      { threshold: 0.01, rootMargin: "50px" }
     );
     observer.observe(container);
 

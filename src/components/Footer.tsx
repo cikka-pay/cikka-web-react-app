@@ -7,6 +7,7 @@ export function Footer() {
 
   useEffect(() => {
     if (prefersReducedMotion()) return;
+    const isMobile = window.innerWidth < 768;
     const ctx = gsap.context(() => {
       gsap.fromTo(
         "[data-footer-word]",
@@ -18,9 +19,9 @@ export function Footer() {
           ease: "power2.out",
           scrollTrigger: {
             trigger: root.current as HTMLElement,
-            start: "top 80%",
+            start: "top 85%",
             end: "bottom bottom",
-            scrub: 0.5,
+            scrub: isMobile ? true : 0.5,
           },
         },
       );

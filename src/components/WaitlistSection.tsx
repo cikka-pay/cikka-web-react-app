@@ -401,6 +401,14 @@ const OUTER_CIRCLE_LOGOS: OrbitLogoDef[] = [
 
 export function WaitlistSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   // Track scroll progression across the multi-vh pinned track
   const { scrollYProgress } = useScroll({
@@ -408,21 +416,22 @@ export function WaitlistSection() {
     offset: ["start start", "end end"],
   });
 
-  const smoothProgress = useSpring(scrollYProgress, {
-    damping: 30,
-    stiffness: 220,
-    mass: 0.02,
+  const springProgress = useSpring(scrollYProgress, {
+    damping: 28,
+    stiffness: 100,
+    mass: 0.16,
   });
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // 1. OUTER CIRCLE ZOOM-IN TRANSFORMS
   const outerScale = useTransform(smoothProgress, [0, 0.25, 0.45, 0.55], [0.72, 1.0, 1.9, 3.4]);
   const outerOpacity = useTransform(smoothProgress, [0, 0.15, 0.38, 0.48, 1], [0.85, 1.0, 0.95, 0.0, 0.0]);
-  const outerZ = useTransform(smoothProgress, [0, 0.55], [0, 280]);
+  const outerZ = useTransform(smoothProgress, [0, 0.55], isMobile ? [0, 0] : [0, 280]);
 
   // 2. INNER CIRCLE ZOOM-IN TRANSFORMS
   const innerScale = useTransform(smoothProgress, [0, 0.25, 0.45, 0.55], [0.78, 1.0, 1.7, 3.0]);
   const innerOpacity = useTransform(smoothProgress, [0, 0.15, 0.38, 0.48, 1], [0.9, 1.0, 0.95, 0.0, 0.0]);
-  const innerZ = useTransform(smoothProgress, [0, 0.55], [0, 180]);
+  const innerZ = useTransform(smoothProgress, [0, 0.55], isMobile ? [0, 0] : [0, 180]);
 
   // 3. CENTER CIKKA LOGO (STABLE DURING FIRST PHASE)
   const cikkaLogoOpacity = useTransform(smoothProgress, [0, 0.1, 0.38, 0.48], [1, 1, 1, 0]);
@@ -444,7 +453,7 @@ export function WaitlistSection() {
     <div
       ref={containerRef}
       className="relative w-full bg-[#f4f5f8] select-none"
-      style={{ height: "360vh" }}
+      style={{ height: isMobile ? "180vh" : "360vh" }}
     >
       {/* Sticky Viewport Pinned Viewport with Navbar Clearance */}
       <div className="sticky top-0 h-screen w-full flex flex-col items-center justify-center pt-[72px] sm:pt-[84px] pb-10 sm:pb-16 px-4 sm:px-8 md:px-12 overflow-hidden">
@@ -453,7 +462,7 @@ export function WaitlistSection() {
         <motion.section
           style={{
             scale: cardScale,
-            perspective: 1200,
+            perspective: isMobile ? undefined : 1200,
           }}
           className="relative w-full max-w-[1400px] rounded-[32px] sm:rounded-[40px] md:rounded-[48px] bg-[#0c0d12] border border-white/10 overflow-hidden h-[calc(100vh-120px)] max-h-[720px] sm:max-h-[760px] min-h-[540px] sm:min-h-[600px] flex flex-col items-center justify-center shadow-[0_30px_90px_rgba(0,0,0,0.95)] will-change-transform"
         >

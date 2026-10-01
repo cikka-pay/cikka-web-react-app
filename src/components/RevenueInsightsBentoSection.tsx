@@ -17,19 +17,26 @@ export function RevenueInsightsBentoSection() {
   const [ordersTimeframe, setOrdersTimeframe] = useState<Timeframe>("today");
   const [revenueTimeframe, setRevenueTimeframe] = useState<Timeframe>("today");
   const [productsTimeframe, setProductsTimeframe] = useState<Timeframe>("today");
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ["start end", "end start"],
   });
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 220,
-    damping: 30,
-    mass: 0.02,
+  const springProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 28,
+    mass: 0.16,
   });
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   const ribbonY = useTransform(smoothProgress, [0, 1], isMobile ? [5, -5] : [15, -15]);
   const ribbonRotate = useTransform(smoothProgress, [0, 1], isMobile ? [0, 0] : [-2, 4]);

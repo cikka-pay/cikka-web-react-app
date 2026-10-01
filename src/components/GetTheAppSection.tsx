@@ -18,19 +18,26 @@ import {
 
 export function GetTheAppSection() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const [isMobile, setIsMobile] = React.useState(false);
+
+  React.useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile, { passive: true });
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
 
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start end", "end start"],
   });
 
-  const isMobile = typeof window !== "undefined" && window.innerWidth < 768;
-
-  const smoothProgress = useSpring(scrollYProgress, {
-    stiffness: 220,
-    damping: 30,
-    mass: 0.02,
+  const springProgress = useSpring(scrollYProgress, {
+    stiffness: 100,
+    damping: 28,
+    mass: 0.16,
   });
+  const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // Parallax shifts for the 3 phones
   const leftPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [15, -10] : [40, -25]);

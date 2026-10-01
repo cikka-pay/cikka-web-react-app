@@ -11,16 +11,16 @@ export function SmoothScroll() {
       (typeof navigator !== "undefined" && navigator.maxTouchPoints > 0) ||
       window.innerWidth < 768;
 
-    // Initialize Lenis with ultra-smooth physics for desktop and fluid native momentum on mobile touch
+    // Initialize Lenis with ultra-fast fluid momentum on mobile and buttery physics on desktop
     const lenis = new Lenis({
-      duration: 1.1,
+      duration: isTouch ? 0.85 : 1.15,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      syncTouch: false, // Prevents JS touch hijacking lag on mobile; enables 120Hz native momentum
-      touchMultiplier: 1.0,
-      wheelMultiplier: 1.0,
+      syncTouch: false,
+      touchMultiplier: 2.2,
+      wheelMultiplier: 1.1,
       autoResize: true,
       infinite: false,
     });
@@ -34,7 +34,7 @@ export function SmoothScroll() {
     };
 
     gsap.ticker.add(updateTicker);
-    // lagSmoothing(0) is critical to prevent GSAP ScrollTrigger and Lenis from stuttering/lagging during frame drops
+    // lagSmoothing(0) prevents GSAP ScrollTrigger and Lenis from stuttering during frame drops
     gsap.ticker.lagSmoothing(0);
 
     // Make lenis globally available
