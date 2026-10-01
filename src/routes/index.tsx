@@ -177,7 +177,7 @@ function UnifiedPhoneShowcase() {
   const phoneShiftX = isStacked ? 0 : isLargeDesktop ? 275 : 210;
 
   // Hero start Y: phone enters from below, slides up as user scrolls
-  const heroStartY = isMobile ? 160 : isTablet ? 200 : 250;
+  const heroStartY = isMobile ? 150 : isTablet ? 190 : 250;
 
   // Track scroll throughout the sequence
   const { scrollYProgress } = useScroll({
@@ -217,7 +217,7 @@ function UnifiedPhoneShowcase() {
   const quickActionsY = useTransform(
     smoothProgress,
     [0.14, 0.24, 0.56, 0.64],
-    isStacked ? [10, 0, 0, -10] : [35, 0, 0, -35]
+    isStacked ? [0, 0, 0, 0] : [35, 0, 0, -35]
   );
 
   // --- 3. LARGE PAYMENTS STAGE (Right Column on desktop / Bottom on mobile) ---
@@ -238,7 +238,7 @@ function UnifiedPhoneShowcase() {
   const largePaymentsY = useTransform(
     smoothProgress,
     [0.64, 0.74],
-    isStacked ? [10, 0] : [35, 0]
+    isStacked ? [0, 0] : [35, 0]
   );
 
   // --- 4. THE SINGLE CONTINUOUS PHONE MOCKUP ---
@@ -253,7 +253,7 @@ function UnifiedPhoneShowcase() {
   const phoneY = useTransform(
     smoothProgress,
     [0.0, 0.18, 0.30, 1.0],
-    [heroStartY, 10, isMobile ? -145 : isTablet ? -130 : 0, isMobile ? -145 : isTablet ? -130 : 0]
+    [heroStartY, 0, isMobile ? -165 : isTablet ? -140 : 0, isMobile ? -165 : isTablet ? -140 : 0]
   );
 
   // 3D Perspective Tilt (zero tilt on mobile for maximum 120fps GPU performance)
@@ -271,12 +271,12 @@ function UnifiedPhoneShowcase() {
     smoothProgress,
     [0.0, 0.18, 0.30, 0.56, 0.72, 1.0],
     [
-      isMobile ? 0.60 : isTablet ? 0.70 : 0.86,
-      isMobile ? 0.62 : isTablet ? 0.72 : 0.88,
-      isMobile ? 0.63 : isTablet ? 0.74 : 0.88,
-      isMobile ? 0.63 : isTablet ? 0.74 : 0.88,
-      isMobile ? 0.63 : isTablet ? 0.74 : 0.88,
-      isMobile ? 0.63 : isTablet ? 0.74 : 0.88,
+      isMobile ? 0.58 : isTablet ? 0.68 : 0.86,
+      isMobile ? 0.60 : isTablet ? 0.70 : 0.88,
+      isMobile ? 0.60 : isTablet ? 0.72 : 0.88,
+      isMobile ? 0.60 : isTablet ? 0.72 : 0.88,
+      isMobile ? 0.60 : isTablet ? 0.72 : 0.88,
+      isMobile ? 0.60 : isTablet ? 0.72 : 0.88,
     ]
   );
 
@@ -359,7 +359,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-14 xl:left-24 2xl:left-36 lg:right-auto
-            bottom-4 xs:bottom-6 sm:bottom-10 md:bottom-16 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            bottom-14 xs:bottom-16 sm:bottom-20 md:bottom-24 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
             z-30 w-full max-w-[94%] xs:max-w-[390px] sm:max-w-[460px] lg:max-w-md xl:max-w-lg
             flex flex-col justify-center items-center lg:items-start
             text-center lg:text-left px-2 lg:px-0 will-change-transform"
@@ -422,7 +422,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-auto lg:right-14 xl:right-24 2xl:right-36
-            bottom-4 xs:bottom-6 sm:bottom-10 md:bottom-16 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            bottom-14 xs:bottom-16 sm:bottom-20 md:bottom-24 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
             z-30 w-full max-w-[95%] xs:max-w-[400px] sm:max-w-[500px] lg:max-w-xl xl:max-w-2xl
             flex flex-col justify-center items-center lg:items-end
             text-center lg:text-right px-2 lg:px-0 will-change-transform"
