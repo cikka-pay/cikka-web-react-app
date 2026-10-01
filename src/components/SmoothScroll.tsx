@@ -13,40 +13,49 @@ export function SmoothScroll() {
 
     ScrollTrigger.config({ ignoreMobileResize: true });
 
-    // Initialize Lenis with ultra-fast fluid momentum and native touch synchronization
+    // Initialize Lenis with universal buttery fluid momentum across desktop, mobile, and tablet
     const lenis = new Lenis({
-      duration: isTouch ? 0.75 : 0.95,
+      duration: 1.0,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
       syncTouch: true,
-      touchMultiplier: 1.0,
+      touchMultiplier: 1.15,
       wheelMultiplier: 1.0,
       autoResize: true,
       infinite: false,
     });
 
-    // Synchronize Lenis with GSAP ScrollTrigger
-    lenis.on("scroll", ScrollTrigger.update);
+    // Synchronize Lenis scroll with GSAP ScrollTrigger
+    lenis.on("scroll", () => {
+      ScrollTrigger.update();
+    });
 
-    // RAF loop via GSAP ticker for synchronized 60-120fps rendering
+    // RAF loop via GSAP ticker for synchronized 60-120fps rendering without jank
     const updateTicker = (time: number) => {
       lenis.raf(time * 1000);
     };
 
     gsap.ticker.add(updateTicker);
-    // lagSmoothing(0) prevents GSAP ScrollTrigger and Lenis from stuttering during frame drops
     gsap.ticker.lagSmoothing(0);
 
-    // Make lenis globally available
+    // Make lenis globally accessible
     (window as unknown as { lenis?: Lenis }).lenis = lenis;
 
-    // Handle resize events to recalculate scroll heights
+    // Refresh ScrollTrigger when layout / fonts finish rendering
     const handleResize = () => {
       lenis.resize();
+      ScrollTrigger.refresh();
     };
+
     window.addEventListener("resize", handleResize, { passive: true });
+
+    // Ensure ScrollTrigger refreshes after initial paint
+    const timer = setTimeout(() => {
+      lenis.resize();
+      ScrollTrigger.refresh();
+    }, 300);
 
     // Smooth in-page anchor scrolling with dynamic header offset
     const onClick = (e: MouseEvent) => {
@@ -68,6 +77,7 @@ export function SmoothScroll() {
     document.addEventListener("click", onClick);
 
     return () => {
+      clearTimeout(timer);
       document.removeEventListener("click", onClick);
       window.removeEventListener("resize", handleResize);
       gsap.ticker.remove(updateTicker);

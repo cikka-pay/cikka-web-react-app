@@ -73,7 +73,6 @@ export const Route = createFileRoute("/")({
 function PayerLanding() {
   return (
     <main className="payer-page bg-[#000000] text-white">
-      <SmoothScroll />
       <Header />
       {/* Unified Pinned Scroll Experience with ONE continuous transitioning Phone */}
       <UnifiedPhoneShowcase />
@@ -185,13 +184,8 @@ function UnifiedPhoneShowcase() {
     offset: ["start start", "end end"],
   });
 
-  // On mobile: 1:1 instantaneous hardware response; On desktop: buttery smooth momentum
-  const springProgress = useSpring(scrollYProgress, {
-    damping: 28,
-    stiffness: 100,
-    mass: 0.16,
-  });
-  const smoothProgress = isStacked ? scrollYProgress : springProgress;
+  // Master Lenis smooth scroll engine provides consistent 120fps fluid momentum across desktop, tablet, and mobile
+  const smoothProgress = scrollYProgress;
 
   // --- 1. HERO STAGE ("We've Got You") ---
   const heroOpacity = useTransform(smoothProgress, [0.0, 0.04, 0.09], [1, 0.1, 0]);
@@ -621,7 +615,7 @@ function CardsScene() {
           trigger: containerRef.current,
           start: "top top",
           end: isMobile ? "+=110%" : "+=170%",
-          scrub: isMobile ? true : 0.2,
+          scrub: 0.4,
           pin: true,
           anticipatePin: 1,
           fastScrollEnd: true,

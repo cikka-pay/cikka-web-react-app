@@ -15,7 +15,7 @@ export function SizzleSection() {
           trigger: root.current as HTMLElement,
           start: "top top",
           end: isMobile ? "+=160%" : "+=350%",
-          scrub: isMobile ? true : 0.6,
+          scrub: 0.5,
           pin: true,
           anticipatePin: 1,
         },
