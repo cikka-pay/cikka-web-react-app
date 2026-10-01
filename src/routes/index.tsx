@@ -163,16 +163,19 @@ function UnifiedPhoneShowcase() {
   const { width } = useWindowSize();
 
   // Responsive breakpoints
+  const isStacked = width < 1024;
   const isMobile = width < 640;
   const isTablet = width >= 640 && width < 1024;
+  const isLargeDesktop = width >= 1280;
 
   // Responsive phone X offset (how far it shifts left/right)
-  // On mobile, phone stays centered while text sits cleanly below
-  const phoneShiftX = isMobile ? 0 : isTablet ? 175 : 260;
-  // Hero start Y: phone enters from below, slides up as user scrolls
-  const heroStartY = isMobile ? 180 : 250;
+  // On stacked (<1024px), phone stays centered while text sits cleanly below in the lower half
+  const phoneShiftX = isStacked ? 0 : isLargeDesktop ? 275 : 210;
 
-  // Track scroll throughout the 480vh sequence
+  // Hero start Y: phone enters from below, slides up as user scrolls
+  const heroStartY = isMobile ? 180 : isTablet ? 210 : 250;
+
+  // Track scroll throughout the sequence
   const { scrollYProgress } = useScroll({
     target: containerRef,
     offset: ["start start", "end end"],
@@ -184,7 +187,7 @@ function UnifiedPhoneShowcase() {
     stiffness: 100,
     mass: 0.16,
   });
-  const smoothProgress = isMobile ? scrollYProgress : springProgress;
+  const smoothProgress = isStacked ? scrollYProgress : springProgress;
 
   // --- 1. HERO STAGE ("We've Got You") ---
   const heroOpacity = useTransform(smoothProgress, [0.0, 0.04, 0.09], [1, 0.1, 0]);
@@ -205,12 +208,12 @@ function UnifiedPhoneShowcase() {
   const quickActionsX = useTransform(
     smoothProgress,
     [0.14, 0.24, 0.56, 0.64],
-    isMobile ? [0, 0, 0, 0] : [-50, 0, 0, -50]
+    isStacked ? [0, 0, 0, 0] : [-40, 0, 0, -40]
   );
   const quickActionsY = useTransform(
     smoothProgress,
     [0.14, 0.24, 0.56, 0.64],
-    isMobile ? [20, 0, 0, -20] : [40, 0, 0, -40]
+    isStacked ? [15, 0, 0, -15] : [35, 0, 0, -35]
   );
 
   // --- 3. LARGE PAYMENTS STAGE (Right Column on desktop / Bottom on mobile) ---
@@ -226,12 +229,12 @@ function UnifiedPhoneShowcase() {
   const largePaymentsX = useTransform(
     smoothProgress,
     [0.64, 0.74],
-    isMobile ? [0, 0] : [50, 0]
+    isStacked ? [0, 0] : [40, 0]
   );
   const largePaymentsY = useTransform(
     smoothProgress,
     [0.64, 0.74],
-    isMobile ? [20, 0] : [40, 0]
+    isStacked ? [15, 0] : [35, 0]
   );
 
   // --- 4. THE SINGLE CONTINUOUS PHONE MOCKUP ---
@@ -239,38 +242,37 @@ function UnifiedPhoneShowcase() {
   const phoneX = useTransform(
     smoothProgress,
     [0.0, 0.16, 0.30, 0.56, 0.72, 1.0],
-    [0, isMobile ? 0 : 80, phoneShiftX, phoneShiftX, -phoneShiftX, -phoneShiftX]
+    [0, isStacked ? 0 : 70, phoneShiftX, phoneShiftX, -phoneShiftX, -phoneShiftX]
   );
 
-  // KEY SCROLL PARALLAX: Phone starts lower and moves upward.
-  // On mobile, phone docks safely in the top half (-120px) to give clear headroom for the interactive controls below
+  // KEY SCROLL PARALLAX: When stacked (<1024px), phone docks in upper half (-125px) giving clear space for text & cards below
   const phoneY = useTransform(
     smoothProgress,
     [0.0, 0.18, 0.30, 1.0],
-    [heroStartY, 20, isMobile ? -120 : 0, isMobile ? -120 : 0]
+    [heroStartY, 20, isStacked ? -125 : 0, isStacked ? -125 : 0]
   );
 
   // 3D Perspective Tilt (zero tilt on mobile for maximum 120fps GPU performance)
   const phoneRotateX = useTransform(
     smoothProgress,
     [0.0, 0.18, 0.30, 0.56, 0.72, 1.0],
-    isMobile ? [0, 0, 0, 0, 0, 0] : [20, 0, 0, 0, 0, 0]
+    isStacked ? [0, 0, 0, 0, 0, 0] : [20, 0, 0, 0, 0, 0]
   );
   const phoneRotateY = useTransform(
     smoothProgress,
     [0.0, 0.16, 0.30, 0.56, 0.72, 1.0],
-    isMobile ? [0, 0, 0, 0, 0, 0] : [0, -3, -3, 3, 3, 3]
+    isStacked ? [0, 0, 0, 0, 0, 0] : [0, -3, -3, 3, 3, 3]
   );
   const phoneScale = useTransform(
     smoothProgress,
     [0.0, 0.18, 0.30, 0.56, 0.72, 1.0],
     [
-      isMobile ? 0.70 : 0.86,
-      isMobile ? 0.73 : 0.88,
-      isMobile ? 0.74 : 0.88,
-      isMobile ? 0.74 : 0.88,
-      isMobile ? 0.74 : 0.88,
-      isMobile ? 0.74 : 0.88,
+      isMobile ? 0.64 : isTablet ? 0.72 : 0.86,
+      isMobile ? 0.67 : isTablet ? 0.74 : 0.88,
+      isMobile ? 0.68 : isTablet ? 0.75 : 0.88,
+      isMobile ? 0.68 : isTablet ? 0.75 : 0.88,
+      isMobile ? 0.68 : isTablet ? 0.75 : 0.88,
+      isMobile ? 0.68 : isTablet ? 0.75 : 0.88,
     ]
   );
 
@@ -300,7 +302,7 @@ function UnifiedPhoneShowcase() {
     <div
       ref={containerRef}
       className="relative w-full bg-[#000000] text-white selection:bg-purple-500/30 overflow-visible"
-      style={{ height: isMobile ? "210vh" : "480vh" }}
+      style={{ height: isStacked ? "230vh" : "480vh" }}
     >
       {/* Sticky Fullscreen Viewport */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-16 sm:pt-24 pb-4 sm:pb-8 px-4 sm:px-12 lg:px-20">
@@ -327,9 +329,9 @@ function UnifiedPhoneShowcase() {
             y: heroY,
             scale: heroScale,
           }}
-          className="absolute top-[130px] xs:top-[145px] sm:top-20 md:top-24 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-2 max-w-4xl pointer-events-none will-change-transform"
+          className="absolute top-[120px] xs:top-[135px] sm:top-20 md:top-24 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-2 max-w-4xl pointer-events-none will-change-transform"
         >
-          <h1 className="font-sans font-bold tracking-[-0.045em] leading-[0.88] text-[4.75rem] xs:text-[5.5rem] sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
+          <h1 className="font-sans font-bold tracking-[-0.045em] leading-[0.88] text-[4.25rem] xs:text-[5rem] sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
             {/* Top Line: "We've" */}
             <span className="inline-block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] via-[#f472b6] via-[#c084fc] to-[#a5b4fc] bg-clip-text text-transparent drop-shadow-[0_10px_35px_rgba(244,114,182,0.12)] pb-1">
               We've
@@ -360,24 +362,24 @@ function UnifiedPhoneShowcase() {
             y: quickActionsY,
           }}
           className="absolute
-            left-0 right-0 mx-auto sm:left-16 md:left-24 lg:left-32 xl:left-40 2xl:left-48 sm:right-auto
-            bottom-24 xs:bottom-28 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2
-            z-30 w-full max-w-[92%] sm:max-w-md lg:max-w-lg
-            flex flex-col justify-center items-center sm:items-start
-            text-center sm:text-left px-2 sm:px-0 will-change-transform"
+            left-0 right-0 mx-auto lg:left-14 xl:left-24 2xl:left-36 lg:right-auto
+            bottom-4 xs:bottom-6 sm:bottom-10 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            z-30 w-full max-w-[92%] xs:max-w-[380px] sm:max-w-[460px] lg:max-w-md xl:max-w-lg
+            flex flex-col justify-center items-center lg:items-start
+            text-center lg:text-left px-2 lg:px-0 will-change-transform"
         >
-          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.15] sm:leading-[1.1] text-3xl xs:text-4xl sm:text-5xl lg:text-[4.75rem] pb-1 overflow-visible">
+          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.15] sm:leading-[1.1] text-2xl xs:text-3xl sm:text-4xl lg:text-[4.25rem] pb-1 overflow-visible">
             <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-2 sm:mr-0 pb-1">
               Cikka
             </span>
-            <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent pb-1.5 sm:pb-2.5">
+            <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent pb-1 sm:pb-2">
               Rewards
             </span>
           </h2>
-          <p className="mt-2 sm:mt-4 text-xs sm:text-base text-slate-400 font-normal leading-relaxed max-w-md">
+          <p className="mt-1 sm:mt-3 text-xs sm:text-sm lg:text-base text-slate-400 font-normal leading-relaxed max-w-sm sm:max-w-md">
             Turn your Cikka Points into rewards you actually want.
           </p>
-          <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mt-3 sm:mt-5 w-full max-w-[220px] xs:max-w-[245px] sm:max-w-[270px] md:max-w-[295px]">
+          <div className="grid grid-cols-2 gap-2 sm:gap-2.5 mt-2.5 sm:mt-5 w-full max-w-[210px] xs:max-w-[240px] sm:max-w-[270px] lg:max-w-[295px]">
             {/* Box 1: Redeem Points */}
             <div className="rounded-xl sm:rounded-2xl bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3 flex flex-col items-center text-center shadow-md backdrop-blur-xl group transition-all cursor-pointer">
               <Gift className="w-4 h-4 sm:w-4.5 sm:h-4.5 text-white group-hover:scale-110 transition-transform stroke-[1.75]" />
@@ -423,28 +425,28 @@ function UnifiedPhoneShowcase() {
             y: largePaymentsY,
           }}
           className="absolute
-            left-0 right-0 mx-auto sm:left-auto sm:right-16 md:right-24 lg:right-32 xl:right-40 2xl:right-48
-            bottom-20 xs:bottom-24 sm:bottom-auto sm:top-1/2 sm:-translate-y-1/2
-            z-30 w-full max-w-[95%] sm:max-w-xl lg:max-w-2xl xl:max-w-3xl
-            flex flex-col justify-center items-center sm:items-end
-            text-center sm:text-right px-2 sm:px-0 will-change-transform"
+            left-0 right-0 mx-auto lg:left-auto lg:right-14 xl:right-24 2xl:right-36
+            bottom-4 xs:bottom-6 sm:bottom-10 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            z-30 w-full max-w-[95%] xs:max-w-[400px] sm:max-w-[500px] lg:max-w-xl xl:max-w-2xl
+            flex flex-col justify-center items-center lg:items-end
+            text-center lg:text-right px-2 lg:px-0 will-change-transform"
         >
-          <div className="w-full max-w-2xl flex flex-col items-center sm:items-end">
-            <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.18] sm:leading-[1.12] text-3xl xs:text-4xl sm:text-5xl lg:text-[4.35rem] text-center sm:text-right pb-1 overflow-visible">
+          <div className="w-full flex flex-col items-center lg:items-end">
+            <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.18] sm:leading-[1.12] text-2xl xs:text-3xl sm:text-4xl lg:text-[4rem] text-center lg:text-right pb-1 overflow-visible">
               <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-2 sm:mr-0 pb-1">
                 Smart
               </span>
-              <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent pb-1.5 sm:pb-2.5">
+              <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent pb-1 sm:pb-2">
                 Navigation
               </span>
             </h2>
 
-            <p className="mt-2 sm:mt-4 text-xs sm:text-sm md:text-base text-slate-400 font-normal leading-relaxed max-w-md text-center sm:text-right">
+            <p className="mt-1 sm:mt-3 text-xs sm:text-sm lg:text-base text-slate-400 font-normal leading-relaxed max-w-sm sm:max-w-md text-center lg:text-right">
               Everything you need, one tap away. Pay bills, track orders, and stay ahead with smart
               reminders.
             </p>
 
-            <div className="grid grid-cols-3 gap-2 sm:gap-3 mt-3 sm:mt-6 w-full max-w-[280px] xs:max-w-[310px] sm:max-w-[380px] md:max-w-[420px]">
+            <div className="grid grid-cols-3 gap-1.5 xs:gap-2 sm:gap-3 mt-2.5 sm:mt-5 w-full max-w-[270px] xs:max-w-[310px] sm:max-w-[380px] lg:max-w-[420px]">
               {/* Card 1: One-Click Orders */}
               <div className="rounded-xl xs:rounded-2xl sm:rounded-[18px] bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3.5 flex flex-col items-center text-center shadow-lg backdrop-blur-xl group transition-all">
                 <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center mb-1.5 sm:mb-2 group-hover:scale-105 transition-transform">
@@ -808,6 +810,7 @@ function CardsScene() {
   const containerRef = useRef<HTMLElement>(null);
   const { width } = useWindowSize();
   const isMobile = width < 640;
+  const isNarrow = width < 480;
   const isTablet = width >= 640 && width < 1024;
 
   const { scrollYProgress } = useScroll({
@@ -823,17 +826,17 @@ function CardsScene() {
   const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // Headline scroll animation: Starts closer to cards (+165px down), floats smoothly upwards to +15px on scroll
-  const titleY = useTransform(smoothProgress, [0.0, 0.75], [isMobile ? 100 : 165, 15]);
+  const titleY = useTransform(smoothProgress, [0.0, 0.75], [isMobile ? 90 : 165, 15]);
   const titleOpacity = useTransform(smoothProgress, [0.0, 0.18], [0.7, 1]);
 
   // Left Card Scroll Transforms
   const leftCardX = useTransform(
     smoothProgress,
     [0.05, 0.85],
-    [0, isMobile ? -58 : isTablet ? -85 : -105]
+    [0, isNarrow ? -48 : isMobile ? -60 : isTablet ? -85 : -105]
   );
   const leftCardY = useTransform(smoothProgress, [0.05, 0.85], [115, 12]);
-  const leftCardRotate = useTransform(smoothProgress, [0.05, 0.85], [0, isMobile ? -16 : -22]);
+  const leftCardRotate = useTransform(smoothProgress, [0.05, 0.85], [0, isMobile ? -15 : -22]);
   const leftCardScale = useTransform(smoothProgress, [0.05, 0.85], [0.92, 0.98]);
 
   // Center Card Scroll Transforms
@@ -845,10 +848,10 @@ function CardsScene() {
   const rightCardX = useTransform(
     smoothProgress,
     [0.05, 0.85],
-    [0, isMobile ? 58 : isTablet ? 85 : 105]
+    [0, isNarrow ? 48 : isMobile ? 60 : isTablet ? 85 : 105]
   );
   const rightCardY = useTransform(smoothProgress, [0.05, 0.85], [115, 12]);
-  const rightCardRotate = useTransform(smoothProgress, [0.05, 0.85], [0, isMobile ? 14 : 18]);
+  const rightCardRotate = useTransform(smoothProgress, [0.05, 0.85], [0, isMobile ? 13 : 18]);
   const rightCardScale = useTransform(smoothProgress, [0.05, 0.85], [0.92, 0.98]);
 
   return (
