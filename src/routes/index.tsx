@@ -368,12 +368,12 @@ function UnifiedPhoneShowcase() {
             flex flex-col justify-center items-center lg:items-start
             text-center lg:text-left px-2 lg:px-0 will-change-transform"
         >
-          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.15] sm:leading-[1.1] text-2xl xs:text-3xl sm:text-4xl lg:text-[4.25rem] pb-1 overflow-visible">
+          <h2 className="font-sans font-bold tracking-[-0.035em] leading-[1.15] sm:leading-[1.1] text-xl xs:text-2xl sm:text-3xl lg:text-[2.85rem] xl:text-[3.35rem] pb-1 overflow-visible">
             <span className="inline-block sm:block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] to-[#f472b6] bg-clip-text text-transparent mr-2 sm:mr-0 pb-1">
-              Cikka
+              Most Rewarding
             </span>
             <span className="inline-block sm:block bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent pb-1 sm:pb-2">
-              Rewards
+              Credit Card Platform
             </span>
           </h2>
           <p className="mt-1 sm:mt-3 text-xs sm:text-sm lg:text-base text-slate-400 font-normal leading-relaxed max-w-sm sm:max-w-md">
@@ -835,12 +835,12 @@ function CardsScene() {
     [0.0, 0.35, 1.0],
     [0, isNarrow ? -48 : isMobile ? -60 : isTablet ? -85 : -105, isNarrow ? -48 : isMobile ? -60 : isTablet ? -85 : -105]
   );
-  const leftCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [100, 12, 12]);
+  const leftCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [120, 36, 36]);
   const leftCardRotate = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0, isMobile ? -15 : -22, isMobile ? -15 : -22]);
   const leftCardScale = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0.92, 0.98, 0.98]);
 
   // Center Card Scroll Transforms: Rises into focus (0.0 -> 0.35), then STICKS / PAUSES (0.35 -> 1.0)
-  const centerCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [110, -10, -10]);
+  const centerCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [130, 16, 16]);
   const centerCardRotate = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0, -3, -3]);
   const centerCardScale = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0.94, 1.02, 1.02]);
 
@@ -850,7 +850,7 @@ function CardsScene() {
     [0.0, 0.35, 1.0],
     [0, isNarrow ? 48 : isMobile ? 60 : isTablet ? 85 : 105, isNarrow ? 48 : isMobile ? 60 : isTablet ? 85 : 105]
   );
-  const rightCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [100, 12, 12]);
+  const rightCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [120, 36, 36]);
   const rightCardRotate = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0, isMobile ? 13 : 18, isMobile ? 13 : 18]);
   const rightCardScale = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0.92, 0.98, 0.98]);
 
@@ -870,7 +870,7 @@ function CardsScene() {
           {/* Headline */}
           <motion.h2
             style={{ y: titleY, opacity: titleOpacity }}
-            className="font-sans font-bold tracking-[-0.035em] text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white text-center mb-6 sm:mb-10 select-none"
+            className="font-sans font-bold tracking-[-0.035em] text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white text-center mb-10 sm:mb-16 md:mb-20 select-none"
           >
             Manage <span className="bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">all</span> cards in one place
           </motion.h2>
