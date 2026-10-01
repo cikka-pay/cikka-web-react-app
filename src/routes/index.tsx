@@ -26,6 +26,7 @@ import {
 } from "lucide-react";
 import React, { useRef, useState, useEffect, type CSSProperties, type ReactNode } from "react";
 import { motion, useScroll, useTransform, useSpring } from "framer-motion";
+import { gsap, ScrollTrigger, prefersReducedMotion } from "../lib/gsap";
 import { SizzleSection } from "../components/SizzleSection";
 import { CikkaMall } from "../components/CikkaMall";
 import { WaitlistSection } from "../components/WaitlistSection";
@@ -329,23 +330,15 @@ function UnifiedPhoneShowcase() {
             y: heroY,
             scale: heroScale,
           }}
-          className="absolute top-[120px] xs:top-[135px] sm:top-20 md:top-24 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-2 max-w-4xl pointer-events-none will-change-transform"
+          className="absolute top-[150px] xs:top-[165px] sm:top-48 md:top-56 lg:top-28 xl:top-32 inset-x-0 mx-auto z-10 flex flex-col items-center text-center px-2 max-w-4xl pointer-events-none will-change-transform"
         >
           <h1 className="font-sans font-bold tracking-[-0.045em] leading-[0.88] text-[4.25rem] xs:text-[5rem] sm:text-[6.25rem] md:text-[6.25rem] lg:text-[7.25rem] xl:text-[7.75rem] flex flex-col items-center justify-center select-none">
             {/* Top Line: "We've" */}
-            <span className="inline-block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] via-[#f472b6] via-[#c084fc] to-[#a5b4fc] bg-clip-text text-transparent drop-shadow-[0_10px_35px_rgba(244,114,182,0.12)] pb-1">
+            <span className="inline-block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] via-[#f472b6] via-[#c084fc] to-[#a5b4fc] bg-clip-text text-transparent pb-1">
               We've
             </span>
-            {/* Bottom Line: "Got You" with exact horizontal gradient matching We've + vertical shadow fade to black */}
-            <span
-              className="inline-block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] via-[#f472b6] via-[#c084fc] to-[#a5b4fc] bg-clip-text text-transparent"
-              style={{
-                WebkitMaskImage:
-                  "linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.88) 32%, rgba(0,0,0,0.32) 68%, rgba(0,0,0,0) 100%)",
-                maskImage:
-                  "linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.88) 32%, rgba(0,0,0,0.32) 68%, rgba(0,0,0,0) 100%)",
-              }}
-            >
+            {/* Bottom Line: "Got You" fully visible with vibrant gradient */}
+            <span className="inline-block bg-gradient-to-r from-[#ffd3b6] via-[#fbcfe8] via-[#f472b6] via-[#c084fc] to-[#a5b4fc] bg-clip-text text-transparent pb-1">
               Got You
             </span>
           </h1>
@@ -807,176 +800,163 @@ function UnifiedPhoneShowcase() {
 }
 
 function CardsScene() {
-  const containerRef = useRef<HTMLDivElement>(null);
-  const { width } = useWindowSize();
-  const isMobile = width < 640;
-  const isNarrow = width < 480;
-  const isTablet = width >= 640 && width < 1024;
+  const containerRef = useRef<HTMLElement>(null);
+  const titleRef = useRef<HTMLHeadingElement>(null);
+  const leftCardRef = useRef<HTMLDivElement>(null);
+  const centerCardRef = useRef<HTMLDivElement>(null);
+  const rightCardRef = useRef<HTMLDivElement>(null);
 
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+  useEffect(() => {
+    if (prefersReducedMotion() || !containerRef.current) return;
 
-  const springProgress = useSpring(scrollYProgress, {
-    damping: 28,
-    stiffness: 100,
-    mass: 0.16,
-  });
-  const smoothProgress = isMobile ? scrollYProgress : springProgress;
+    const isMobile = window.innerWidth < 640;
+    const isNarrow = window.innerWidth < 480;
+    const isTablet = window.innerWidth >= 640 && window.innerWidth < 1024;
 
-  // Headline scroll animation: Starts slightly lower (+65px), ascends & settles by 0.32, then holds paused
-  const titleY = useTransform(smoothProgress, [0.0, 0.32, 1.0], [isMobile ? 45 : 65, 0, 0]);
-  const titleOpacity = useTransform(smoothProgress, [0.0, 0.20, 1.0], [0.35, 1, 1]);
+    const leftX = isNarrow ? -48 : isMobile ? -60 : isTablet ? -85 : -105;
+    const rightX = isNarrow ? 48 : isMobile ? 60 : isTablet ? 85 : 105;
+    const leftRot = isMobile ? -15 : -22;
+    const rightRot = isMobile ? 13 : 18;
 
-  // Left Card Scroll Transforms: Fans out smoothly (0.0 -> 0.35), then STICKS / PAUSES (0.35 -> 1.0)
-  const leftCardX = useTransform(
-    smoothProgress,
-    [0.0, 0.35, 1.0],
-    [0, isNarrow ? -48 : isMobile ? -60 : isTablet ? -85 : -105, isNarrow ? -48 : isMobile ? -60 : isTablet ? -85 : -105]
-  );
-  const leftCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [120, 36, 36]);
-  const leftCardRotate = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0, isMobile ? -15 : -22, isMobile ? -15 : -22]);
-  const leftCardScale = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0.92, 0.98, 0.98]);
+    const ctx = gsap.context(() => {
+      // GPU accelerated initialization with zero paint thrashing
+      gsap.set(titleRef.current, { y: isMobile ? 30 : 45, opacity: 0.35, force3D: true });
+      gsap.set(leftCardRef.current, { x: 0, y: 100, rotation: 0, scale: 0.92, force3D: true });
+      gsap.set(centerCardRef.current, { y: 110, rotation: 0, scale: 0.94, force3D: true });
+      gsap.set(rightCardRef.current, { x: 0, y: 100, rotation: 0, scale: 0.92, force3D: true });
 
-  // Center Card Scroll Transforms: Rises into focus (0.0 -> 0.35), then STICKS / PAUSES (0.35 -> 1.0)
-  const centerCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [130, 16, 16]);
-  const centerCardRotate = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0, -3, -3]);
-  const centerCardScale = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0.94, 1.02, 1.02]);
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: containerRef.current,
+          start: "top top",
+          end: isMobile ? "+=110%" : "+=170%",
+          scrub: isMobile ? true : 0.2,
+          pin: true,
+          anticipatePin: 1,
+          fastScrollEnd: true,
+          invalidateOnRefresh: true,
+        },
+      });
 
-  // Right Card Scroll Transforms: Fans out smoothly (0.0 -> 0.35), then STICKS / PAUSES (0.35 -> 1.0)
-  const rightCardX = useTransform(
-    smoothProgress,
-    [0.0, 0.35, 1.0],
-    [0, isNarrow ? 48 : isMobile ? 60 : isTablet ? 85 : 105, isNarrow ? 48 : isMobile ? 60 : isTablet ? 85 : 105]
-  );
-  const rightCardY = useTransform(smoothProgress, [0.0, 0.35, 1.0], [120, 36, 36]);
-  const rightCardRotate = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0, isMobile ? 13 : 18, isMobile ? 13 : 18]);
-  const rightCardScale = useTransform(smoothProgress, [0.0, 0.35, 1.0], [0.92, 0.98, 0.98]);
+      // Phase 1: Ultra-fast 120fps hardware fan out
+      tl.to(titleRef.current, { y: 0, opacity: 1, duration: 1, ease: "power1.out" }, 0)
+        .to(leftCardRef.current, { x: leftX, y: 36, rotation: leftRot, scale: 0.98, duration: 1, ease: "power1.out" }, 0)
+        .to(centerCardRef.current, { y: 16, rotation: -3, scale: 1.02, duration: 1, ease: "power1.out" }, 0)
+        .to(rightCardRef.current, { x: rightX, y: 36, rotation: rightRot, scale: 0.98, duration: 1, ease: "power1.out" }, 0);
+
+      // Phase 2: The Pinned Hold / Pause while scrolling
+      tl.to({}, { duration: 1.0 });
+
+    }, containerRef);
+
+    return () => ctx.revert();
+  }, []);
 
   return (
-    <div
+    <section
       id="download"
       ref={containerRef}
-      className="relative w-full bg-[#000000] text-white selection:bg-purple-500/30 overflow-visible"
-      style={{ height: isMobile ? "190vh" : "240vh" }}
+      className="relative w-full h-screen min-h-screen bg-[#000000] text-white selection:bg-purple-500/30 overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 transform-gpu"
     >
-      {/* Pinned Sticky Fullscreen Viewport with Pause on Scroll */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6">
-        {/* Ambient background glow */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] xs:w-[450px] sm:w-[700px] h-[300px] sm:h-[450px] bg-[radial-gradient(circle,rgba(168,85,247,0.16)_0%,transparent_70%)] blur-[70px] sm:blur-[95px] pointer-events-none" />
+      {/* Ambient background glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] xs:w-[420px] sm:w-[650px] h-[280px] sm:h-[400px] bg-[radial-gradient(circle,rgba(168,85,247,0.16)_0%,transparent_70%)] blur-[50px] sm:blur-[80px] pointer-events-none" />
 
-        <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center w-full flex flex-col items-center">
-          {/* Headline */}
-          <motion.h2
-            style={{ y: titleY, opacity: titleOpacity }}
-            className="font-sans font-bold tracking-[-0.035em] text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white text-center mb-10 sm:mb-16 md:mb-20 select-none"
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 text-center w-full flex flex-col items-center">
+        {/* Headline */}
+        <h2
+          ref={titleRef}
+          className="font-sans font-bold tracking-[-0.035em] text-3xl xs:text-4xl sm:text-5xl md:text-6xl text-white text-center mb-10 sm:mb-16 md:mb-20 select-none transform-gpu will-change-transform"
+        >
+          Manage <span className="bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">all</span> cards in one place
+        </h2>
+
+        {/* Fanned Cards Showcase (120fps GPU composited & Lenis synchronized) */}
+        <div className="relative w-full max-w-2xl h-[260px] xs:h-[280px] sm:h-[320px] md:h-[350px] flex items-center justify-center select-none">
+          {/* Left Card - Axis Bank */}
+          <div
+            ref={leftCardRef}
+            className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_16px_36px_rgba(0,0,0,0.85)] z-10 origin-bottom transform-gpu will-change-transform"
           >
-            Manage <span className="bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">all</span> cards in one place
-          </motion.h2>
+            <div className="flex items-center justify-between">
+              <AxisBankLogo />
+              <EmvChip />
+            </div>
+            <div className="my-auto flex items-center justify-between pl-0.5">
+              <div className="font-mono text-white/90 text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
+                3455 4562 7710 3507
+              </div>
+              <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
+                <p className="font-semibold text-white">Kunal Shah</p>
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
+                <p className="font-semibold text-white">02/30</p>
+              </div>
+            </div>
+            <div className="flex items-center gap-1.5 opacity-60">
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20" />
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/15 -ml-2 sm:-ml-2.5" />
+            </div>
+          </div>
 
-          {/* Fanned Cards Showcase (Scroll Scrubbed & Paused) */}
-          <div className="relative w-full max-w-2xl h-[260px] xs:h-[280px] sm:h-[320px] md:h-[350px] flex items-center justify-center select-none">
-            {/* Left Card - Axis Bank */}
-            <motion.div
-              style={{
-                x: leftCardX,
-                y: leftCardY,
-                rotate: leftCardRotate,
-                scale: leftCardScale,
-              }}
-              className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
-            >
-              <div className="flex items-center justify-between">
-                <AxisBankLogo />
-                <EmvChip />
-              </div>
-              <div className="my-auto flex items-center justify-between pl-0.5">
-                <div className="font-mono text-white/90 text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
-                  3455 4562 7710 3507
-                </div>
-                <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
-                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
-                  <p className="font-semibold text-white">Kunal Shah</p>
-                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
-                  <p className="font-semibold text-white">02/30</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-1.5 opacity-60">
-                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20" />
-                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/15 -ml-2 sm:-ml-2.5" />
-              </div>
-            </motion.div>
+          {/* Center Card (Front Card with Topo Pattern) - HDFC Bank */}
+          <div
+            ref={centerCardRef}
+            className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#252532] via-[#14141c] to-[#0c0c12] border border-white/25 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_45px_rgba(0,0,0,0.9)] z-20 overflow-hidden origin-bottom transform-gpu will-change-transform"
+          >
+            {/* Topographic Lines Overlay */}
+            <TopoPattern />
 
-            {/* Center Card (Front Card with Topo Pattern) - HDFC Bank */}
-            <motion.div
-              style={{
-                y: centerCardY,
-                rotate: centerCardRotate,
-                scale: centerCardScale,
-              }}
-              className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#252532] via-[#14141c] to-[#0c0c12] border border-white/25 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_25px_80px_rgba(0,0,0,0.95),_0_0_35px_rgba(168,85,247,0.12)] z-20 overflow-hidden origin-bottom"
-            >
-              {/* Topographic Lines Overlay */}
-              <TopoPattern />
+            <div className="relative z-10 flex items-center justify-between">
+              <HdfcBankLogo />
+              <EmvChip />
+            </div>
 
-              <div className="relative z-10 flex items-center justify-between">
-                <HdfcBankLogo />
-                <EmvChip />
+            <div className="relative z-10 my-auto flex items-center justify-between pl-0.5">
+              <div className="font-mono text-white text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
+                3455 4562 7710 3507
               </div>
+              <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-300 space-y-0.5">
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400">Card holder name</p>
+                <p className="font-semibold text-white">Kunal Shah</p>
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400 pt-1 sm:pt-1.5">Expiry date</p>
+                <p className="font-semibold text-white">02/30</p>
+              </div>
+            </div>
 
-              <div className="relative z-10 my-auto flex items-center justify-between pl-0.5">
-                <div className="font-mono text-white text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180 drop-shadow">
-                  3455 4562 7710 3507
-                </div>
-                <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-300 space-y-0.5">
-                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400">Card holder name</p>
-                  <p className="font-semibold text-white">Kunal Shah</p>
-                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-400 pt-1 sm:pt-1.5">Expiry date</p>
-                  <p className="font-semibold text-white">02/30</p>
-                </div>
-              </div>
+            <div className="relative z-10 flex items-center gap-1.5 opacity-75">
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/30" />
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 -ml-2 sm:-ml-2.5" />
+            </div>
+          </div>
 
-              <div className="relative z-10 flex items-center gap-1.5 opacity-75">
-                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/30" />
-                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20 -ml-2 sm:-ml-2.5" />
+          {/* Right Card - SBI */}
+          <div
+            ref={rightCardRef}
+            className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_16px_36px_rgba(0,0,0,0.85)] z-10 origin-bottom transform-gpu will-change-transform"
+          >
+            <div className="flex items-center justify-between">
+              <SbiBankLogo />
+              <EmvChip />
+            </div>
+            <div className="my-auto flex items-center justify-between pl-0.5">
+              <div className="font-mono text-white/90 text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
+                3455 4562 7710 3507
               </div>
-            </motion.div>
-
-            {/* Right Card - SBI */}
-            <motion.div
-              style={{
-                x: rightCardX,
-                y: rightCardY,
-                rotate: rightCardRotate,
-                scale: rightCardScale,
-              }}
-              className="absolute w-[155px] xs:w-[180px] sm:w-[215px] md:w-[235px] h-[245px] xs:h-[280px] sm:h-[330px] md:h-[365px] rounded-[18px] sm:rounded-[24px] bg-gradient-to-b from-[#1a1a22] via-[#101016] to-[#09090d] border border-white/15 p-3.5 sm:p-5 flex flex-col justify-between shadow-[0_20px_50px_rgba(0,0,0,0.85)] z-10 origin-bottom"
-            >
-              <div className="flex items-center justify-between">
-                <SbiBankLogo />
-                <EmvChip />
+              <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
+                <p className="font-semibold text-white">Kunal Shah</p>
+                <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
+                <p className="font-semibold text-white">02/30</p>
               </div>
-              <div className="my-auto flex items-center justify-between pl-0.5">
-                <div className="font-mono text-white/90 text-[10px] xs:text-xs sm:text-[13px] tracking-[0.14em] sm:tracking-[0.16em] font-semibold [writing-mode:vertical-rl] rotate-180">
-                  3455 4562 7710 3507
-                </div>
-                <div className="text-right text-[8px] xs:text-[9px] sm:text-[10px] text-slate-400 space-y-0.5">
-                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500">Card holder name</p>
-                  <p className="font-semibold text-white">Kunal Shah</p>
-                  <p className="text-[7px] xs:text-[8px] uppercase tracking-wider text-slate-500 pt-1 sm:pt-1.5">Expiry date</p>
-                  <p className="font-semibold text-white">02/30</p>
-                </div>
-              </div>
-              <div className="flex items-center gap-1.5 opacity-60">
-                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20" />
-                <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/15 -ml-2 sm:-ml-2.5" />
-              </div>
-            </motion.div>
+            </div>
+            <div className="flex items-center gap-1.5 opacity-60">
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/20" />
+              <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-white/15 -ml-2 sm:-ml-2.5" />
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 
@@ -1308,7 +1288,7 @@ function LightContinuation() {
         </section>
 
         {/* SECTION 5: SIZZLE SECTION */}
-        <div className="bg-[#f4f5f8] w-full px-2 sm:px-4 md:px-6 py-8 sm:py-14 md:py-20">
+        <div className="w-full bg-[#07070a]">
           <SizzleSection />
         </div>
 

@@ -11,16 +11,18 @@ export function SmoothScroll() {
       (typeof navigator !== "undefined" && navigator.maxTouchPoints > 0) ||
       window.innerWidth < 768;
 
-    // Initialize Lenis with ultra-fast fluid momentum on mobile and buttery physics on desktop
+    ScrollTrigger.config({ ignoreMobileResize: true });
+
+    // Initialize Lenis with ultra-fast fluid momentum and native touch synchronization
     const lenis = new Lenis({
-      duration: isTouch ? 0.85 : 1.15,
+      duration: isTouch ? 0.75 : 0.95,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
-      syncTouch: false,
-      touchMultiplier: 2.2,
-      wheelMultiplier: 1.1,
+      syncTouch: true,
+      touchMultiplier: 1.0,
+      wheelMultiplier: 1.0,
       autoResize: true,
       infinite: false,
     });

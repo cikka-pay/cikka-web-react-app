@@ -72,7 +72,7 @@ export function SizzleSection() {
   return (
     <section
       ref={root}
-      className="relative flex h-[100svh] items-center justify-center overflow-hidden bg-ink w-full max-w-full rounded-[32px] sm:rounded-[44px] md:rounded-[56px] will-change-transform"
+      className="relative flex h-screen min-h-screen items-center justify-center overflow-hidden bg-[#07070a] w-full max-w-full will-change-transform"
     >
       <div
         data-sizzle-bg
