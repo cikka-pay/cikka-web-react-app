@@ -50,12 +50,12 @@ const cardsData = [
 ];
 
 export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
-  const [activeCard, setActiveCard] = useState(2); // Start on SBI Elite or cycle smoothly
+  const [activeCard, setActiveCard] = useState(2); // Start on SBI Elite matching screenshot
 
   useEffect(() => {
     const timer = setInterval(() => {
       setActiveCard((prev) => (prev + 1) % cardsData.length);
-    }, 3500);
+    }, 3800);
 
     return () => clearInterval(timer);
   }, []);
@@ -102,45 +102,25 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
       />
 
       {/* Safe Area Notch Clearance */}
-      <div className={`${compact ? "h-3" : "h-5 sm:h-7"} shrink-0 pointer-events-none`} />
+      <div className="h-8 sm:h-9 shrink-0 pointer-events-none" />
 
       {/* Main Content Area */}
-      <div
-        className={`flex-1 overflow-hidden flex flex-col justify-between relative z-10 ${
-          compact ? "px-2.5 pb-2" : "px-4 xs:px-5 pb-3 sm:pb-4"
-        }`}
-        style={{
-          scrollbarWidth: "none",
-          msOverflowStyle: "none",
-        }}
-      >
+      <div className="flex-1 overflow-hidden flex flex-col justify-between relative z-10 px-3.5 sm:px-4.5 pb-3 sm:pb-3.5">
         {/* Header */}
-        <div className="flex items-center justify-between pt-1">
+        <div className="flex items-center justify-between pt-0.5">
           <div className="text-left">
-            <p
-              className={`${
-                compact ? "text-[8px]" : "text-[10px] sm:text-[11px]"
-              } font-bold tracking-[0.14em] text-[#09090b]/45 uppercase mb-0.5`}
-            >
+            <p className="text-[9px] sm:text-[9.5px] font-bold tracking-[0.14em] text-[#09090b]/45 uppercase mb-0.5">
               Cikka Pay
             </p>
-            <h2
-              className={`${
-                compact ? "text-[16px]" : "text-[20px] sm:text-[22px]"
-              } font-extrabold text-[#09090b] font-['Poppins',sans-serif] leading-[1.18] m-0 tracking-tight`}
-            >
+            <h2 className="text-[18px] sm:text-[20px] font-extrabold text-[#09090b] font-['Poppins',sans-serif] leading-[1.15] m-0 tracking-tight">
               Your Cards &amp;<br />Bills
             </h2>
           </div>
 
           {/* Bell button with purple live notification indicator */}
-          <div
-            className={`relative ${
-              compact ? "w-8 h-8 rounded-xl" : "w-10 h-10 rounded-[14px]"
-            } bg-white border border-black/[0.06] shadow-[0_4px_12px_rgba(0,0,0,0.04)] flex items-center justify-center`}
-          >
+          <div className="relative w-8 h-8 sm:w-9 sm:h-9 rounded-[11px] sm:rounded-[12px] bg-white border border-black/[0.06] shadow-[0_3px_10px_rgba(0,0,0,0.04)] flex items-center justify-center">
             <svg
-              className={`${compact ? "w-4 h-4" : "w-4.5 h-4.5"} text-[#09090b]`}
+              className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-[#09090b]"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -151,19 +131,15 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
               <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9" />
               <path d="M13.73 21a2 2 0 0 1-3.46 0" />
             </svg>
-            <div
-              className={`absolute top-2 right-2 ${
-                compact ? "w-1.5 h-1.5" : "w-2 h-2"
-              } rounded-full bg-[#7c3aed] border-[1.5px] border-white`}
-            >
+            <div className="absolute top-1.5 right-1.5 w-1.5 h-1.5 rounded-full bg-[#7c3aed] border-[1px] border-white">
               <div className="ping-dot absolute inset-0 rounded-full bg-[#7c3aed]" />
             </div>
           </div>
         </div>
 
-        {/* ── Single-Card Auto-Loop Carousel (Matching dummyscreens.html) ── */}
-        <div className={`${compact ? "my-1" : "my-2"} relative`}>
-          <div className="overflow-hidden rounded-[24px] sm:rounded-[28px] w-full shadow-[0_16px_38px_rgba(0,0,0,0.14)]">
+        {/* ── Single-Card Auto-Loop Carousel ── */}
+        <div className="my-1.5 relative">
+          <div className="overflow-hidden rounded-[20px] sm:rounded-[22px] w-full shadow-[0_12px_28px_rgba(0,0,0,0.12)]">
             <div
               className="flex transition-transform duration-600 ease-[cubic-bezier(0.25,1,0.35,1)]"
               style={{
@@ -173,86 +149,58 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
               {cardsData.map((card, idx) => (
                 <div key={idx} className="w-full shrink-0">
                   <div
-                    className={`${
-                      compact ? "h-[140px] p-3.5" : "h-[175px] xs:h-[188px] p-4 sm:p-5"
-                    } rounded-[24px] sm:rounded-[28px] overflow-hidden relative flex flex-col justify-between text-white`}
+                    className="h-[142px] sm:h-[152px] p-3 sm:p-3.5 rounded-[20px] sm:rounded-[22px] overflow-hidden relative flex flex-col justify-between text-white"
                     style={{
                       background: card.bg,
-                      boxShadow: `0 16px 36px ${card.shadow}`,
+                      boxShadow: `0 12px 28px ${card.shadow}`,
                     }}
                   >
                     {/* Shimmer overlay */}
-                    <div className="card-shimmer absolute inset-0 rounded-[24px] sm:rounded-[28px] pointer-events-none" />
+                    <div className="card-shimmer absolute inset-0 rounded-[20px] sm:rounded-[22px] pointer-events-none" />
 
                     {/* Ambient orb glow */}
                     <div
-                      className="absolute w-52 h-52 rounded-full -top-20 -right-12 blur-2xl pointer-events-none"
+                      className="absolute w-44 h-44 rounded-full -top-16 -right-10 blur-2xl pointer-events-none"
                       style={{ background: `radial-gradient(circle, ${card.glow} 0%, transparent 70%)` }}
                     />
 
                     {/* Top Row: Card Title & Status */}
                     <div className="flex items-start justify-between relative z-10 text-left">
                       <div>
-                        <p
-                          className={`${
-                            compact ? "text-[13px]" : "text-[16px] sm:text-[18px]"
-                          } font-bold text-white tracking-tight font-['Poppins',sans-serif] m-0`}
-                        >
+                        <p className="text-[14px] sm:text-[15px] font-bold text-white tracking-tight font-['Poppins',sans-serif] m-0 leading-tight">
                           {card.name}
                         </p>
-                        <p
-                          className={`${
-                            compact ? "text-[8.5px]" : "text-[10px] sm:text-[11px]"
-                          } font-medium text-white/50 m-0`}
-                        >
+                        <p className="text-[9px] sm:text-[9.5px] font-medium text-white/50 m-0 leading-tight mt-0.5">
                           {card.bank}
                         </p>
                       </div>
                       <div className="pt-0.5">
                         <span
-                          className={`${
-                            compact ? "text-[8.5px]" : "text-[10px] sm:text-[11px]"
-                          } font-semibold`}
+                          className="text-[9px] sm:text-[9.5px] font-semibold"
                           style={{ color: card.badgeColor }}
                         >
-                          <span style={{ color: card.dotColor, marginRight: "4px" }}>•</span>
+                          <span style={{ color: card.dotColor, marginRight: "3px" }}>•</span>
                           {card.badge.replace("• ", "")}
                         </span>
                       </div>
                     </div>
 
                     {/* Middle Row: Hero Amount */}
-                    <div className="relative z-10 my-auto text-left">
-                      <p
-                        className={`${
-                          compact ? "text-[8px]" : "text-[9.5px] sm:text-[11px]"
-                        } text-white/50 mb-0.5`}
-                      >
+                    <div className="relative z-10 text-left my-0.5">
+                      <p className="text-[8px] sm:text-[8.5px] text-white/50 mb-0.5 leading-none">
                         {card.label}
                       </p>
-                      <p
-                        className={`${
-                          compact ? "text-[22px]" : "text-[28px] xs:text-[30px] sm:text-[34px]"
-                        } font-extrabold text-white font-['Poppins',sans-serif] tracking-tight leading-none m-0`}
-                      >
+                      <p className="text-[22px] sm:text-[25px] font-extrabold text-white font-['Poppins',sans-serif] tracking-tight leading-none m-0">
                         {card.amount}
                       </p>
                     </div>
 
                     {/* Bottom Row: Number & Expiry */}
                     <div className="flex items-center justify-between relative z-10">
-                      <span
-                        className={`${
-                          compact ? "text-[9px] tracking-wider" : "text-[11px] sm:text-[12px] tracking-widest"
-                        } text-white/55 font-mono font-medium`}
-                      >
+                      <span className="text-[9.5px] sm:text-[10.5px] text-white/55 font-mono font-medium tracking-wider">
                         {card.number}
                       </span>
-                      <span
-                        className={`${
-                          compact ? "text-[8px]" : "text-[9.5px] sm:text-[10.5px]"
-                        } text-white/45 font-medium`}
-                      >
+                      <span className="text-[8px] sm:text-[8.5px] text-white/45 font-medium">
                         {card.exp}
                       </span>
                     </div>
@@ -263,7 +211,7 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
           </div>
 
           {/* Indicator Dots */}
-          <div className="flex items-center justify-center gap-1.5 mt-2.5 mb-1">
+          <div className="flex items-center justify-center gap-1.5 mt-1.5 mb-0.5">
             {cardsData.map((_, idx) => (
               <button
                 key={idx}
@@ -271,7 +219,7 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
                 aria-label={`Show card ${idx + 1}`}
                 className={`transition-all duration-300 p-0 border-none cursor-pointer ${
                   idx === activeCard
-                    ? "w-4.5 h-1.5 rounded-full bg-[#7c3aed]"
+                    ? "w-4 h-1.5 rounded-full bg-[#7c3aed]"
                     : "w-1.5 h-1.5 rounded-full bg-[#09090b]/20 hover:bg-[#09090b]/40"
                 }`}
               />
@@ -280,34 +228,22 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
         </div>
 
         {/* ── Smart Alerts List ── */}
-        <div className={`${compact ? "mt-0.5 mb-1" : "mt-1 mb-2"} text-left`}>
-          <div className="flex items-center justify-between mb-2">
-            <span
-              className={`${
-                compact ? "text-[11.5px]" : "text-[13.5px] sm:text-[15px]"
-              } font-bold text-[#09090b] tracking-tight`}
-            >
+        <div className="my-0.5 text-left">
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-[12px] sm:text-[13px] font-bold text-[#09090b] tracking-tight">
               Smart Alerts
             </span>
-            <span
-              className={`${
-                compact ? "text-[9px]" : "text-[10.5px] sm:text-[11.5px]"
-              } font-semibold text-[#7c3aed]`}
-            >
+            <span className="text-[9px] sm:text-[9.5px] font-semibold text-[#7c3aed]">
               3 new
             </span>
           </div>
 
-          <div className="space-y-2">
+          <div className="space-y-1.5">
             {/* Alert 1 */}
-            <div className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-black/[0.02] transition-colors cursor-pointer">
-              <div
-                className={`${
-                  compact ? "w-7 h-7" : "w-9 h-9 sm:w-10 sm:h-10"
-                } rounded-full bg-white shadow-[0_3px_12px_rgba(0,0,0,0.06)] flex items-center justify-center shrink-0 border border-black/[0.03]`}
-              >
+            <div className="flex items-center gap-2 p-0.5 rounded-lg hover:bg-black/[0.02] transition-colors cursor-pointer">
+              <div className="w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.05)] flex items-center justify-center shrink-0 border border-black/[0.03]">
                 <svg
-                  className={`${compact ? "w-3.5 h-3.5" : "w-4.5 h-4.5"} text-[#18181b]`}
+                  className="w-3.5 h-3.5 text-[#18181b]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -318,23 +254,15 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p
-                  className={`${
-                    compact ? "text-[9.5px]" : "text-[11.5px] sm:text-[13px]"
-                  } font-bold text-[#09090b] truncate leading-tight tracking-tight`}
-                >
+                <p className="text-[10.5px] sm:text-[11.5px] font-bold text-[#09090b] truncate leading-tight tracking-tight m-0">
                   HDFC Regalia · due in 2 days
                 </p>
-                <p
-                  className={`${
-                    compact ? "text-[8px]" : "text-[9.5px] sm:text-[11px]"
-                  } text-[#8e8e93] truncate leading-tight mt-0.5`}
-                >
+                <p className="text-[8.5px] sm:text-[9.5px] text-[#8e8e93] truncate leading-tight mt-0.5 m-0">
                   Pay now &amp; earn +5,428 CI Points
                 </p>
               </div>
               <svg
-                className={`${compact ? "w-3 h-3" : "w-3.5 h-3.5"} text-[#c7c7cc] shrink-0`}
+                className="w-3 h-3 text-[#c7c7cc] shrink-0"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -347,14 +275,10 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
             </div>
 
             {/* Alert 2 */}
-            <div className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-black/[0.02] transition-colors cursor-pointer">
-              <div
-                className={`${
-                  compact ? "w-7 h-7" : "w-9 h-9 sm:w-10 sm:h-10"
-                } rounded-full bg-white shadow-[0_3px_12px_rgba(0,0,0,0.06)] flex items-center justify-center shrink-0 border border-black/[0.03]`}
-              >
+            <div className="flex items-center gap-2 p-0.5 rounded-lg hover:bg-black/[0.02] transition-colors cursor-pointer">
+              <div className="w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.05)] flex items-center justify-center shrink-0 border border-black/[0.03]">
                 <svg
-                  className={`${compact ? "w-3.5 h-3.5" : "w-4.5 h-4.5"} text-[#18181b]`}
+                  className="w-3.5 h-3.5 text-[#18181b]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -366,23 +290,15 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p
-                  className={`${
-                    compact ? "text-[9.5px]" : "text-[11.5px] sm:text-[13px]"
-                  } font-bold text-[#09090b] truncate leading-tight tracking-tight`}
-                >
+                <p className="text-[10.5px] sm:text-[11.5px] font-bold text-[#09090b] truncate leading-tight tracking-tight m-0">
                   Rewards · Axis Magnus
                 </p>
-                <p
-                  className={`${
-                    compact ? "text-[8px]" : "text-[9.5px] sm:text-[11px]"
-                  } text-[#8e8e93] truncate leading-tight mt-0.5`}
-                >
+                <p className="text-[8.5px] sm:text-[9.5px] text-[#8e8e93] truncate leading-tight mt-0.5 m-0">
                   +3,414 CI Points from ₹28,450
                 </p>
               </div>
               <svg
-                className={`${compact ? "w-3 h-3" : "w-3.5 h-3.5"} text-[#c7c7cc] shrink-0`}
+                className="w-3 h-3 text-[#c7c7cc] shrink-0"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -395,14 +311,10 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
             </div>
 
             {/* Alert 3 */}
-            <div className="flex items-center gap-2.5 p-1 rounded-xl hover:bg-black/[0.02] transition-colors cursor-pointer">
-              <div
-                className={`${
-                  compact ? "w-7 h-7" : "w-9 h-9 sm:w-10 sm:h-10"
-                } rounded-full bg-white shadow-[0_3px_12px_rgba(0,0,0,0.06)] flex items-center justify-center shrink-0 border border-black/[0.03]`}
-              >
+            <div className="flex items-center gap-2 p-0.5 rounded-lg hover:bg-black/[0.02] transition-colors cursor-pointer">
+              <div className="w-7.5 h-7.5 sm:w-8 sm:h-8 rounded-full bg-white shadow-[0_2px_8px_rgba(0,0,0,0.05)] flex items-center justify-center shrink-0 border border-black/[0.03]">
                 <svg
-                  className={`${compact ? "w-3.5 h-3.5" : "w-4.5 h-4.5"} text-[#18181b]`}
+                  className="w-3.5 h-3.5 text-[#18181b]"
                   viewBox="0 0 24 24"
                   fill="none"
                   stroke="currentColor"
@@ -414,23 +326,15 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
                 </svg>
               </div>
               <div className="flex-1 min-w-0">
-                <p
-                  className={`${
-                    compact ? "text-[9.5px]" : "text-[11.5px] sm:text-[13px]"
-                  } font-bold text-[#09090b] truncate leading-tight tracking-tight`}
-                >
+                <p className="text-[10.5px] sm:text-[11.5px] font-bold text-[#09090b] truncate leading-tight tracking-tight m-0">
                   SBI Elite · due in 12 days
                 </p>
-                <p
-                  className={`${
-                    compact ? "text-[8px]" : "text-[9.5px] sm:text-[11px]"
-                  } text-[#8e8e93] truncate leading-tight mt-0.5`}
-                >
+                <p className="text-[8.5px] sm:text-[9.5px] text-[#8e8e93] truncate leading-tight mt-0.5 m-0">
                   Auto-pay ₹12,800 or set reminder
                 </p>
               </div>
               <svg
-                className={`${compact ? "w-3 h-3" : "w-3.5 h-3.5"} text-[#c7c7cc] shrink-0`}
+                className="w-3 h-3 text-[#c7c7cc] shrink-0"
                 viewBox="0 0 24 24"
                 fill="none"
                 stroke="currentColor"
@@ -444,37 +348,21 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
           </div>
         </div>
 
-        {/* ── Bottom Floating Pay CTA Bar (Matching dummyscreens.html) ── */}
-        <div
-          className={`${
-            compact ? "p-1.5 rounded-xl" : "p-2.5 sm:p-3 rounded-2xl"
-          } bg-white shadow-[0_12px_32px_rgba(0,0,0,0.1)] border border-black/[0.05] flex items-center justify-between text-left mt-auto`}
-        >
+        {/* ── Bottom Floating Pay CTA Bar ── */}
+        <div className="p-2 sm:p-2.5 rounded-[16px] sm:rounded-[18px] bg-white shadow-[0_8px_24px_rgba(0,0,0,0.08)] border border-black/[0.05] flex items-center justify-between text-left mt-auto">
           <div className="min-w-0 pr-2">
-            <p
-              className={`${
-                compact ? "text-[9.5px]" : "text-[11.5px] sm:text-[13px]"
-              } font-extrabold text-[#09090b] font-['Poppins',sans-serif] truncate leading-tight m-0`}
-            >
+            <p className="text-[10.5px] sm:text-[11.5px] font-extrabold text-[#09090b] font-['Poppins',sans-serif] truncate leading-tight m-0">
               Pay HDFC Regalia Now
             </p>
-            <p
-              className={`${
-                compact ? "text-[7.5px]" : "text-[9px] sm:text-[10px]"
-              } text-[#8e8e93] truncate leading-tight mt-0.5`}
-            >
+            <p className="text-[8px] sm:text-[8.5px] text-[#8e8e93] truncate leading-tight mt-0.5 m-0">
               1 tap · pay bill instantly
             </p>
           </div>
 
-          <button
-            className={`flex items-center gap-1.5 bg-[#09090b] text-white rounded-full ${
-              compact ? "px-2.5 py-1 text-[8.5px]" : "px-3.5 py-1.5 text-[10.5px] sm:text-[12px]"
-            } font-bold shadow-[0_4px_14px_rgba(9,9,11,0.2)] shrink-0 cursor-pointer border-none hover:bg-neutral-800 transition-colors`}
-          >
+          <button className="flex items-center gap-1 bg-[#09090b] text-white rounded-full px-3 py-1.2 sm:px-3.5 sm:py-1.5 text-[9.5px] sm:text-[10px] font-bold shadow-[0_3px_10px_rgba(9,9,11,0.2)] shrink-0 cursor-pointer border-none hover:bg-neutral-800 transition-colors">
             <span>Pay</span>
             <svg
-              className={`${compact ? "w-2.5 h-2.5" : "w-3 h-3"}`}
+              className="w-2.5 h-2.5"
               viewBox="0 0 24 24"
               fill="none"
               stroke="currentColor"
@@ -490,4 +378,3 @@ export function PhoneScreen4Cards({ compact = false }: PhoneScreen4CardsProps) {
     </div>
   );
 }
-

@@ -49,33 +49,33 @@ export function PhoneScreen2Portfolio({ compact = false }: PhoneScreen2Portfolio
       `}</style>
 
       {/* Safe Area Notch Clearance */}
-      <div className={`${compact ? "h-6 xs:h-7" : "h-7 sm:h-8"} shrink-0 pointer-events-none`} />
+      <div className="h-8 sm:h-9 shrink-0 pointer-events-none" />
 
       {/* Screen Flow Container */}
       <div className="flex-1 flex flex-col justify-between overflow-hidden">
         {/* ========================================================================= */}
         {/* UPPER PORTION (58% with spacious royal purple styling)                     */}
         {/* ========================================================================= */}
-        <div className="flex-[0_0_58%] flex flex-col justify-between px-3 xs:px-4 sm:px-5 pb-2">
+        <div className="flex-[0_0_58%] flex flex-col justify-between px-2.5 xs:px-3 sm:px-5 pb-1.5 sm:pb-2">
           {/* 1. User Header Bar */}
           <div className="flex items-center justify-between pt-0.5">
             {/* Avatar & Greeting */}
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1.5 sm:gap-2 min-w-0">
               <div
                 className={`${
-                  compact ? "w-6 h-6 text-[9px]" : "w-8 h-8 sm:w-9 sm:h-9 text-[11px] sm:text-[13px]"
+                  compact ? "w-5.5 h-5.5 text-[8px]" : "w-8 h-8 sm:w-9 sm:h-9 text-[11px] sm:text-[13px]"
                 } rounded-full bg-[#09090b] border-[1.5px] border-white/20 shadow-md flex items-center justify-center font-bold text-white shrink-0`}
               >
                 KS
               </div>
-              <div className="flex flex-col text-left">
-                <span className={`${compact ? "text-[8px]" : "text-[9.5px] sm:text-[11px]"} text-white/60 leading-none`}>
+              <div className="flex flex-col text-left min-w-0">
+                <span className={`${compact ? "text-[6.5px]" : "text-[9.5px] sm:text-[11px]"} text-white/60 leading-none`}>
                   Hello,
                 </span>
                 <span
                   className={`${
-                    compact ? "text-[10px]" : "text-xs sm:text-[14px]"
-                  } text-white font-bold leading-tight mt-0.5`}
+                    compact ? "text-[8.5px] tracking-tight" : "text-xs sm:text-[14px]"
+                  } text-white font-bold leading-tight mt-0.5 whitespace-nowrap truncate`}
                 >
                   Kunal Shah
                 </span>
@@ -83,25 +83,25 @@ export function PhoneScreen2Portfolio({ compact = false }: PhoneScreen2Portfolio
             </div>
 
             {/* Header Right Action Buttons */}
-            <div className="flex items-center gap-1.5 sm:gap-2">
+            <div className="flex items-center gap-1 sm:gap-2 shrink-0">
               {/* Search Glass Button */}
               <div
                 className={`${
-                  compact ? "w-6 h-6" : "w-7.5 h-7.5 sm:w-8.5 sm:h-8.5"
+                  compact ? "w-5.5 h-5.5" : "w-7.5 h-7.5 sm:w-8.5 sm:h-8.5"
                 } rounded-full bg-white/15 backdrop-blur-md border border-white/10 flex items-center justify-center text-white`}
               >
-                <Search className={`${compact ? "w-3 h-3" : "w-3.5 h-3.5 sm:w-4 sm:h-4"}`} />
+                <Search className={`${compact ? "w-2.5 h-2.5" : "w-3.5 h-3.5 sm:w-4 sm:h-4"}`} />
               </div>
               {/* Notification Glass Button with Badge */}
               <div
                 className={`${
-                  compact ? "w-6 h-6" : "w-7.5 h-7.5 sm:w-8.5 sm:h-8.5"
+                  compact ? "w-5.5 h-5.5" : "w-7.5 h-7.5 sm:w-8.5 sm:h-8.5"
                 } rounded-full bg-white/15 backdrop-blur-md border border-white/10 flex items-center justify-center text-white relative`}
               >
-                <Bell className={`${compact ? "w-3 h-3" : "w-3.5 h-3.5 sm:w-4 sm:h-4"}`} />
+                <Bell className={`${compact ? "w-2.5 h-2.5" : "w-3.5 h-3.5 sm:w-4 sm:h-4"}`} />
                 <div
                   className={`absolute -top-0.5 -right-0.5 ${
-                    compact ? "w-3 h-3 text-[7px]" : "w-3.5 h-3.5 sm:w-4 sm:h-4 text-[8px] sm:text-[9px]"
+                    compact ? "w-2.5 h-2.5 text-[6px]" : "w-3.5 h-3.5 sm:w-4 sm:h-4 text-[8px] sm:text-[9px]"
                   } rounded-full bg-white text-[#07070a] font-black flex items-center justify-center shadow-md`}
                 >
                   2
@@ -111,48 +111,48 @@ export function PhoneScreen2Portfolio({ compact = false }: PhoneScreen2Portfolio
           </div>
 
           {/* 2. Top Segment Switcher (Pay / Mall) */}
-          <div className="mt-1 sm:mt-2">
+          <div className="mt-0.5 sm:mt-2">
             <div
               className={`${
-                compact ? "h-8 p-0.5" : "h-9 sm:h-11 p-1"
+                compact ? "h-6.5 p-0.5" : "h-9 sm:h-11 p-1"
               } rounded-full bg-white/15 backdrop-blur-md border border-white/10 flex items-center`}
             >
               <div
                 className={`flex-1 h-full bg-white rounded-full text-[#07070a] font-bold ${
-                  compact ? "text-[10px]" : "text-xs sm:text-[13px]"
+                  compact ? "text-[8.5px]" : "text-xs sm:text-[13px]"
                 } flex items-center justify-center shadow-md`}
               >
                 Pay
               </div>
               <div
                 className={`flex-1 h-full text-white/75 font-medium ${
-                  compact ? "text-[10px]" : "text-xs sm:text-[13px]"
+                  compact ? "text-[8.5px]" : "text-xs sm:text-[13px]"
                 } flex items-center justify-center`}
               >
                 Mall
               </div>
             </div>
             {/* Hide/Eye Icon */}
-            <div className="flex items-center mt-1 ml-1.5 text-white/60">
-              <EyeOff className={`${compact ? "w-3 h-3" : "w-3.5 h-3.5 sm:w-4 sm:h-4"}`} />
+            <div className="flex items-center mt-0.5 ml-1 text-white/60">
+              <EyeOff className={`${compact ? "w-2.5 h-2.5" : "w-3.5 h-3.5 sm:w-4 sm:h-4"}`} />
             </div>
           </div>
 
           {/* 3. Hero Total Due Section with Continuous Carousel */}
-          <div className="flex flex-col items-center justify-center text-center my-auto">
+          <div className="flex flex-col items-center justify-center text-center my-auto py-0.5">
             <span
               className={`${
-                compact ? "text-[8.5px]" : "text-[10px] sm:text-[12px]"
+                compact ? "text-[7.5px]" : "text-[10px] sm:text-[12px]"
               } font-medium text-white/60 mb-0.5 tracking-wide transition-opacity duration-300 ${
                 fade ? "opacity-100" : "opacity-0"
               }`}
             >
               {currentSlide.label}
             </span>
-            <div className="h-7 sm:h-10 flex items-center justify-center overflow-hidden">
+            <div className={`${compact ? "h-5 xs:h-6" : "h-7 sm:h-10"} flex items-center justify-center overflow-hidden`}>
               <span
                 className={`${
-                  compact ? "text-[20px]" : "text-[26px] xs:text-[30px] sm:text-[36px]"
+                  compact ? "text-[17px] xs:text-[19px]" : "text-[26px] xs:text-[30px] sm:text-[36px]"
                 } font-extrabold text-white font-['Poppins',sans-serif] tracking-tight leading-none transition-all duration-300 ${
                   fade ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-1"
                 }`}
@@ -161,14 +161,14 @@ export function PhoneScreen2Portfolio({ compact = false }: PhoneScreen2Portfolio
               </span>
             </div>
             {/* Carousel Indicator Dots */}
-            <div className="flex items-center gap-1.5 mt-1 sm:mt-1.5">
+            <div className="flex items-center gap-1 mt-0.5 sm:mt-1.5">
               {dueSlides.map((_, i) => (
                 <div
                   key={i}
                   className={`transition-all duration-300 ${
                     i === slideIdx
-                      ? `${compact ? "w-3 h-1" : "w-4 h-1.5"} rounded-full bg-white`
-                      : `${compact ? "w-1 h-1" : "w-1.5 h-1.5"} rounded-full bg-white/30`
+                      ? `${compact ? "w-2.5 h-0.5" : "w-4 h-1.5"} rounded-full bg-white`
+                      : `${compact ? "w-0.5 h-0.5" : "w-1.5 h-1.5"} rounded-full bg-white/30`
                   }`}
                 />
               ))}
@@ -176,20 +176,20 @@ export function PhoneScreen2Portfolio({ compact = false }: PhoneScreen2Portfolio
           </div>
 
           {/* 4. Quick Action Squircles Grid (Pay, Add new, Redeem, View) */}
-          <div className="grid grid-cols-4 gap-1.5 sm:gap-2.5 mt-1 mb-1 sm:mb-2">
+          <div className="grid grid-cols-4 gap-1 sm:gap-2.5 mt-0.5 mb-0.5 sm:mb-2">
             {/* Pay */}
             <div className="flex flex-col items-center">
               <div
                 className={`w-full ${
-                  compact ? "h-9 rounded-xl" : "h-11 sm:h-13 rounded-[16px] sm:rounded-[20px]"
+                  compact ? "h-7.5 rounded-lg" : "h-11 sm:h-13 rounded-[16px] sm:rounded-[20px]"
                 } bg-white/15 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-md text-white`}
               >
-                <CreditCard className={`${compact ? "w-3.5 h-3.5" : "w-4.5 h-4.5 sm:w-5 sm:h-5"}`} />
+                <CreditCard className={`${compact ? "w-3 h-3" : "w-4.5 h-4.5 sm:w-5 sm:h-5"}`} />
               </div>
               <span
                 className={`${
-                  compact ? "text-[8px]" : "text-[9.5px] sm:text-[11px]"
-                } font-medium text-white/85 mt-1`}
+                  compact ? "text-[6.5px] whitespace-nowrap" : "text-[9.5px] sm:text-[11px]"
+                } font-medium text-white/85 mt-0.5`}
               >
                 Pay
               </span>
@@ -199,15 +199,15 @@ export function PhoneScreen2Portfolio({ compact = false }: PhoneScreen2Portfolio
             <div className="flex flex-col items-center">
               <div
                 className={`w-full ${
-                  compact ? "h-9 rounded-xl" : "h-11 sm:h-13 rounded-[16px] sm:rounded-[20px]"
+                  compact ? "h-7.5 rounded-lg" : "h-11 sm:h-13 rounded-[16px] sm:rounded-[20px]"
                 } bg-white/15 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-md text-white`}
               >
-                <PlusSquare className={`${compact ? "w-3.5 h-3.5" : "w-4.5 h-4.5 sm:w-5 sm:h-5"}`} />
+                <PlusSquare className={`${compact ? "w-3 h-3" : "w-4.5 h-4.5 sm:w-5 sm:h-5"}`} />
               </div>
               <span
                 className={`${
-                  compact ? "text-[8px]" : "text-[9.5px] sm:text-[11px]"
-                } font-medium text-white/85 mt-1`}
+                  compact ? "text-[6.5px] whitespace-nowrap" : "text-[9.5px] sm:text-[11px]"
+                } font-medium text-white/85 mt-0.5`}
               >
                 Add new
               </span>
@@ -217,15 +217,15 @@ export function PhoneScreen2Portfolio({ compact = false }: PhoneScreen2Portfolio
             <div className="flex flex-col items-center">
               <div
                 className={`w-full ${
-                  compact ? "h-9 rounded-xl" : "h-11 sm:h-13 rounded-[16px] sm:rounded-[20px]"
+                  compact ? "h-7.5 rounded-lg" : "h-11 sm:h-13 rounded-[16px] sm:rounded-[20px]"
                 } bg-white/15 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-md text-white`}
               >
-                <Gift className={`${compact ? "w-3.5 h-3.5" : "w-4.5 h-4.5 sm:w-5 sm:h-5"}`} />
+                <Gift className={`${compact ? "w-3 h-3" : "w-4.5 h-4.5 sm:w-5 sm:h-5"}`} />
               </div>
               <span
                 className={`${
-                  compact ? "text-[8px]" : "text-[9.5px] sm:text-[11px]"
-                } font-medium text-white/85 mt-1`}
+                  compact ? "text-[6.5px] whitespace-nowrap" : "text-[9.5px] sm:text-[11px]"
+                } font-medium text-white/85 mt-0.5`}
               >
                 Redeem
               </span>
@@ -235,15 +235,15 @@ export function PhoneScreen2Portfolio({ compact = false }: PhoneScreen2Portfolio
             <div className="flex flex-col items-center">
               <div
                 className={`w-full ${
-                  compact ? "h-9 rounded-xl" : "h-11 sm:h-13 rounded-[16px] sm:rounded-[20px]"
+                  compact ? "h-7.5 rounded-lg" : "h-11 sm:h-13 rounded-[16px] sm:rounded-[20px]"
                 } bg-white/15 backdrop-blur-md border border-white/10 flex items-center justify-center shadow-md text-white`}
               >
-                <Eye className={`${compact ? "w-3.5 h-3.5" : "w-4.5 h-4.5 sm:w-5 sm:h-5"}`} />
+                <Eye className={`${compact ? "w-3 h-3" : "w-4.5 h-4.5 sm:w-5 sm:h-5"}`} />
               </div>
               <span
                 className={`${
-                  compact ? "text-[8px]" : "text-[9.5px] sm:text-[11px]"
-                } font-medium text-white/85 mt-1`}
+                  compact ? "text-[6.5px] whitespace-nowrap" : "text-[9.5px] sm:text-[11px]"
+                } font-medium text-white/85 mt-0.5`}
               >
                 View
               </span>
@@ -254,19 +254,19 @@ export function PhoneScreen2Portfolio({ compact = false }: PhoneScreen2Portfolio
         {/* ========================================================================= */}
         {/* LOWER PORTION (42% Charcoal Glass Container with Rewards Gauge)          */}
         {/* ========================================================================= */}
-        <div className="flex-[0_0_42%] rounded-t-[26px] sm:rounded-t-[32px] bg-gradient-to-b from-[#131317] to-[#09090b] border-t border-x border-white/10 px-3 xs:px-4 sm:px-5 pt-2.5 sm:pt-3.5 pb-2 flex flex-col justify-between shadow-[0_-10px_30px_rgba(0,0,0,0.6)] overflow-hidden">
+        <div className="flex-[0_0_42%] rounded-t-[22px] sm:rounded-t-[32px] bg-gradient-to-b from-[#131317] to-[#09090b] border-t border-x border-white/10 px-2.5 xs:px-3 sm:px-5 pt-2 sm:pt-3.5 pb-1.5 flex flex-col justify-between shadow-[0_-10px_30px_rgba(0,0,0,0.6)] overflow-hidden">
           {/* Inner Tab Switcher (Product / Coupon) */}
-          <div className="flex items-center gap-3 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-4">
             <div
-              className={`px-3 sm:px-4 py-1 sm:py-1.5 rounded-xl sm:rounded-2xl bg-white/15 text-white font-semibold ${
-                compact ? "text-[9px]" : "text-[11px] sm:text-[13px]"
+              className={`px-2 sm:px-4 py-0.5 sm:py-1.5 rounded-lg sm:rounded-2xl bg-white/15 text-white font-semibold ${
+                compact ? "text-[7.5px]" : "text-[11px] sm:text-[13px]"
               } backdrop-blur-md`}
             >
               Product
             </div>
             <div
               className={`text-white/45 font-medium ${
-                compact ? "text-[9px]" : "text-[11px] sm:text-[13px]"
+                compact ? "text-[7.5px]" : "text-[11px] sm:text-[13px]"
               }`}
             >
               Coupon
@@ -276,7 +276,7 @@ export function PhoneScreen2Portfolio({ compact = false }: PhoneScreen2Portfolio
           {/* Rewards Gauge Donut Chart with Continuous Spinning Energy Arc */}
           <div
             className={`relative ${
-              compact ? "w-28 h-28" : "w-36 h-36 xs:w-40 xs:h-40 sm:w-48 sm:h-48"
+              compact ? "w-22 h-22" : "w-36 h-36 xs:w-40 xs:h-40 sm:w-48 sm:h-48"
             } mx-auto flex items-center justify-center my-auto`}
           >
             <svg viewBox="0 0 240 240" className="w-full h-full">
@@ -322,21 +322,21 @@ export function PhoneScreen2Portfolio({ compact = false }: PhoneScreen2Portfolio
             <div className="absolute inset-0 flex flex-col items-center justify-center text-center">
               <span
                 className={`${
-                  compact ? "text-[7px]" : "text-[8.5px] sm:text-[10px]"
+                  compact ? "text-[6px]" : "text-[8.5px] sm:text-[10px]"
                 } font-semibold text-white/50 tracking-wider uppercase mb-0.5`}
               >
                 AVG
               </span>
               <span
                 className={`${
-                  compact ? "text-[18px]" : "text-[24px] xs:text-[28px] sm:text-[34px]"
+                  compact ? "text-[15px]" : "text-[24px] xs:text-[28px] sm:text-[34px]"
                 } font-extrabold text-white font-['Poppins',sans-serif] leading-none`}
               >
                 12%
               </span>
               <span
                 className={`${
-                  compact ? "text-[8px]" : "text-[9.5px] sm:text-[11px]"
+                  compact ? "text-[7px]" : "text-[9.5px] sm:text-[11px]"
                 } font-semibold text-white/70 mt-0.5 tracking-wide`}
               >
                 Rewards

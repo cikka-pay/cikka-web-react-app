@@ -359,7 +359,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-14 xl:left-24 2xl:left-36 lg:right-auto
-            bottom-4 xs:bottom-6 sm:bottom-10 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            bottom-10 xs:bottom-14 sm:bottom-16 md:bottom-20 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
             z-30 w-full max-w-[92%] xs:max-w-[380px] sm:max-w-[460px] lg:max-w-md xl:max-w-lg
             flex flex-col justify-center items-center lg:items-start
             text-center lg:text-left px-2 lg:px-0 will-change-transform"
@@ -422,7 +422,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-auto lg:right-14 xl:right-24 2xl:right-36
-            bottom-4 xs:bottom-6 sm:bottom-10 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            bottom-10 xs:bottom-14 sm:bottom-16 md:bottom-20 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
             z-30 w-full max-w-[95%] xs:max-w-[400px] sm:max-w-[500px] lg:max-w-xl xl:max-w-2xl
             flex flex-col justify-center items-center lg:items-end
             text-center lg:text-right px-2 lg:px-0 will-change-transform"
@@ -503,13 +503,10 @@ function UnifiedPhoneShowcase() {
             }}
             className="relative w-[260px] sm:w-[290px] md:w-[320px] lg:w-[340px] h-[520px] sm:h-[580px] md:h-[630px] lg:h-[660px] pointer-events-auto will-change-transform"
           >
-            {/* Titanium Frame & Specular Rim */}
-            <div className="relative w-full h-full rounded-[44px] sm:rounded-[50px] p-2 sm:p-2.5 bg-gradient-to-b from-[#3a3a46] via-[#1c1c24] to-[#0c0c12] border border-white/20 shadow-[0_0_0_1px_rgba(255,255,255,0.15),_0_-25px_80px_rgba(168,85,247,0.35),_0_35px_100px_rgba(0,0,0,0.95)]">
-              {/* Top Specular Edge Highlight */}
-              <div className="absolute top-0 inset-x-12 h-[1.5px] bg-gradient-to-r from-transparent via-white/80 to-transparent pointer-events-none" />
-
+            {/* Sleek Slim Pure Obsidian Black Frame */}
+            <div className="relative w-full h-full rounded-[42px] sm:rounded-[48px] p-1 sm:p-1.5 bg-[#000000] border border-white/[0.08] shadow-[0_0_0_1px_rgba(255,255,255,0.06),_0_-20px_80px_rgba(168,85,247,0.3),_0_35px_100px_rgba(0,0,0,0.95)]">
               {/* Inner Phone Screen Container */}
-              <div className="relative w-full h-full rounded-[36px] sm:rounded-[42px] border border-white/10 overflow-hidden shadow-inner">
+              <div className="relative w-full h-full rounded-[36px] sm:rounded-[42px] border border-white/[0.06] overflow-hidden shadow-inner">
                 {/* Dynamic Island & Status Bar - floating seamlessly on top */}
                 <div className="absolute top-0 inset-x-0 z-40 w-full flex items-center justify-between text-white text-[10px] sm:text-[11px] font-medium tracking-tight px-4 pt-3 pb-1 pointer-events-none select-none">
                   <span className="font-semibold text-white/95">9:41</span>

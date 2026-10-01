@@ -217,9 +217,9 @@ export function SoftCushionsBackground() {
 // Cards iPhone Screen Mockup with auto-loop carousel and live Smart Alerts
 export function ExpensesPhoneMockup() {
   return (
-    <div className="relative z-10 w-[260px] xs:w-[285px] sm:w-[315px] h-[520px] xs:h-[570px] sm:h-[620px] rounded-[38px] xs:rounded-[44px] sm:rounded-[48px] p-2 xs:p-2.5 sm:p-3 bg-black border-[4px] xs:border-[5px] sm:border-[6px] border-[#222228] shadow-[0_25px_60px_rgba(0,0,0,0.9),_0_0_40px_rgba(0,0,0,0.6)] flex flex-col mb-14 xs:mb-12 select-none overflow-hidden">
+    <div className="relative z-10 w-[260px] xs:w-[285px] sm:w-[315px] h-[520px] xs:h-[570px] sm:h-[620px] rounded-[38px] xs:rounded-[44px] sm:rounded-[48px] p-1 xs:p-1.5 sm:p-2 bg-[#000000] border border-white/[0.08] shadow-[0_25px_60px_rgba(0,0,0,0.9),_0_0_40px_rgba(0,0,0,0.6)] flex flex-col mb-14 xs:mb-12 select-none overflow-hidden">
       {/* Screen container */}
-      <div className="relative w-full h-full rounded-[30px] xs:rounded-[36px] sm:rounded-[40px] overflow-hidden flex flex-col shadow-inner">
+      <div className="relative w-full h-full rounded-[32px] xs:rounded-[38px] sm:rounded-[42px] overflow-hidden flex flex-col shadow-inner">
         {/* Dynamic Island Notch */}
         <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-30 w-20 h-5 bg-black rounded-full pointer-events-none flex items-center justify-end pr-2">
           <div className="w-2 h-2 rounded-full bg-[#15151b] border border-[#262630]/60" />

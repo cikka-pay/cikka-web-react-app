@@ -43,15 +43,15 @@ export function GetTheAppSection() {
   const smoothProgress = isMobile ? scrollYProgress : springProgress;
 
   // Parallax shifts for the 3 phones
-  const leftPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [15, -10] : [40, -25]);
-  const leftPhoneRotate = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [-5, -4, -3] : [-15, -13, -11]);
+  const leftPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [12, -8] : [40, -25]);
+  const leftPhoneRotate = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [-15, -14, -13] : [-15, -13, -11]);
   const leftPhoneX = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [-8, 0, 4] : [-20, 0, 10]);
 
-  const centerPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [10, -10] : [25, -25]);
+  const centerPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [8, -8] : [25, -25]);
   const centerPhoneScale = useTransform(smoothProgress, [0, 0.5, 1], [0.97, 1.0, 0.98]);
 
-  const rightPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [15, -10] : [40, -25]);
-  const rightPhoneRotate = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [5, 4, 3] : [15, 13, 11]);
+  const rightPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [12, -8] : [40, -25]);
+  const rightPhoneRotate = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [15, 14, 13] : [15, 13, 11]);
   const rightPhoneX = useTransform(smoothProgress, [0, 0.5, 1], isMobile ? [8, 0, -4] : [20, 0, -10]);
 
   const glowScale = useTransform(smoothProgress, [0, 0.5, 1], [0.85, 1.15, 0.95]);
@@ -61,7 +61,7 @@ export function GetTheAppSection() {
     <section
       id="get-app-section"
       ref={containerRef}
-      className="relative w-full bg-[#f4f5f8] text-slate-900 pt-10 sm:pt-16 md:pt-20 pb-8 sm:pb-12 md:pb-14 px-4 sm:px-6 overflow-hidden flex flex-col items-center justify-center select-none"
+      className="relative w-full bg-[#f4f5f8] text-slate-900 pt-10 sm:pt-16 md:pt-20 pb-8 sm:pb-12 md:pb-14 px-3 sm:px-6 overflow-hidden flex flex-col items-center justify-center select-none"
     >
       {/* Balanced Soft Purple Ambient Radial Glow on White */}
       <div className="pointer-events-none absolute -bottom-10 left-1/2 -translate-x-1/2 w-[700px] sm:w-[950px] md:w-[1150px] h-[340px] sm:h-[420px] bg-[radial-gradient(ellipse_at_bottom,rgba(168,85,247,0.10)_0%,rgba(147,51,234,0.04)_38%,transparent_75%)] blur-[95px] z-0" />
@@ -71,7 +71,7 @@ export function GetTheAppSection() {
       {/* 3-PHONE TRIPTYCH SHOWCASE (Solid, Opaque & Widely Spread with Black Shadow Fade) */}
       {/* ------------------------------------------------------------- */}
       <div
-        className="relative w-full max-w-4xl h-[320px] xs:h-[370px] sm:h-[460px] md:h-[510px] mt-2 sm:mt-4 mb-4 sm:mb-6 flex items-center justify-center pointer-events-none"
+        className="relative w-full max-w-4xl h-[310px] xs:h-[360px] sm:h-[460px] md:h-[510px] mt-2 sm:mt-4 mb-4 sm:mb-6 flex items-center justify-center pointer-events-none"
       >
         {/* LEFT PHONE: Quick Actions Dashboard */}
         <motion.div
@@ -84,7 +84,7 @@ export function GetTheAppSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="absolute left-1/2 -translate-x-[calc(50%+65px)] xs:-translate-x-[calc(50%+85px)] sm:-translate-x-[calc(50%+115px)] md:-translate-x-[calc(50%+138px)] z-10 w-[120px] xs:w-[155px] sm:w-[195px] md:w-[220px] h-[250px] xs:h-[320px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom will-change-transform"
+          className="absolute left-1/2 -translate-x-[calc(50%+78px)] xs:-translate-x-[calc(50%+98px)] sm:-translate-x-[calc(50%+122px)] md:-translate-x-[calc(50%+145px)] z-10 w-[114px] xs:w-[148px] sm:w-[195px] md:w-[220px] h-[238px] xs:h-[308px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom will-change-transform"
         >
           <PhoneFrame>
             <LeftPhoneDashboardScreen />
@@ -102,7 +102,7 @@ export function GetTheAppSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="absolute left-1/2 translate-x-[calc(-50%+65px)] xs:translate-x-[calc(-50%+85px)] sm:translate-x-[calc(-50%+115px)] md:translate-x-[calc(-50%+138px)] z-10 w-[120px] xs:w-[155px] sm:w-[195px] md:w-[220px] h-[250px] xs:h-[320px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom will-change-transform"
+          className="absolute left-1/2 translate-x-[calc(-50%+78px)] xs:translate-x-[calc(-50%+98px)] sm:translate-x-[calc(-50%+122px)] md:translate-x-[calc(-50%+145px)] z-10 w-[114px] xs:w-[148px] sm:w-[195px] md:w-[220px] h-[238px] xs:h-[308px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom will-change-transform"
         >
           <PhoneFrame>
             <RightPhoneTransferScreen />
@@ -119,7 +119,7 @@ export function GetTheAppSection() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true, amount: 0.15 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="relative z-20 w-[135px] xs:w-[170px] sm:w-[210px] md:w-[238px] h-[275px] xs:h-[345px] sm:h-[425px] md:h-[475px] pointer-events-auto shadow-[0_25px_60px_rgba(0,0,0,0.85)] rounded-[26px] xs:rounded-[34px] sm:rounded-[42px] will-change-transform"
+          className="relative z-20 w-[126px] xs:w-[162px] sm:w-[210px] md:w-[238px] h-[260px] xs:h-[332px] sm:h-[425px] md:h-[475px] pointer-events-auto shadow-[0_25px_60px_rgba(0,0,0,0.85)] rounded-[26px] xs:rounded-[34px] sm:rounded-[42px] will-change-transform"
         >
           <PhoneFrame isCenter>
             <CenterPhoneHeroScreen />
@@ -171,7 +171,64 @@ export function GetTheAppSection() {
 }
 
 // ---------------------------------------------------------------------------
-// TITANIUM PHONE FRAME WRAPPER (Solid & Opaque)
+// SCALED SCREEN WRAPPER (Proportionally scales full standard layout)
+// ---------------------------------------------------------------------------
+function ScaledScreen({
+  children,
+  baseWidth = 300,
+  baseHeight = 640,
+}: {
+  children: React.ReactNode;
+  baseWidth?: number;
+  baseHeight?: number;
+}) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [scale, setScale] = React.useState(0.5);
+
+  React.useEffect(() => {
+    const updateScale = () => {
+      if (containerRef.current) {
+        const { width, height } = containerRef.current.getBoundingClientRect();
+        if (width > 0 && height > 0) {
+          const sX = width / baseWidth;
+          const sY = height / baseHeight;
+          setScale(Math.min(sX, sY));
+        }
+      }
+    };
+    updateScale();
+    const ro = new ResizeObserver(updateScale);
+    if (containerRef.current) ro.observe(containerRef.current);
+    window.addEventListener("resize", updateScale);
+    return () => {
+      ro.disconnect();
+      window.removeEventListener("resize", updateScale);
+    };
+  }, [baseWidth, baseHeight]);
+
+  return (
+    <div
+      ref={containerRef}
+      className="relative w-full h-full overflow-hidden flex items-start justify-center select-none"
+    >
+      <div
+        style={{
+          width: `${baseWidth}px`,
+          height: `${baseHeight}px`,
+          transform: `scale(${scale})`,
+          transformOrigin: "top center",
+          flexShrink: 0,
+        }}
+        className="relative overflow-hidden flex flex-col justify-between"
+      >
+        {children}
+      </div>
+    </div>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// TITANIUM PHONE FRAME WRAPPER (Slim Obsidian Black)
 // ---------------------------------------------------------------------------
 function PhoneFrame({
   children,
@@ -182,16 +239,13 @@ function PhoneFrame({
 }) {
   return (
     <div
-      className={`relative w-full h-full rounded-[34px] sm:rounded-[40px] md:rounded-[44px] p-1.5 sm:p-2 bg-gradient-to-b from-[#3a3a46] via-[#1c1c24] to-[#0c0c12] border border-white/20 ${isCenter
-          ? "shadow-[0_0_0_1px_rgba(255,255,255,0.2),_0_20px_60px_rgba(0,0,0,0.95)]"
+      className={`relative w-full h-full rounded-[30px] sm:rounded-[36px] md:rounded-[40px] p-1 sm:p-1.5 bg-[#000000] border border-white/[0.08] ${isCenter
+          ? "shadow-[0_0_0_1px_rgba(255,255,255,0.12),_0_20px_60px_rgba(0,0,0,0.95)]"
           : "shadow-[0_15px_40px_rgba(0,0,0,0.85)] opacity-95 hover:opacity-100 transition-opacity"
         }`}
     >
-      {/* Top Specular Edge Highlight */}
-      <div className="absolute top-0 inset-x-8 sm:inset-x-10 h-[1.2px] bg-gradient-to-r from-transparent via-white/70 to-transparent pointer-events-none z-30" />
-
       {/* Inner Phone Screen Container (Borderless Screen) */}
-      <div className="relative w-full h-full rounded-[28px] sm:rounded-[34px] md:rounded-[37px] border border-white/10 overflow-hidden shadow-inner">
+      <div className="relative w-full h-full rounded-[25px] sm:rounded-[31px] md:rounded-[35px] border border-white/[0.06] overflow-hidden shadow-inner">
         {/* Screen Content Body - fills 100% full height */}
         <div className="absolute inset-0 w-full h-full overflow-hidden flex flex-col">
           {children}
@@ -226,35 +280,47 @@ function PhoneFrame({
 // ---------------------------------------------------------------------------
 function CenterPhoneHeroScreen() {
   return (
-    <div className="relative w-full h-full flex flex-col justify-between select-none overflow-hidden bg-[#050508]">
-      {/* 3D Cikka Logo Canvas */}
-      <PhoneScreen1Canvas />
+    <ScaledScreen baseWidth={300} baseHeight={640}>
+      <div className="relative w-full h-full flex flex-col justify-between select-none overflow-hidden bg-[#050508]">
+        {/* 3D Cikka Logo Canvas */}
+        <PhoneScreen1Canvas />
 
-      {/* Safe area clearance */}
-      <div className="w-full h-3 sm:h-5 shrink-0 pointer-events-none" />
+        {/* Safe area clearance */}
+        <div className="w-full h-7 shrink-0 pointer-events-none" />
 
-      {/* Bottom Tagline Overlay (India's Most Rewarding Platform) */}
-      <div className="relative z-10 p-2 xs:p-2.5 sm:p-3 pb-3 xs:pb-3.5 sm:pb-4 flex flex-col items-start mt-auto pointer-events-none">
-        <h2 className="text-[10px] xs:text-[11.5px] sm:text-[13.5px] md:text-[15px] font-extrabold font-['Poppins','Inter',sans-serif] leading-[1.15] tracking-[-0.03em] bg-gradient-to-br from-white via-[#e9d5ff] to-[#c084fc] bg-clip-text text-transparent m-0 select-none">
-          <span className="block whitespace-nowrap">India's Most</span>
-          <span className="block whitespace-nowrap">Rewarding Platform</span>
-        </h2>
+        {/* Bottom Tagline Overlay (India's Most Rewarding Platform) */}
+        <div className="relative z-10 px-4 pb-6 flex flex-col items-start mt-auto pointer-events-none">
+          <h2 className="text-[17px] font-extrabold font-['Poppins','Inter',sans-serif] leading-[1.15] tracking-[-0.03em] bg-gradient-to-br from-white via-[#e9d5ff] to-[#c084fc] bg-clip-text text-transparent m-0 select-none">
+            <span className="block whitespace-nowrap">India's Most</span>
+            <span className="block whitespace-nowrap">Rewarding Platform</span>
+          </h2>
+        </div>
       </div>
-    </div>
+    </ScaledScreen>
   );
 }
 
 // ---------------------------------------------------------------------------
-// 2. LEFT SCREEN: Financial Portfolio Showcase (Compact)
+// 2. LEFT SCREEN: Financial Portfolio Showcase (Scaled Full UI)
 // ---------------------------------------------------------------------------
 function LeftPhoneDashboardScreen() {
-  return <PhoneScreen2Portfolio compact />;
+  return (
+    <ScaledScreen baseWidth={300} baseHeight={640}>
+      <PhoneScreen2Portfolio />
+    </ScaledScreen>
+  );
 }
 
 // ---------------------------------------------------------------------------
-// 3. RIGHT SCREEN: Smart Features Showcase (Compact)
+// 3. RIGHT SCREEN: Smart Features Showcase (Scaled Full UI)
 // ---------------------------------------------------------------------------
 function RightPhoneTransferScreen() {
-  return <PhoneScreen3Features compact />;
+  return (
+    <ScaledScreen baseWidth={300} baseHeight={640}>
+      <PhoneScreen3Features />
+    </ScaledScreen>
+  );
 }
+
+
 
