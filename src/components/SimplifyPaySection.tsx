@@ -25,14 +25,26 @@ export function SimplifyPaySection() {
     offset: ["start end", "end start"],
   });
 
-  // Direct sync with Lenis smooth scroll — zero spring lag or stutter
+  // Direct sync with scroll progress — zero spring lag or stutter
   const smoothProgress = scrollYProgress;
 
   // Gentle subtle parallax on large desktop only; static 120fps locked rendering on tablet/mobile
-  const cardRotateY = useTransform(smoothProgress, [0, 0.5, 1], isTouchOrTablet ? [0, 0, 0] : [-2, 0, 2]);
-  const cardRotateX = useTransform(smoothProgress, [0, 0.5, 1], isTouchOrTablet ? [0, 0, 0] : [2, 0, -2]);
+  const cardRotateY = useTransform(
+    smoothProgress,
+    [0, 0.5, 1],
+    isTouchOrTablet ? [0, 0, 0] : [-2, 0, 2],
+  );
+  const cardRotateX = useTransform(
+    smoothProgress,
+    [0, 0.5, 1],
+    isTouchOrTablet ? [0, 0, 0] : [2, 0, -2],
+  );
   const phoneParallaxY = useTransform(smoothProgress, [0, 1], isTouchOrTablet ? [0, 0] : [15, -15]);
-  const cushionsParallaxY = useTransform(smoothProgress, [0, 1], isTouchOrTablet ? [0, 0] : [-10, 10]);
+  const cushionsParallaxY = useTransform(
+    smoothProgress,
+    [0, 1],
+    isTouchOrTablet ? [0, 0] : [-10, 10],
+  );
 
   return (
     <div
@@ -116,8 +128,8 @@ export function SimplifyPaySection() {
           transition={{ duration: 0.6, delay: 0.15 }}
           className="text-slate-600 text-base sm:text-lg leading-relaxed max-w-xl"
         >
-          We simplify the way you pay our platform offers secure transactions,
-          tools, and a seamless experience for easy everyday payments
+          We simplify the way you pay our platform offers secure transactions, tools, and a seamless
+          experience for easy everyday payments
         </motion.p>
 
         {/* Luxury Pill CTA Button */}
@@ -231,4 +243,3 @@ export function ExpensesPhoneMockup() {
     </div>
   );
 }
-

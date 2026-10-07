@@ -14,10 +14,12 @@ export function SizzleSection() {
         scrollTrigger: {
           trigger: root.current as HTMLElement,
           start: "top top",
-          end: isMobile ? "+=160%" : "+=350%",
-          scrub: 0.5,
+          end: isMobile ? "+=110%" : "+=180%",
+          scrub: 0.3,
           pin: true,
           anticipatePin: 1,
+          fastScrollEnd: true,
+          invalidateOnRefresh: true,
         },
       });
 

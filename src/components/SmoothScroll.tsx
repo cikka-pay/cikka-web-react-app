@@ -6,14 +6,9 @@ export function SmoothScroll() {
   useEffect(() => {
     if (typeof window === "undefined" || prefersReducedMotion()) return;
 
-    const isTouch =
-      "ontouchstart" in window ||
-      (typeof navigator !== "undefined" && navigator.maxTouchPoints > 0) ||
-      window.innerWidth < 768;
-
     ScrollTrigger.config({ ignoreMobileResize: true });
 
-    // Initialize Lenis with universal buttery fluid momentum across desktop, mobile, and tablet
+    // Initialize Lenis with universal fluid momentum across desktop, mobile, and tablet
     const lenis = new Lenis({
       duration: 1.0,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -21,7 +16,7 @@ export function SmoothScroll() {
       gestureOrientation: "vertical",
       smoothWheel: true,
       syncTouch: true,
-      touchMultiplier: 1.15,
+      touchMultiplier: 1.0,
       wheelMultiplier: 1.0,
       autoResize: true,
       infinite: false,
@@ -32,7 +27,7 @@ export function SmoothScroll() {
       ScrollTrigger.update();
     });
 
-    // RAF loop via GSAP ticker for synchronized 60-120fps rendering without jank
+    // RAF loop via GSAP ticker for 60-120fps synchronized rendering
     const updateTicker = (time: number) => {
       lenis.raf(time * 1000);
     };
@@ -43,7 +38,7 @@ export function SmoothScroll() {
     // Make lenis globally accessible
     (window as unknown as { lenis?: Lenis }).lenis = lenis;
 
-    // Refresh ScrollTrigger when layout / fonts finish rendering
+    // Refresh ScrollTrigger and Lenis after resize/font/DOM load
     const handleResize = () => {
       lenis.resize();
       ScrollTrigger.refresh();
@@ -51,7 +46,6 @@ export function SmoothScroll() {
 
     window.addEventListener("resize", handleResize, { passive: true });
 
-    // Ensure ScrollTrigger refreshes after initial paint
     const timer = setTimeout(() => {
       lenis.resize();
       ScrollTrigger.refresh();
@@ -70,7 +64,7 @@ export function SmoothScroll() {
       e.preventDefault();
       lenis.scrollTo(el, {
         offset: window.innerWidth < 640 ? -60 : -75,
-        duration: 1.0,
+        duration: 1.2,
         easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       });
     };

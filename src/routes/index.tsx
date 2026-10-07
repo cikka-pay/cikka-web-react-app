@@ -35,7 +35,6 @@ import { RevenueInsightsBentoSection } from "../components/RevenueInsightsBentoS
 import { GeneralPaymentsSection } from "../components/GeneralPaymentsSection";
 import { GetTheAppSection } from "../components/GetTheAppSection";
 import { Footer } from "../components/Footer";
-import { SmoothScroll } from "../components/SmoothScroll";
 import { Cikka3DLogo } from "../components/Cikka3DLogo";
 import { PhoneScreen1Canvas } from "../components/PhoneScreen1Canvas";
 import { PhoneScreen2Portfolio } from "../components/PhoneScreen2Portfolio";
@@ -184,7 +183,7 @@ function UnifiedPhoneShowcase() {
     offset: ["start start", "end end"],
   });
 
-  // Master Lenis smooth scroll engine provides consistent 120fps fluid momentum across desktop, tablet, and mobile
+  // Fluid momentum scroll progression across desktop, tablet, and mobile
   const smoothProgress = scrollYProgress;
 
   // --- 1. HERO STAGE ("We've Got You") ---
@@ -300,7 +299,7 @@ function UnifiedPhoneShowcase() {
     <div
       ref={containerRef}
       className="relative w-full bg-[#000000] text-white selection:bg-purple-500/30 overflow-visible"
-      style={{ height: isStacked ? "230vh" : "480vh" }}
+      style={{ height: isMobile ? "240vh" : isTablet ? "280vh" : "420vh" }}
     >
       {/* Sticky Fullscreen Viewport */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-14 sm:pt-24 pb-3 sm:pb-8 px-4 sm:px-12 lg:px-20">
@@ -353,7 +352,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-14 xl:left-24 2xl:left-36 lg:right-auto
-            bottom-28 xs:bottom-32 sm:bottom-36 md:bottom-40 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            bottom-20 xs:bottom-24 sm:bottom-28 md:bottom-32 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
             z-30 w-full max-w-[94%] xs:max-w-[390px] sm:max-w-[460px] lg:max-w-md xl:max-w-lg
             flex flex-col justify-center items-center lg:items-start
             text-center lg:text-left px-2 lg:px-0 will-change-transform"
@@ -416,7 +415,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-auto lg:right-14 xl:right-24 2xl:right-36
-            bottom-28 xs:bottom-32 sm:bottom-36 md:bottom-40 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            bottom-20 xs:bottom-24 sm:bottom-28 md:bottom-32 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
             z-30 w-full max-w-[95%] xs:max-w-[400px] sm:max-w-[500px] lg:max-w-xl xl:max-w-2xl
             flex flex-col justify-center items-center lg:items-end
             text-center lg:text-right px-2 lg:px-0 will-change-transform"
@@ -439,9 +438,7 @@ function UnifiedPhoneShowcase() {
             <div className="grid grid-cols-3 gap-1.5 xs:gap-2 sm:gap-3 mt-2.5 sm:mt-5 w-full max-w-[270px] xs:max-w-[310px] sm:max-w-[380px] lg:max-w-[420px]">
               {/* Card 1: One-Click Orders */}
               <div className="rounded-xl xs:rounded-2xl sm:rounded-[18px] bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3.5 flex flex-col items-center text-center shadow-lg backdrop-blur-xl group transition-all">
-                <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center mb-1.5 sm:mb-2 group-hover:scale-105 transition-transform">
-                  <ShoppingBagNavIcon className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5.5 sm:h-5.5" />
-                </div>
+                <ShoppingBagNavIcon className="w-5 h-5 xs:w-6 xs:h-6 sm:w-7 sm:h-7 mb-1.5 sm:mb-2 group-hover:scale-110 transition-transform text-white" />
                 <h3 className="font-bold text-white text-[9.5px] xs:text-[10.5px] sm:text-[12px] md:text-[13px] leading-tight">
                   One-Click Orders
                 </h3>
@@ -452,9 +449,7 @@ function UnifiedPhoneShowcase() {
 
               {/* Card 2: One-Click Payments */}
               <div className="rounded-xl xs:rounded-2xl sm:rounded-[18px] bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3.5 flex flex-col items-center text-center shadow-lg backdrop-blur-xl group transition-all">
-                <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center mb-1.5 sm:mb-2 group-hover:scale-105 transition-transform">
-                  <CardLightningNavIcon className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5.5 sm:h-5.5" />
-                </div>
+                <CardLightningNavIcon className="w-5 h-5 xs:w-6 xs:h-6 sm:w-7 sm:h-7 mb-1.5 sm:mb-2 group-hover:scale-110 transition-transform text-white" />
                 <h3 className="font-bold text-white text-[9.5px] xs:text-[10.5px] sm:text-[12px] md:text-[13px] leading-tight">
                   One-Click Payments
                 </h3>
@@ -465,9 +460,7 @@ function UnifiedPhoneShowcase() {
 
               {/* Card 3: Smart Reminders */}
               <div className="rounded-xl xs:rounded-2xl sm:rounded-[18px] bg-[#0c0c14]/90 border border-white/10 hover:border-white/20 p-2 xs:p-2.5 sm:p-3.5 flex flex-col items-center text-center shadow-lg backdrop-blur-xl group transition-all">
-                <div className="w-8 h-8 xs:w-9 xs:h-9 sm:w-11 sm:h-11 rounded-lg sm:rounded-xl bg-white/[0.04] border border-white/10 flex items-center justify-center mb-1.5 sm:mb-2 group-hover:scale-105 transition-transform">
-                  <BellClockNavIcon className="w-4 h-4 xs:w-4.5 xs:h-4.5 sm:w-5.5 sm:h-5.5" />
-                </div>
+                <BellClockNavIcon className="w-5 h-5 xs:w-6 xs:h-6 sm:w-7 sm:h-7 mb-1.5 sm:mb-2 group-hover:scale-110 transition-transform text-white" />
                 <h3 className="font-bold text-white text-[9.5px] xs:text-[10.5px] sm:text-[12px] md:text-[13px] leading-tight">
                   Smart Reminders
                 </h3>
@@ -605,32 +598,27 @@ function CardsScene() {
 
     const ctx = gsap.context(() => {
       // GPU accelerated initialization with zero paint thrashing
-      gsap.set(titleRef.current, { y: isMobile ? 30 : 45, opacity: 0.35, force3D: true });
-      gsap.set(leftCardRef.current, { x: 0, y: 100, rotation: 0, scale: 0.92, force3D: true });
-      gsap.set(centerCardRef.current, { y: 110, rotation: 0, scale: 0.94, force3D: true });
-      gsap.set(rightCardRef.current, { x: 0, y: 100, rotation: 0, scale: 0.92, force3D: true });
+      gsap.set(titleRef.current, { y: 25, opacity: 0.35, force3D: true });
+      gsap.set(leftCardRef.current, { x: 0, y: 70, rotation: 0, scale: 0.92, force3D: true });
+      gsap.set(centerCardRef.current, { y: 80, rotation: 0, scale: 0.94, force3D: true });
+      gsap.set(rightCardRef.current, { x: 0, y: 70, rotation: 0, scale: 0.92, force3D: true });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top top",
-          end: isMobile ? "+=110%" : "+=170%",
-          scrub: 0.4,
-          pin: true,
-          anticipatePin: 1,
+          start: "top 80%",
+          end: "center 45%",
+          scrub: 0.6,
           fastScrollEnd: true,
           invalidateOnRefresh: true,
         },
       });
 
-      // Phase 1: Ultra-fast 120fps hardware fan out
-      tl.to(titleRef.current, { y: 0, opacity: 1, duration: 1, ease: "power1.out" }, 0)
-        .to(leftCardRef.current, { x: leftX, y: 36, rotation: leftRot, scale: 0.98, duration: 1, ease: "power1.out" }, 0)
-        .to(centerCardRef.current, { y: 16, rotation: -3, scale: 1.02, duration: 1, ease: "power1.out" }, 0)
-        .to(rightCardRef.current, { x: rightX, y: 36, rotation: rightRot, scale: 0.98, duration: 1, ease: "power1.out" }, 0);
-
-      // Phase 2: The Pinned Hold / Pause while scrolling
-      tl.to({}, { duration: 1.0 });
+      // Ultra-smooth hardware fan out on natural scroll
+      tl.to(titleRef.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0)
+        .to(leftCardRef.current, { x: leftX, y: 36, rotation: leftRot, scale: 0.98, duration: 1, ease: "power2.out" }, 0)
+        .to(centerCardRef.current, { y: 16, rotation: -3, scale: 1.02, duration: 1, ease: "power2.out" }, 0)
+        .to(rightCardRef.current, { x: rightX, y: 36, rotation: rightRot, scale: 0.98, duration: 1, ease: "power2.out" }, 0);
 
     }, containerRef);
 
@@ -641,7 +629,7 @@ function CardsScene() {
     <section
       id="download"
       ref={containerRef}
-      className="relative w-full h-screen min-h-screen bg-[#000000] text-white selection:bg-purple-500/30 overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 transform-gpu"
+      className="relative w-full py-16 sm:py-24 md:py-32 min-h-[70vh] bg-[#000000] text-white selection:bg-purple-500/30 overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 transform-gpu"
     >
       {/* Ambient background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] xs:w-[420px] sm:w-[650px] h-[280px] sm:h-[400px] bg-[radial-gradient(circle,rgba(168,85,247,0.16)_0%,transparent_70%)] blur-[50px] sm:blur-[80px] pointer-events-none" />
@@ -655,7 +643,7 @@ function CardsScene() {
           Manage <span className="bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">all</span> cards in one place
         </h2>
 
-        {/* Fanned Cards Showcase (120fps GPU composited & Lenis synchronized) */}
+        {/* Fanned Cards Showcase (GPU composited) */}
         <div className="relative w-full max-w-2xl h-[260px] xs:h-[280px] sm:h-[320px] md:h-[350px] flex items-center justify-center select-none">
           {/* Left Card - Axis Bank */}
           <div
@@ -823,14 +811,14 @@ function ShoppingBagNavIcon({ className = "" }: { className?: string }) {
     <svg viewBox="0 0 32 32" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
       <path
         d="M9 10.5H23L21.7 25C21.6 25.8 20.9 26.5 20.1 26.5H11.9C11.1 26.5 10.4 25.8 10.3 25L9 10.5Z"
-        stroke="#f472b6"
+        stroke="white"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M12.5 10.5V8C12.5 6.1 14.1 4.5 16 4.5C17.9 4.5 19.5 6.1 19.5 8V10.5"
-        stroke="#f472b6"
+        stroke="white"
         strokeWidth="2"
         strokeLinecap="round"
       />
@@ -847,15 +835,15 @@ function CardLightningNavIcon({ className = "" }: { className?: string }) {
         width="22"
         height="17"
         rx="4"
-        stroke="#818cf8"
+        stroke="white"
         strokeWidth="2"
         strokeLinecap="round"
       />
-      <path d="M5 12.5H27" stroke="#818cf8" strokeWidth="2" />
-      <circle cx="21" cy="19.5" r="4.5" fill="#0c0c14" stroke="#818cf8" strokeWidth="1.5" />
+      <path d="M5 12.5H27" stroke="white" strokeWidth="2" />
+      <circle cx="21" cy="19.5" r="4.5" fill="#0c0c14" stroke="white" strokeWidth="1.5" />
       <path
         d="M21.5 17L19.5 19.5H22.5L20.5 22"
-        stroke="#818cf8"
+        stroke="white"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"
@@ -869,21 +857,21 @@ function BellClockNavIcon({ className = "" }: { className?: string }) {
     <svg viewBox="0 0 32 32" fill="none" className={className} xmlns="http://www.w3.org/2000/svg">
       <path
         d="M16 5.5C13.5 5.5 11.5 7.5 11.5 10V15C11.5 16 11 17 10.2 17.6L9.2 18.4C8.6 18.9 9 19.8 9.8 19.8H18.5"
-        stroke="#c084fc"
+        stroke="white"
         strokeWidth="2"
         strokeLinecap="round"
         strokeLinejoin="round"
       />
       <path
         d="M13.5 23C14 23.6 14.8 24 16 24C16.8 24 17.5 23.7 18 23.2"
-        stroke="#c084fc"
+        stroke="white"
         strokeWidth="2"
         strokeLinecap="round"
       />
-      <circle cx="21.5" cy="18.5" r="4.5" fill="#0c0c14" stroke="#c084fc" strokeWidth="1.5" />
+      <circle cx="21.5" cy="18.5" r="4.5" fill="#0c0c14" stroke="white" strokeWidth="1.5" />
       <path
         d="M21.5 16.5V18.5L23 19.5"
-        stroke="#c084fc"
+        stroke="white"
         strokeWidth="1.5"
         strokeLinecap="round"
         strokeLinejoin="round"

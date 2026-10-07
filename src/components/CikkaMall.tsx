@@ -397,8 +397,8 @@ function Product3DCanvas({ modelUrl, id }: { modelUrl: string; id: string }) {
   }, [modelUrl, id]);
 
   return (
-    <div ref={containerRef} className="relative w-full h-full flex items-center justify-center">
-      <canvas ref={canvasRef} className="w-full h-full block cursor-grab active:cursor-grabbing" />
+    <div ref={containerRef} className="relative w-full h-full flex items-center justify-center pointer-events-none">
+      <canvas ref={canvasRef} className="w-full h-full block pointer-events-none touch-none" />
       {!isLoaded && (
         <div className="absolute inset-0 flex items-center justify-center bg-[#f8fafc]">
           <div className="w-7 h-7 border-2 border-slate-200 border-t-[#6366f1] rounded-full animate-spin" />
