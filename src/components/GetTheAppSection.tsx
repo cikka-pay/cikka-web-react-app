@@ -76,10 +76,6 @@ export function GetTheAppSection() {
             x: leftPhoneX,
             rotateZ: leftPhoneRotate,
           }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
           className="absolute left-1/2 -translate-x-[calc(50%+78px)] xs:-translate-x-[calc(50%+98px)] sm:-translate-x-[calc(50%+122px)] md:-translate-x-[calc(50%+145px)] z-10 w-[114px] xs:w-[148px] sm:w-[195px] md:w-[220px] h-[238px] xs:h-[308px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom will-change-transform"
         >
           <PhoneFrame>
@@ -94,10 +90,6 @@ export function GetTheAppSection() {
             x: rightPhoneX,
             rotateZ: rightPhoneRotate,
           }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
           className="absolute left-1/2 translate-x-[calc(-50%+78px)] xs:translate-x-[calc(-50%+98px)] sm:translate-x-[calc(-50%+122px)] md:translate-x-[calc(-50%+145px)] z-10 w-[114px] xs:w-[148px] sm:w-[195px] md:w-[220px] h-[238px] xs:h-[308px] sm:h-[395px] md:h-[440px] pointer-events-auto origin-bottom will-change-transform"
         >
           <PhoneFrame>
@@ -111,10 +103,6 @@ export function GetTheAppSection() {
             y: centerPhoneY,
             scale: centerPhoneScale,
           }}
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
-          viewport={{ once: true, amount: 0.15 }}
-          transition={{ duration: 0.6, ease: "easeOut" }}
           className="relative z-20 w-[126px] xs:w-[162px] sm:w-[210px] md:w-[238px] h-[260px] xs:h-[332px] sm:h-[425px] md:h-[475px] pointer-events-auto shadow-[0_25px_60px_rgba(0,0,0,0.85)] rounded-[26px] xs:rounded-[34px] sm:rounded-[42px] will-change-transform"
         >
           <PhoneFrame isCenter>

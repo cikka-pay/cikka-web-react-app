@@ -541,14 +541,16 @@ export function WaitlistSection() {
   );
   const innerZ = useTransform(smoothProgress, [0, 0.75], isMobile ? [0, 0] : [0, 160]);
 
-  // 3. CENTER CIKKA LOGO (STABLE DURING FIRST PHASE)
-  const cikkaLogoOpacity = useTransform(smoothProgress, [0, 0.2, 0.55, 0.7], [1, 1, 0.8, 0]);
-  const cikkaLogoScale = useTransform(smoothProgress, [0, 0.45, 0.7], [1.0, 1.05, 0.85]);
+  // 3. CENTER CIKKA LOGO (Fades out completely in Phase 1 before text appears)
+  const cikkaLogoOpacity = useTransform(smoothProgress, [0, 0.25, 0.45], [1, 1, 0]);
+  const cikkaLogoVisibility = useTransform(smoothProgress, (p) => (p >= 0.48 ? "hidden" : "visible"));
+  const cikkaLogoScale = useTransform(smoothProgress, [0, 0.35, 0.48], [1.0, 1.05, 0.8]);
 
   // 4. CONVERTED TEXT: "Rewards that reshape the daily life" (POPPINS FONT)
-  const textOpacity = useTransform(smoothProgress, [0.6, 0.78, 0.95, 1.0], [0, 1, 1, 0.92]);
-  const textScale = useTransform(smoothProgress, [0.6, 0.78, 1.0], [0.92, 1.0, 1.0]);
-  const textY = useTransform(smoothProgress, [0.6, 0.78, 1.0], [18, 0, 0]);
+  const textOpacity = useTransform(smoothProgress, [0.52, 0.72, 0.95, 1.0], [0, 1, 1, 0.92]);
+  const textVisibility = useTransform(smoothProgress, (p) => (p < 0.50 ? "hidden" : "visible"));
+  const textScale = useTransform(smoothProgress, [0.52, 0.72, 1.0], [0.92, 1.0, 1.0]);
+  const textY = useTransform(smoothProgress, [0.52, 0.72, 1.0], [18, 0, 0]);
 
   // 5. AMBIENT ATMOSPHERIC GLOW DYNAMICS
   const glowScale = useTransform(smoothProgress, [0, 0.5, 1], [0.85, 1.25, 1.5]);
@@ -672,6 +674,7 @@ export function WaitlistSection() {
             <motion.div
               style={{
                 opacity: cikkaLogoOpacity,
+                visibility: cikkaLogoVisibility,
                 scale: cikkaLogoScale,
               }}
               className="absolute flex flex-col items-center justify-center pointer-events-none select-none will-change-transform"
@@ -687,6 +690,7 @@ export function WaitlistSection() {
             <motion.div
               style={{
                 opacity: textOpacity,
+                visibility: textVisibility,
                 scale: textScale,
                 y: textY,
               }}
