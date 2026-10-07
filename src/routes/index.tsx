@@ -299,7 +299,7 @@ function UnifiedPhoneShowcase() {
     <div
       ref={containerRef}
       className="relative w-full bg-[#000000] text-white selection:bg-purple-500/30 overflow-visible"
-      style={{ height: isStacked ? "230vh" : "480vh" }}
+      style={{ height: isMobile ? "240vh" : isTablet ? "280vh" : "420vh" }}
     >
       {/* Sticky Fullscreen Viewport */}
       <div className="sticky top-0 h-screen w-full overflow-hidden flex flex-col justify-between pt-14 sm:pt-24 pb-3 sm:pb-8 px-4 sm:px-12 lg:px-20">
@@ -352,7 +352,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-14 xl:left-24 2xl:left-36 lg:right-auto
-            bottom-28 xs:bottom-32 sm:bottom-36 md:bottom-40 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            bottom-20 xs:bottom-24 sm:bottom-28 md:bottom-32 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
             z-30 w-full max-w-[94%] xs:max-w-[390px] sm:max-w-[460px] lg:max-w-md xl:max-w-lg
             flex flex-col justify-center items-center lg:items-start
             text-center lg:text-left px-2 lg:px-0 will-change-transform"
@@ -415,7 +415,7 @@ function UnifiedPhoneShowcase() {
           }}
           className="absolute
             left-0 right-0 mx-auto lg:left-auto lg:right-14 xl:right-24 2xl:right-36
-            bottom-28 xs:bottom-32 sm:bottom-36 md:bottom-40 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
+            bottom-20 xs:bottom-24 sm:bottom-28 md:bottom-32 lg:bottom-auto lg:top-1/2 lg:-translate-y-1/2
             z-30 w-full max-w-[95%] xs:max-w-[400px] sm:max-w-[500px] lg:max-w-xl xl:max-w-2xl
             flex flex-col justify-center items-center lg:items-end
             text-center lg:text-right px-2 lg:px-0 will-change-transform"
@@ -598,32 +598,27 @@ function CardsScene() {
 
     const ctx = gsap.context(() => {
       // GPU accelerated initialization with zero paint thrashing
-      gsap.set(titleRef.current, { y: isMobile ? 30 : 45, opacity: 0.35, force3D: true });
-      gsap.set(leftCardRef.current, { x: 0, y: 100, rotation: 0, scale: 0.92, force3D: true });
-      gsap.set(centerCardRef.current, { y: 110, rotation: 0, scale: 0.94, force3D: true });
-      gsap.set(rightCardRef.current, { x: 0, y: 100, rotation: 0, scale: 0.92, force3D: true });
+      gsap.set(titleRef.current, { y: 25, opacity: 0.35, force3D: true });
+      gsap.set(leftCardRef.current, { x: 0, y: 70, rotation: 0, scale: 0.92, force3D: true });
+      gsap.set(centerCardRef.current, { y: 80, rotation: 0, scale: 0.94, force3D: true });
+      gsap.set(rightCardRef.current, { x: 0, y: 70, rotation: 0, scale: 0.92, force3D: true });
 
       const tl = gsap.timeline({
         scrollTrigger: {
           trigger: containerRef.current,
-          start: "top top",
-          end: isMobile ? "+=110%" : "+=170%",
-          scrub: 0.4,
-          pin: true,
-          anticipatePin: 1,
+          start: "top 80%",
+          end: "center 45%",
+          scrub: 0.6,
           fastScrollEnd: true,
           invalidateOnRefresh: true,
         },
       });
 
-      // Phase 1: Ultra-fast 120fps hardware fan out
-      tl.to(titleRef.current, { y: 0, opacity: 1, duration: 1, ease: "power1.out" }, 0)
-        .to(leftCardRef.current, { x: leftX, y: 36, rotation: leftRot, scale: 0.98, duration: 1, ease: "power1.out" }, 0)
-        .to(centerCardRef.current, { y: 16, rotation: -3, scale: 1.02, duration: 1, ease: "power1.out" }, 0)
-        .to(rightCardRef.current, { x: rightX, y: 36, rotation: rightRot, scale: 0.98, duration: 1, ease: "power1.out" }, 0);
-
-      // Phase 2: The Pinned Hold / Pause while scrolling
-      tl.to({}, { duration: 1.0 });
+      // Ultra-smooth hardware fan out on natural scroll
+      tl.to(titleRef.current, { y: 0, opacity: 1, duration: 1, ease: "power2.out" }, 0)
+        .to(leftCardRef.current, { x: leftX, y: 36, rotation: leftRot, scale: 0.98, duration: 1, ease: "power2.out" }, 0)
+        .to(centerCardRef.current, { y: 16, rotation: -3, scale: 1.02, duration: 1, ease: "power2.out" }, 0)
+        .to(rightCardRef.current, { x: rightX, y: 36, rotation: rightRot, scale: 0.98, duration: 1, ease: "power2.out" }, 0);
 
     }, containerRef);
 
@@ -634,7 +629,7 @@ function CardsScene() {
     <section
       id="download"
       ref={containerRef}
-      className="relative w-full h-screen min-h-screen bg-[#000000] text-white selection:bg-purple-500/30 overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 transform-gpu"
+      className="relative w-full py-16 sm:py-24 md:py-32 min-h-[70vh] bg-[#000000] text-white selection:bg-purple-500/30 overflow-hidden flex flex-col items-center justify-center px-4 sm:px-6 transform-gpu"
     >
       {/* Ambient background glow */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[300px] xs:w-[420px] sm:w-[650px] h-[280px] sm:h-[400px] bg-[radial-gradient(circle,rgba(168,85,247,0.16)_0%,transparent_70%)] blur-[50px] sm:blur-[80px] pointer-events-none" />

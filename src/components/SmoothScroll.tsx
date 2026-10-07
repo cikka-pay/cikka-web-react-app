@@ -10,13 +10,13 @@ export function SmoothScroll() {
 
     // Initialize Lenis with universal fluid momentum across desktop, mobile, and tablet
     const lenis = new Lenis({
-      duration: 1.2,
+      duration: 1.0,
       easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: "vertical",
       gestureOrientation: "vertical",
       smoothWheel: true,
       syncTouch: true,
-      touchMultiplier: 1.2,
+      touchMultiplier: 1.0,
       wheelMultiplier: 1.0,
       autoResize: true,
       infinite: false,

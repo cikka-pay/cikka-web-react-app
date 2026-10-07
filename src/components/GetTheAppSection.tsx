@@ -35,12 +35,8 @@ export function GetTheAppSection() {
     offset: ["start end", "end start"],
   });
 
-  const springProgress = useSpring(scrollYProgress, {
-    stiffness: 100,
-    damping: 28,
-    mass: 0.16,
-  });
-  const smoothProgress = isMobile ? scrollYProgress : springProgress;
+  // Direct sync with Lenis smooth scroll — zero spring lag
+  const smoothProgress = scrollYProgress;
 
   // Parallax shifts for the 3 phones
   const leftPhoneY = useTransform(smoothProgress, [0, 1], isMobile ? [12, -8] : [40, -25]);
