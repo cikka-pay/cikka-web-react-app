@@ -31,7 +31,7 @@ export function RevenueInsightsBentoSection() {
     offset: ["start end", "end start"],
   });
 
-  // Direct sync with Lenis smooth scroll — zero spring lag or stutter
+  // Direct sync with scroll progress — zero spring lag or stutter
   const smoothProgress = scrollYProgress;
 
   const ribbonY = useTransform(smoothProgress, [0, 1], isMobile ? [0, 0] : [12, -12]);

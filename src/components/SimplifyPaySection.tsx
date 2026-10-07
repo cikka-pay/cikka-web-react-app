@@ -25,7 +25,7 @@ export function SimplifyPaySection() {
     offset: ["start end", "end start"],
   });
 
-  // Direct sync with Lenis smooth scroll — zero spring lag or stutter
+  // Direct sync with scroll progress — zero spring lag or stutter
   const smoothProgress = scrollYProgress;
 
   // Gentle subtle parallax on large desktop only; static 120fps locked rendering on tablet/mobile

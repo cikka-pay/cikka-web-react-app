@@ -35,7 +35,6 @@ import { RevenueInsightsBentoSection } from "../components/RevenueInsightsBentoS
 import { GeneralPaymentsSection } from "../components/GeneralPaymentsSection";
 import { GetTheAppSection } from "../components/GetTheAppSection";
 import { Footer } from "../components/Footer";
-import { SmoothScroll } from "../components/SmoothScroll";
 import { Cikka3DLogo } from "../components/Cikka3DLogo";
 import { PhoneScreen1Canvas } from "../components/PhoneScreen1Canvas";
 import { PhoneScreen2Portfolio } from "../components/PhoneScreen2Portfolio";
@@ -184,7 +183,7 @@ function UnifiedPhoneShowcase() {
     offset: ["start start", "end end"],
   });
 
-  // Master Lenis smooth scroll engine provides consistent 120fps fluid momentum across desktop, tablet, and mobile
+  // Fluid momentum scroll progression across desktop, tablet, and mobile
   const smoothProgress = scrollYProgress;
 
   // --- 1. HERO STAGE ("We've Got You") ---
@@ -649,7 +648,7 @@ function CardsScene() {
           Manage <span className="bg-gradient-to-r from-[#f472b6] via-[#c084fc] to-[#818cf8] bg-clip-text text-transparent">all</span> cards in one place
         </h2>
 
-        {/* Fanned Cards Showcase (120fps GPU composited & Lenis synchronized) */}
+        {/* Fanned Cards Showcase (GPU composited) */}
         <div className="relative w-full max-w-2xl h-[260px] xs:h-[280px] sm:h-[320px] md:h-[350px] flex items-center justify-center select-none">
           {/* Left Card - Axis Bank */}
           <div
