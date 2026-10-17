@@ -132,7 +132,9 @@ function Header() {
       {/* Action Buttons */}
       <div className="flex items-center gap-3 sm:gap-3.5">
         <a
-          href="/signin"
+          href="https://seller.cikka.club/"
+          target="_blank"
+          rel="noopener noreferrer"
           style={{ color: isLight ? "#000000" : "#ffffff" }}
           className={`inline-flex items-center justify-center font-medium text-[13px] px-4 sm:px-4.5 py-2 rounded-full border shadow-[0_2px_12px_rgba(0,0,0,0.35)] backdrop-blur-md transition-all duration-500 active:scale-95 cursor-pointer select-none ${isLight
               ? "bg-black/5 hover:bg-black/10 text-black border-black/15 shadow-[0_2px_10px_rgba(0,0,0,0.06)]"
