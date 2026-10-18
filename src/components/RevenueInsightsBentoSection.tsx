@@ -43,10 +43,10 @@ export function RevenueInsightsBentoSection() {
   const ordersData = {
     today: {
       stats: [
-        { label: "Total Orders", value: "327", growth: "↑ 12%", positive: true, icon: ShoppingCart, bg: "bg-[#f3e8ff]", color: "text-[#7c3aed]" },
-        { label: "Shipped", value: "298", growth: "↑ 8%", positive: true, icon: Package, bg: "bg-[#e0e7ff]", color: "text-[#4f46e5]" },
-        { label: "In Transit", value: "18", growth: "↑ 20%", positive: true, icon: Truck, bg: "bg-[#eff6ff]", color: "text-[#2563eb]" },
-        { label: "Returns", value: "11", growth: "↑ 5%", positive: false, icon: RotateCcw, bg: "bg-[#fee2e2]", color: "text-[#dc2626]" },
+        { label: "Total Orders", value: "327", growth: "↑ 12%", positive: true, icon: ShoppingCart, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
+        { label: "Shipped", value: "298", growth: "↑ 8%", positive: true, icon: Package, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
+        { label: "In Transit", value: "18", growth: "↑ 20%", positive: true, icon: Truck, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
+        { label: "Returns", value: "11", growth: "↑ 5%", positive: false, icon: RotateCcw, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
       ],
       bars: [
         { day: "Mon", shipped: 44, processing: 28 },
@@ -61,10 +61,10 @@ export function RevenueInsightsBentoSection() {
     },
     "7days": {
       stats: [
-        { label: "Total Orders", value: "2,410", growth: "↑ 15%", positive: true, icon: ShoppingCart, bg: "bg-[#f3e8ff]", color: "text-[#7c3aed]" },
-        { label: "Shipped", value: "2,180", growth: "↑ 14%", positive: true, icon: Package, bg: "bg-[#e0e7ff]", color: "text-[#4f46e5]" },
-        { label: "In Transit", value: "154", growth: "↑ 18%", positive: true, icon: Truck, bg: "bg-[#eff6ff]", color: "text-[#2563eb]" },
-        { label: "Returns", value: "76", growth: "↑ 3%", positive: false, icon: RotateCcw, bg: "bg-[#fee2e2]", color: "text-[#dc2626]" },
+        { label: "Total Orders", value: "2,410", growth: "↑ 15%", positive: true, icon: ShoppingCart, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
+        { label: "Shipped", value: "2,180", growth: "↑ 14%", positive: true, icon: Package, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
+        { label: "In Transit", value: "154", growth: "↑ 18%", positive: true, icon: Truck, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
+        { label: "Returns", value: "76", growth: "↑ 3%", positive: false, icon: RotateCcw, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
       ],
       bars: [
         { day: "Mon", shipped: 52, processing: 30 },
@@ -79,10 +79,10 @@ export function RevenueInsightsBentoSection() {
     },
     "30days": {
       stats: [
-        { label: "Total Orders", value: "9,840", growth: "↑ 22%", positive: true, icon: ShoppingCart, bg: "bg-[#f3e8ff]", color: "text-[#7c3aed]" },
-        { label: "Shipped", value: "9,120", growth: "↑ 20%", positive: true, icon: Package, bg: "bg-[#e0e7ff]", color: "text-[#4f46e5]" },
-        { label: "In Transit", value: "520", growth: "↑ 25%", positive: true, icon: Truck, bg: "bg-[#eff6ff]", color: "text-[#2563eb]" },
-        { label: "Returns", value: "200", growth: "↑ 4%", positive: false, icon: RotateCcw, bg: "bg-[#fee2e2]", color: "text-[#dc2626]" },
+        { label: "Total Orders", value: "9,840", growth: "↑ 22%", positive: true, icon: ShoppingCart, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
+        { label: "Shipped", value: "9,120", growth: "↑ 20%", positive: true, icon: Package, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
+        { label: "In Transit", value: "520", growth: "↑ 25%", positive: true, icon: Truck, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
+        { label: "Returns", value: "200", growth: "↑ 4%", positive: false, icon: RotateCcw, bg: "bg-[#ede9fe]", color: "text-[#5835e0]" },
       ],
       bars: [
         { day: "Mon", shipped: 62, processing: 30 },
@@ -623,7 +623,7 @@ export function RevenueInsightsBentoSection() {
                   className="bg-white rounded-[20px] p-3 sm:p-3.5 border border-slate-100/90 shadow-[0_2px_10px_rgba(0,0,0,0.03)] flex flex-col justify-between hover:border-slate-200 transition-colors"
                 >
                   <div className="flex items-center gap-2 sm:gap-2.5">
-                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-[#ede9fe] text-[#6366f1] flex items-center justify-center shrink-0 shadow-xs">
+                    <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-2xl bg-[#ede9fe] text-[#5835e0] flex items-center justify-center shrink-0 shadow-xs">
                       <Icon className="w-4 h-4" />
                     </div>
                     <div className="min-w-0 flex-1 overflow-hidden">
