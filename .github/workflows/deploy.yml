@@ -35,8 +35,12 @@ jobs:
       - name: Pull Vercel project settings and env
         run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
+      # The Lovable vite config defaults nitro to cloudflare-module, and nitro only
+      # auto-detects Vercel on Vercel's own builders, so set the preset here.
       - name: Build
         run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          NITRO_PRESET: vercel
 
       - name: Deploy
         run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
