@@ -98,9 +98,8 @@ function QuickfindCard({
       className="flex flex-col items-center text-center rounded-2xl border border-white/[0.08] bg-[#09090e] p-6 cursor-pointer"
     >
       <div
-        className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-colors ${
-          isSelected ? "bg-white text-black" : "text-slate-200"
-        }`}
+        className={`w-10 h-10 rounded-xl flex items-center justify-center mb-4 transition-colors ${isSelected ? "bg-white text-black" : "text-slate-200"
+          }`}
       >
         <Icon className="w-5.5 h-5.5 stroke-[1.75]" />
       </div>
@@ -465,11 +464,10 @@ function HelpCenterPage() {
                               role="option"
                               aria-selected={isActive}
                               onClick={() => handleSelectSuggestion(suggestion)}
-                              className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors cursor-pointer ${
-                                isActive
+                              className={`flex w-full items-center gap-3 px-4 py-3 text-left text-sm transition-colors cursor-pointer ${isActive
                                   ? "bg-white/[0.1] text-white"
                                   : "text-slate-200 hover:bg-white/[0.06] hover:text-white"
-                              }`}
+                                }`}
                             >
                               <Search
                                 className="h-3.5 w-3.5 shrink-0 text-slate-400"

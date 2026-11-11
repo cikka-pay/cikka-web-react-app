@@ -70,6 +70,23 @@ export const Route = createFileRoute("/")({
 });
 
 function PayerLanding() {
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+    if (!window.location.hash) {
+      const lenis = (
+        window as unknown as {
+          lenis?: { scrollTo: (pos: number, opts?: { immediate?: boolean }) => void };
+        }
+      ).lenis;
+      window.scrollTo(0, 0);
+      lenis?.scrollTo(0, { immediate: true });
+      ScrollTrigger.refresh();
+    }
+  }, []);
+
   return (
     <main className="payer-page bg-[#000000] text-white">
       <Header />
@@ -118,8 +135,11 @@ function Header() {
         onClick={(e) => {
           e.preventDefault();
           window.scrollTo(0, 0);
-          window.location.href = "/";
-          window.location.reload();
+          if (window.location.pathname === "/" && !window.location.hash) {
+            window.location.reload();
+          } else {
+            window.location.href = "/";
+          }
         }}
         aria-label="Cikka home"
       >
@@ -944,12 +964,13 @@ function LightContinuation() {
   return (
     <>
       <div id="light-continuation-wrap" className="w-full">
-        <section id="company" data-theme-light="true" className="relative z-20 mt-10 sm:mt-16 md:mt-24 bg-[#f4f5f8] text-black pt-12 sm:pt-16 pb-28 px-6 sm:px-12 md:px-16 shadow-[0_-30px_70px_rgba(0,0,0,0.7)] w-full">
+        <section id="company" data-theme-light="true" className="relative z-20 mt-10 sm:mt-16 md:mt-24 bg-[#f4f5f8] text-black pt-12 sm:pt-16 pb-28 shadow-[0_-30px_70px_rgba(0,0,0,0.7)] w-full">
           {/* Inverted / Concave Upward Curving Corners */}
           <InvertedCornerLeft />
           <InvertedCornerRight />
 
-          <div className="max-w-6xl mx-auto space-y-24 sm:space-y-32">
+          <div className="px-6 sm:px-12 md:px-16">
+            <div className="max-w-6xl mx-auto space-y-24 sm:space-y-32">
             {/* LOGO MARQUEE STRIP */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -1039,35 +1060,40 @@ function LightContinuation() {
 
             {/* SECTION 2: GAIN WEEKLY REVENUE INSIGHTS BENTO GRID */}
             <RevenueInsightsBentoSection />
+            </div>
+          </div>
 
-            {/* SECTION 3: GIGANTIC ANIMATED TEXT MARQUEE */}
-            <div className="py-6 sm:py-10 border-y border-slate-200/80 overflow-hidden select-none -mx-6 sm:-mx-12 md:-mx-16 flex">
-              <div className="flex whitespace-nowrap will-change-transform animate-marquee-text">
-                <div className="flex items-center gap-6 shrink-0 pr-6">
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Every Purchase</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Turns Into Rewards</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Every Purchase</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Turns Into Rewards</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
-                </div>
-                <div className="flex items-center gap-6 shrink-0 pr-6" aria-hidden="true">
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Every Purchase</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Turns Into Rewards</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Every Purchase</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Turns Into Rewards</span>
-                  <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
-                </div>
+          {/* SECTION 3: GIGANTIC ANIMATED TEXT MARQUEE (Full Viewport Edge-to-Edge) */}
+          <div className="my-24 sm:my-32 w-full py-6 sm:py-10 border-y border-slate-200/80 overflow-hidden select-none flex">
+            <div className="flex whitespace-nowrap will-change-transform animate-marquee-text">
+              <div className="flex items-center gap-6 shrink-0 pr-6">
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Every Purchase</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Turns Into Rewards</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Every Purchase</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Turns Into Rewards</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
+              </div>
+              <div className="flex items-center gap-6 shrink-0 pr-6" aria-hidden="true">
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Every Purchase</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Turns Into Rewards</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Every Purchase</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] font-bold tracking-tighter text-black">Turns Into Rewards</span>
+                <span className="text-5xl sm:text-7xl md:text-8xl lg:text-[7.2rem] text-slate-300 font-light">—</span>
               </div>
             </div>
+          </div>
 
-            {/* SECTION 4: MANAGE GENERAL PAYMENTS WITH CLEAR VISUAL INSIGHTS */}
-            <GeneralPaymentsSection />
+          {/* SECTION 4: MANAGE GENERAL PAYMENTS WITH CLEAR VISUAL INSIGHTS */}
+          <div className="px-6 sm:px-12 md:px-16">
+            <div className="max-w-6xl mx-auto">
+              <GeneralPaymentsSection />
+            </div>
           </div>
         </section>
 

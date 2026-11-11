@@ -46,8 +46,11 @@ export function Footer() {
             onClick={(e) => {
               e.preventDefault();
               window.scrollTo(0, 0);
-              window.location.href = "/";
-              window.location.reload();
+              if (window.location.pathname === "/" && !window.location.hash) {
+                window.location.reload();
+              } else {
+                window.location.href = "/";
+              }
             }}
             className="flex items-center gap-3.5 group cursor-pointer transition-transform duration-300 hover:scale-105 select-none"
             aria-label="Cikka home"
