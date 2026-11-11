@@ -50,7 +50,7 @@ export function GeneralPaymentsSection() {
           className="pt-1"
         >
           <LiquidButton
-            href="#download"
+            href="/get-app"
             text="Get started now"
             className="pl-7 pr-2 py-2"
             badgeBg="bg-[#e2e8f0] text-[#4f46e5]"

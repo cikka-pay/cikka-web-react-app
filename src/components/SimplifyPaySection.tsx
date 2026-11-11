@@ -140,7 +140,7 @@ export function SimplifyPaySection() {
           transition={{ duration: 0.6, delay: 0.2 }}
         >
           <LiquidButton
-            href="#download"
+            href="/get-app"
             text="Get started now"
             className="pl-8 pr-2.5 py-2.5"
             badgeBg="bg-[#e2e8f0] text-[#7c3aed]"

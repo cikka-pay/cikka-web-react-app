@@ -140,7 +140,7 @@ export function GetTheAppSection() {
           className="mt-6 sm:mt-8 mb-2 sm:mb-4"
         >
           <a
-            href="#download"
+            href="/get-app"
             style={{ color: "#ffffff", backgroundColor: "#000000" }}
             className="inline-flex items-center justify-center bg-black hover:bg-neutral-800 text-white !text-white font-semibold text-xs sm:text-sm px-8 sm:px-10 py-3 rounded-full transition-all shadow-[0_6px_20px_rgba(0,0,0,0.22)] active:scale-95 cursor-pointer"
           >
