@@ -358,7 +358,10 @@ export function RevenueInsightsBentoSection() {
 
           {/* Join now pill button */}
           <div className="mt-8 relative z-10">
-            <motion.button
+            <motion.a
+              href="https://seller.cikka.club/"
+              target="_blank"
+              rel="noopener noreferrer"
               whileHover={{ scale: 1.04 }}
               whileTap={{ scale: 0.96 }}
               className="inline-flex items-center gap-3 bg-black text-white pl-5 pr-1.5 py-1.5 rounded-full font-bold text-xs sm:text-sm shadow-md hover:bg-neutral-900 transition-all group cursor-pointer"
@@ -367,7 +370,7 @@ export function RevenueInsightsBentoSection() {
               <span className="w-7 h-7 sm:w-8 sm:h-8 rounded-full bg-white text-[#5422cd] flex items-center justify-center text-xs sm:text-sm font-extrabold transition-transform group-hover:rotate-45 shadow-xs">
                 ↗
               </span>
-            </motion.button>
+            </motion.a>
           </div>
         </motion.div>
 

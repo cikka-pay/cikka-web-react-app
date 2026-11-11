@@ -145,7 +145,7 @@ function Header() {
         </a>
 
         <a
-          href="#download"
+          href="/get-app"
           style={{ color: isLight ? "#ffffff" : "#000000" }}
           className={`inline-flex items-center justify-center font-semibold text-[13px] px-5 sm:px-5.5 py-2 rounded-full border shadow-[0_2px_14px_rgba(0,0,0,0.25)] transition-all duration-500 active:scale-95 cursor-pointer select-none ${isLight
               ? "bg-black hover:bg-neutral-900 text-white border-black/20"
