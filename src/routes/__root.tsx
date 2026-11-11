@@ -110,6 +110,12 @@ function RootShell({ children }: { children: ReactNode }) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <HeadContent />
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              'if("scrollRestoration"in history){history.scrollRestoration="manual";}if(!location.hash){window.scrollTo(0,0);}',
+          }}
+        />
       </head>
       <body suppressHydrationWarning>
         {children}

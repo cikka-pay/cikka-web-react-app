@@ -4,7 +4,17 @@ import { gsap, ScrollTrigger, prefersReducedMotion } from "../lib/gsap";
 
 export function SmoothScroll() {
   useEffect(() => {
-    if (typeof window === "undefined" || prefersReducedMotion()) return;
+    if (typeof window === "undefined") return;
+
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+
+    if (!window.location.hash) {
+      window.scrollTo(0, 0);
+    }
+
+    if (prefersReducedMotion()) return;
 
     ScrollTrigger.config({ ignoreMobileResize: true });
 
@@ -21,6 +31,25 @@ export function SmoothScroll() {
       autoResize: true,
       infinite: false,
     });
+
+    if (!window.location.hash) {
+      lenis.scrollTo(0, { immediate: true });
+    }
+
+    const handleBeforeUnload = () => {
+      window.scrollTo(0, 0);
+    };
+
+    const handlePageShow = (event: PageTransitionEvent) => {
+      if (event.persisted && !window.location.hash) {
+        window.scrollTo(0, 0);
+        lenis.scrollTo(0, { immediate: true });
+        ScrollTrigger.refresh();
+      }
+    };
+
+    window.addEventListener("beforeunload", handleBeforeUnload);
+    window.addEventListener("pageshow", handlePageShow);
 
     // Synchronize Lenis scroll with GSAP ScrollTrigger
     lenis.on("scroll", () => {
@@ -74,6 +103,8 @@ export function SmoothScroll() {
       clearTimeout(timer);
       document.removeEventListener("click", onClick);
       window.removeEventListener("resize", handleResize);
+      window.removeEventListener("beforeunload", handleBeforeUnload);
+      window.removeEventListener("pageshow", handlePageShow);
       gsap.ticker.remove(updateTicker);
       lenis.destroy();
       delete (window as unknown as { lenis?: Lenis }).lenis;
