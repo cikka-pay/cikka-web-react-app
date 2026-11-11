@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import { Link } from "@tanstack/react-router";
 import { gsap, prefersReducedMotion } from "../lib/gsap";
 import { Cikka3DLogo } from "./Cikka3DLogo";
 
@@ -124,13 +125,24 @@ export function Footer() {
           <p className="text-center sm:text-left text-slate-400 font-normal">
             © 2026 Cikka | A product of Sorvantis Platforms Pvt Ltd
           </p>
-          <div className="flex items-center gap-5 text-slate-400 text-xs">
-            <span className="hover:text-white cursor-pointer transition-colors">Privacy</span>
-            <span className="text-slate-600">•</span>
-            <span className="hover:text-white cursor-pointer transition-colors">Terms</span>
-            <span className="text-slate-600">•</span>
+          <nav
+            aria-label="Footer navigation"
+            className="flex flex-wrap items-center justify-center gap-x-4 sm:gap-x-5 gap-y-2 text-slate-400 text-xs"
+          >
+            <span className="hover:text-white cursor-pointer transition-colors">
+              Privacy &amp; Terms
+            </span>
+            <span className="text-slate-600" aria-hidden="true">
+              •
+            </span>
             <span className="hover:text-white cursor-pointer transition-colors">Security</span>
-          </div>
+            <span className="text-slate-600" aria-hidden="true">
+              •
+            </span>
+            <Link to="/help-center" className="hover:text-white cursor-pointer transition-colors">
+              Help Center
+            </Link>
+          </nav>
         </div>
       </div>
 
