@@ -169,10 +169,10 @@ export function GetAppPage() {
                 <div className="w-32 h-32 sm:w-40 sm:h-40 bg-slate-50 filter blur-[7px] rounded-lg" />
               )}
 
-              {/* Overlay: Launching on this Diwali */}
+              {/* Overlay: Launching soon */}
               <div className="absolute inset-0 flex items-center justify-center p-4 text-center">
                 <span className="text-sm sm:text-[15px] font-bold text-black tracking-tight leading-snug">
-                  Launching on this Diwali
+                  Launching soon
                 </span>
               </div>
             </div>
