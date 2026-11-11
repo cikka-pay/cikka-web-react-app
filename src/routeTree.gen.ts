@@ -12,6 +12,7 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DownloadRouteImport } from './routes/download'
 import { Route as GetAppRouteImport } from './routes/get-app'
+import { Route as HelpCenterRouteImport } from './routes/help-center'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -28,35 +29,44 @@ const GetAppRoute = GetAppRouteImport.update({
   path: '/get-app',
   getParentRoute: () => rootRouteImport,
 } as any)
+const HelpCenterRoute = HelpCenterRouteImport.update({
+  id: '/help-center',
+  path: '/help-center',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
+  '/help-center': typeof HelpCenterRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
+  '/help-center': typeof HelpCenterRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/download': typeof DownloadRoute
   '/get-app': typeof GetAppRoute
+  '/help-center': typeof HelpCenterRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/download' | '/get-app'
+  fullPaths: '/' | '/download' | '/get-app' | '/help-center'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/download' | '/get-app'
-  id: '__root__' | '/' | '/download' | '/get-app'
+  to: '/' | '/download' | '/get-app' | '/help-center'
+  id: '__root__' | '/' | '/download' | '/get-app' | '/help-center'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   DownloadRoute: typeof DownloadRoute
   GetAppRoute: typeof GetAppRoute
+  HelpCenterRoute: typeof HelpCenterRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -82,6 +92,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof GetAppRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/help-center': {
+      id: '/help-center'
+      path: '/help-center'
+      fullPath: '/help-center'
+      preLoaderRoute: typeof HelpCenterRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -89,6 +106,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   DownloadRoute: DownloadRoute,
   GetAppRoute: GetAppRoute,
+  HelpCenterRoute: HelpCenterRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
