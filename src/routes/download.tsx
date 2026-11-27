@@ -4,6 +4,7 @@ export const Route = createFileRoute("/download")({
   beforeLoad: () => {
     throw redirect({
       to: "/get-app",
+      statusCode: 301,
     });
   },
 });

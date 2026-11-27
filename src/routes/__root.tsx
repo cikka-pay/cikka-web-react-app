@@ -12,6 +12,12 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SmoothScroll } from "../components/SmoothScroll";
+import {
+  buildOrganizationJsonLd,
+  buildRouteHeadMeta,
+  buildWebSiteJsonLd,
+  SEO_CONFIG,
+} from "../lib/seo";
 
 function NotFoundComponent() {
   return (
@@ -74,31 +80,44 @@ function ErrorComponent({ error, reset }: { error: any; reset: () => void }) {
 }
 
 export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()({
-  head: () => ({
-    meta: [
-      { charSet: "utf-8" },
-      { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Cikka - A perfect place for all of your credit card activity" },
-      { name: "description", content: "A perfect place for all of your credit card activity, powered by Cikka." },
-      { name: "author", content: "Cikka" },
-      { property: "og:title", content: "Cikka - A perfect place for all of your credit card activity" },
-      { property: "og:description", content: "A perfect place for all of your credit card activity, powered by Cikka." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-    links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      { rel: "icon", href: "/favicon.svg?v=2", type: "image/svg+xml" },
-      { rel: "icon", href: "/favicon.png?v=2", type: "image/png", sizes: "64x64" },
-      { rel: "apple-touch-icon", href: "/favicon-192.png?v=2" },
-      { rel: "preconnect", href: "https://fonts.googleapis.com" },
-      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
-      { rel: "stylesheet", href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" },
-    ],
-  }),
+  head: () => {
+    const defaultHead = buildRouteHeadMeta(SEO_CONFIG.routes.home);
+    return {
+      meta: [
+        { charSet: "utf-8" },
+        { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "author", content: "Cikka" },
+        { name: "theme-color", content: "#000000" },
+        ...defaultHead.meta,
+      ],
+      links: [
+        {
+          rel: "stylesheet",
+          href: appCss,
+        },
+        { rel: "icon", href: "/favicon.svg?v=2", type: "image/svg+xml" },
+        { rel: "icon", href: "/favicon.png?v=2", type: "image/png", sizes: "64x64" },
+        { rel: "apple-touch-icon", href: "/favicon-192.png?v=2" },
+        { rel: "preconnect", href: "https://fonts.googleapis.com" },
+        { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+        {
+          rel: "stylesheet",
+          href: "https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap",
+        },
+        ...defaultHead.links,
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(buildOrganizationJsonLd()),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(buildWebSiteJsonLd()),
+        },
+      ],
+    };
+  },
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
