@@ -39,6 +39,11 @@ import { Cikka3DLogo } from "../components/Cikka3DLogo";
 import { PhoneScreen1Canvas } from "../components/PhoneScreen1Canvas";
 import { PhoneScreen2Portfolio } from "../components/PhoneScreen2Portfolio";
 import { PhoneScreen3Features } from "../components/PhoneScreen3Features";
+import {
+  buildRouteHeadMeta,
+  buildSoftwareApplicationJsonLd,
+  SEO_CONFIG,
+} from "../lib/seo";
 
 // Responsive window size hook with SSR-safe initial detection
 function useWindowSize() {
@@ -56,16 +61,18 @@ function useWindowSize() {
 }
 
 export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Cikka - A perfect place for all of your credit card activity" },
-      { name: "description", content: "A perfect place for all of your credit card activity, powered by Cikka." },
-      { property: "og:title", content: "Cikka - A perfect place for all of your credit card activity" },
-      { property: "og:description", content: "A perfect place for all of your credit card activity, powered by Cikka." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
+  head: () => {
+    const seo = buildRouteHeadMeta(SEO_CONFIG.routes.home);
+    return {
+      ...seo,
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(buildSoftwareApplicationJsonLd()),
+        },
+      ],
+    };
+  },
   component: PayerLanding,
 });
 

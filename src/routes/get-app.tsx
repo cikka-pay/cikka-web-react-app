@@ -2,17 +2,35 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import React, { useEffect, useState } from "react";
 import * as QRCode from "qrcode";
 import { Cikka3DLogo } from "../components/Cikka3DLogo";
+import {
+  buildBreadcrumbJsonLd,
+  buildRouteHeadMeta,
+  buildSoftwareApplicationJsonLd,
+  SEO_CONFIG,
+} from "../lib/seo";
 
 export const Route = createFileRoute("/get-app")({
-  head: () => ({
-    meta: [
-      { title: "Download Cikka - Super Money App" },
-      {
-        name: "description",
-        content: "Scan the QR code to download Cikka for iOS and Android.",
-      },
-    ],
-  }),
+  head: () => {
+    const seo = buildRouteHeadMeta(SEO_CONFIG.routes.getApp);
+    return {
+      ...seo,
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(buildSoftwareApplicationJsonLd()),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(
+            buildBreadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Download Cikka App", path: "/get-app" },
+            ]),
+          ),
+        },
+      ],
+    };
+  },
   component: GetAppPage,
 });
 

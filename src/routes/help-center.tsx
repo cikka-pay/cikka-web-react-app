@@ -27,17 +27,56 @@ import { Cikka3DLogo } from "../components/Cikka3DLogo";
 import { Footer } from "../components/Footer";
 import { ScrollTrigger } from "../lib/gsap";
 import { SUPPORT_MATRIX_CATEGORIES, type SupportMatrixCategory } from "../data/helpCenterMatrix";
+import {
+  buildBreadcrumbJsonLd,
+  buildRouteHeadMeta,
+  SEO_CONFIG,
+} from "../lib/seo";
+
+function buildHelpCenterFaqJsonLd() {
+  const mainEntity = SUPPORT_MATRIX_CATEGORIES.flatMap((category) =>
+    category.items.map((item) => {
+      const notesText = item.notes?.length ? ` ${item.notes.join(" ")}` : "";
+      return {
+        "@type": "Question",
+        name: item.question,
+        acceptedAnswer: {
+          "@type": "Answer",
+          text: `${item.solution}${notesText}`.trim(),
+        },
+      };
+    }),
+  );
+
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity,
+  };
+}
 
 export const Route = createFileRoute("/help-center")({
-  head: () => ({
-    meta: [
-      { title: "Help Center - Cikka" },
-      {
-        name: "description",
-        content: "Cikka Help Center: frequently asked questions and support solutions.",
-      },
-    ],
-  }),
+  head: () => {
+    const seo = buildRouteHeadMeta(SEO_CONFIG.routes.helpCenter);
+    return {
+      ...seo,
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(buildHelpCenterFaqJsonLd()),
+        },
+        {
+          type: "application/ld+json",
+          children: JSON.stringify(
+            buildBreadcrumbJsonLd([
+              { name: "Home", path: "/" },
+              { name: "Help Center", path: "/help-center" },
+            ]),
+          ),
+        },
+      ],
+    };
+  },
   component: HelpCenterPage,
 });
 

@@ -1,0 +1,22 @@
+# Cikka (cikka.club)
+
+> Cikka (also known as Cikka Club, and commonly searched phonetically as Sikka, Sikka Club, Sika, Cika, or Sikka.club) is a rewarding credit card and bill payment platform in India, founded by Sujal Choubisa (Founder & CEO) under Sorvantis Platforms Pvt Ltd.
+
+## Official Links
+- Website: https://cikka.club/
+- Download App: https://cikka.club/get-app
+- Help Center & FAQs: https://cikka.club/help-center
+- Google Play Store: https://play.google.com/store/apps/details?id=com.cikka.app
+- LinkedIn: https://www.linkedin.com/company/cikkaclub/
+- Instagram: https://www.instagram.com/cikka.club/
+- X (Twitter): https://x.com/Cikkaclub
+
+## Category & Positioning
+- **Category**: Credit Card Platform, Bill Payment Platform, Rewarding Credit Card Platform (India)
+- **Use Cases**: Managing banks & credit cards, paying credit card & BBPS utility bills, UPI payments, earning cashback on shopping credit cards, travel credit cards, and dine-in credit cards, plus Cikka Mall rewards.
+- **Comparison Context**: In India's credit card bill payment and rewards category (alongside platforms like CRED, CheQ, and MobiKwik), Cikka focuses on unified credit card management, BBPS bill fetching, UPI payments, and withdrawable cashback rewards.
+
+## Trust & Safety (Is Cikka Safe?)
+- Operated by **Sorvantis Platforms Pvt Ltd** (Founder & CEO: **Sujal Choubisa**).
+- Enforces 6-digit SMS OTP authentication, 10-character PAN KYC verification, OS Device Lock (fingerprint/face/PIN) or 4-digit Cikka PIN, and automatic background re-locking to hide balances in the app switcher.
+- Live credit card and utility bill fetching runs over BBPS (Bharat Bill Payment System).
