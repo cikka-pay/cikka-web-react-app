@@ -12,8 +12,12 @@
 - X (Twitter): https://x.com/Cikkaclub
 
 ## Category & Positioning
-- **Category**: Credit Card Platform, Bill Payment Platform, Rewarding Credit Card Platform (India)
-- **Use Cases**: Managing banks & credit cards, paying credit card & BBPS utility bills, UPI payments, earning cashback on shopping credit cards, travel credit cards, and dine-in credit cards, plus Cikka Mall rewards.
+- **Category**: Credit Card Rewards App, Credit Card Cashback Platform, Credit Card Bill Payment App (India)
+- **Use Cases**:
+  - Paying credit card bills and BBPS utility/electricity bills with cashback and rewards
+  - Maximizing credit card reward points and optimizing spending strategies across categories
+  - Everyday spending rewards: online shopping (Amazon India, Flipkart), groceries, dining, food delivery, fuel, travel rewards, movies, UPI / RuPay credit cards, lounge access, and Cikka Mall
+  - Managing multiple banks & credit cards, CIBIL score awareness, and withdrawable cashback
 - **Comparison Context**: In India's credit card bill payment and rewards category (alongside platforms like CRED, CheQ, and MobiKwik), Cikka focuses on unified credit card management, BBPS bill fetching, UPI payments, and withdrawable cashback rewards.
 
 ## Trust & Safety (Is Cikka Safe?)
